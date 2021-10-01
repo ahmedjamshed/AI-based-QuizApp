@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:getx_start_project/app/common/constants.dart';
-import 'package:getx_start_project/app/common/util/exports.dart';
-import 'package:getx_start_project/app/data/app_reponse.dart';
-import 'package:getx_start_project/app/data/errors/app_errors.dart';
-import 'package:getx_start_project/app/data/interface_controller/api_interface_controller.dart';
-import 'package:getx_start_project/app/routes/app_pages.dart';
+import 'package:quizapp/app/common/constants.dart';
+import 'package:quizapp/app/common/util/exports.dart';
+import 'package:quizapp/app/data/app_reponse.dart';
+import 'package:quizapp/app/data/errors/app_errors.dart';
+import 'package:quizapp/app/data/interface_controller/api_interface_controller.dart';
+import 'package:quizapp/app/routes/app_pages.dart';
 import 'package:intl/intl.dart';
 
 import 'utils.dart';

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:getx_start_project/app/common/util/exports.dart';
-import 'package:getx_start_project/app/common/util/initializer.dart';
-import 'package:getx_start_project/app/common/values/styles/theme.dart';
-import 'package:getx_start_project/app/routes/app_pages.dart';
+import 'package:quizapp/app/common/util/exports.dart';
+import 'package:quizapp/app/common/util/initializer.dart';
+import 'package:quizapp/app/common/values/styles/theme.dart';
+import 'package:quizapp/app/routes/app_pages.dart';
 
 import 'app/modules/widgets/base_widget.dart';
 

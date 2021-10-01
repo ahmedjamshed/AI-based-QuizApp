@@ -1,4 +1,4 @@
-import 'package:getx_start_project/app/common/util/exports.dart';
+import 'package:quizapp/app/common/util/exports.dart';
 
 class AppImages {
   ///add app images here

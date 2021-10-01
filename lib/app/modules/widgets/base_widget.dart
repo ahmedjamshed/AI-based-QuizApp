@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:getx_start_project/app/data/interface_controller/api_interface_controller.dart';
-import 'package:getx_start_project/app/modules/widgets/custom_retry_widget.dart';
+import 'package:quizapp/app/data/interface_controller/api_interface_controller.dart';
+import 'package:quizapp/app/modules/widgets/custom_retry_widget.dart';
 
-export 'package:getx_start_project/app/common/util/exports.dart';
+export 'package:quizapp/app/common/util/exports.dart';
 
 class BaseWidget extends GetView<ApiInterfaceController> {
   ///A widget with only custom retry button widget.

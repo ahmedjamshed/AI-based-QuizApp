@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:getx_start_project/app/common/util/exports.dart';
+import 'package:quizapp/app/common/util/exports.dart';
 
 class CustomTextButton extends StatelessWidget {
   final VoidCallback onPressed;

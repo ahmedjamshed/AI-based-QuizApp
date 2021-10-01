@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/status/http_status.dart';
-import 'package:getx_start_project/app/common/util/exports.dart';
+import 'package:quizapp/app/common/util/exports.dart';
 
 import 'errors/app_errors.dart';
 

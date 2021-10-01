@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
-import 'package:getx_start_project/app/common/constants.dart';
-import 'package:getx_start_project/app/common/storage/storage.dart';
+import 'package:quizapp/app/common/constants.dart';
+import 'package:quizapp/app/common/storage/storage.dart';
 
 import 'api_helper.dart';
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:getx_start_project/app/common/util/validators.dart';
+import 'package:quizapp/app/common/util/validators.dart';
 
 class CustomCheckboxWidget extends FormField<bool> {
   CustomCheckboxWidget({

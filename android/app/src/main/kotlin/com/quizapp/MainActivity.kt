@@ -1,4 +1,4 @@
-package com.thealteria.getx_start_project
+package com.quizapp
 
 import io.flutter.embedding.android.FlutterActivity
 

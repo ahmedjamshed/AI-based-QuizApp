@@ -3,10 +3,10 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:getx_start_project/app/common/util/exports.dart';
-import 'package:getx_start_project/app/common/values/styles/app_text_style.dart';
-import 'package:getx_start_project/app/modules/widgets/custom_inkwell_widget.dart';
-import 'package:getx_start_project/app/modules/widgets/custom_text_button.dart';
+import 'package:quizapp/app/common/util/exports.dart';
+import 'package:quizapp/app/common/values/styles/app_text_style.dart';
+import 'package:quizapp/app/modules/widgets/custom_inkwell_widget.dart';
+import 'package:quizapp/app/modules/widgets/custom_text_button.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
