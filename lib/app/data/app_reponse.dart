@@ -7,6 +7,7 @@ import 'package:quizapp/app/common/util/exports.dart';
 
 import 'errors/app_errors.dart';
 
+// ignore: avoid_classes_with_only_static_members
 class AppResponse {
   static T? getResponse<T>(Response<T> response) {
     final status = response.status;

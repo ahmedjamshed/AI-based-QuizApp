@@ -11,7 +11,10 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
     httpClient.timeout = Constants.timeout;
 
     addRequestModifier();
+    addResponseModifier();
+  }
 
+  void addResponseModifier() {
     httpClient.addResponseModifier((request, response) {
       printInfo(
         info: 'Status Code: ${response.statusCode}\n'
