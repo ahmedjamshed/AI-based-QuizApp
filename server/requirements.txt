@@ -11,3 +11,6 @@ matplotlib>=1.4.3
 pandas>=0.19
 nltk == 3.5
 google-cloud-vision
+fastapi==0.68.0
+uvicorn==0.14.0
+pydantic==3.10.0.2

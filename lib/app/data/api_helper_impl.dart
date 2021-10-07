@@ -43,7 +43,8 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
   }
 
   @override
-  Future<Response<dynamic>> getPosts() {
-    return get('posts');
+  Future<Response> getLabels(String base64Image) {
+    final body = {"image": base64Image};
+    return post('predictLabels', body);
   }
 }
