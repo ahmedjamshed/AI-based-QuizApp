@@ -1,5 +1,4 @@
 from fastapi import FastAPI
-from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from google.cloud import vision
 import proto
@@ -41,7 +40,7 @@ def detect_labels_uri(source):
 @app.post("/predictLabels")
 def predict(req: Image):
     # labels = detect_labels_uri(req.image)
-    return JSONResponse(content=jsonable_encoder(LABELS))
+    return JSONResponse(content=LABELS)
 
 
 LABELS = [{'mid': '/m/0bwd_0j', 'description': 'Elephant', 'score': 0.975124, 'topicality': 0.975124, 'locale': '', 'confidence': 0.0, 'locations': [], 'properties': []}, {'mid': '/m/05s2s', 'description': 'Plant', 'score': 0.96498865, 'topicality': 0.96498865, 'locale': '', 'confidence': 0.0, 'locations': [], 'properties': []}, {'mid': '/m/06600f2', 'description': 'Plant community', 'score': 0.93969685, 'topicality': 0.93969685, 'locale': '', 'confidence': 0.0, 'locations': [], 'properties': []}, {'mid': '/m/0cblv', 'description': 'Ecoregion', 'score': 0.9285802, 'topicality': 0.9285802, 'locale': '', 'confidence': 0.0, 'locations': [], 'properties': []}, {'mid': '/m/07_gml', 'description': 'Working animal', 'score': 0.8963104, 'topicality': 0.8963104, 'locale': '', 'confidence': 0.0, 'locations': [], 'properties': []},
