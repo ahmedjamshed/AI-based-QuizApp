@@ -48,16 +48,33 @@ class HomeView extends GetView<HomeController> {
                     itemBuilder: (context, index) {
                       final dynamic _data = controller.dataList[index];
 
-                      return Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            'Title: ${_data['title'].toString()}',
+                          Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                _data['description'].toString(),
+                                style: const TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.bold),
+                              ),
+                              SizedBox(height: 5.h),
+                              Text(
+                                'Score: ${_data['score'].toString()}',
+                              ),
+                              SizedBox(height: 5.h),
+                              Text(
+                                'Relevance: ${_data['topicality'].toString()}',
+                              ),
+                            ],
                           ),
-                          SizedBox(height: 5.h),
-                          Text(
-                            'Body: ${_data['body'].toString()}',
+                          ElevatedButton(
+                            style:
+                                ElevatedButton.styleFrom(primary: Colors.black),
+                            onPressed: () {},
+                            child: const Text('Go'),
                           ),
                         ],
                       );

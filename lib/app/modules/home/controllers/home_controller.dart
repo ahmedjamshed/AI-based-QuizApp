@@ -27,6 +27,7 @@ class HomeController extends GetxController {
   }
 
   void getLabels(String base64Img) {
+    _dataList.clear();
     _apiHelper.getLabels(base64Img).futureValue(
           (dynamic value) => dataList = value,
         );
