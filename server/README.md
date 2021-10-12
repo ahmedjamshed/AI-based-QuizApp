@@ -18,3 +18,7 @@ deactivate
 export GOOGLE_APPLICATION_CREDENTIALS="/Users/immentia/Desktop/QuizApp/server/keyFile.json"
 
 uvicorn main:app --reload --workers 1 --host 0.0.0.0 --port 8008
+
+# dependencies
+
+pip3 install -e git://github.com/ahmedjamshed/question_generation.git@0.1.0#egg=question_generation

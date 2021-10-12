@@ -1,11 +1,24 @@
+from nltk.stem import WordNetLemmatizer
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 from google.cloud import vision
 import proto
 from pydantic import BaseModel
 import base64
+import question_generation
+import numpy as np
+import pandas as pd
+from sklearn import linear_model
+import joblib
+import wikipedia
+import re
+from sklearn.feature_extraction.text import CountVectorizer
+import nltk
+nltk.download('wordnet')
+nltk.download('punkt')
 
 app = FastAPI()
+nlp = question_generation.pipeline("question-generation")
 
 ###################################################
 
@@ -37,8 +50,25 @@ def detect_labels_uri(source):
     return [proto.Message.to_dict(tag) for tag in response.label_annotations]
 
 
+@app.get('/generateQuestions/{concept}')
+def generateQuestions(concept: str):
+    conceptsArr = wikipedia.search(concept)
+    page = wikipedia.page(conceptsArr[0])
+    print(page.categories)
+    print(page.summary)
+    print(page.title)
+    print(page.images)
+    questions = nlp(page.summary)
+    for question in questions:
+        print(question)
+    return JSONResponse(content={
+        questions,
+        page
+    })
+
+
 @app.post("/predictLabels")
-def predict(req: Image):
+def predictLabels(req: Image):
     # labels = detect_labels_uri(req.image)
     return JSONResponse(content=LABELS)
 
