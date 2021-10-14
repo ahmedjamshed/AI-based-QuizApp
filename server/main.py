@@ -12,6 +12,7 @@ from sklearn import linear_model
 import joblib
 import wikipedia
 import re
+import time
 from sklearn.feature_extraction.text import CountVectorizer
 import nltk
 nltk.download('wordnet')
@@ -60,8 +61,12 @@ def generateQuestions(concept: str):
     # print(page.images)
     summary = page.summary
     # summary = ' '.join(re.split(r'(?<=[.?!])\s+', summary, 5)[:-1])
+
     print(summary)
+    start = time.time()
     questions = nlp(summary)
+    end = time.time()
+    print((end - start))
     return JSONResponse(content={
         "questions": questions
     })
