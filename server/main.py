@@ -18,7 +18,8 @@ nltk.download('wordnet')
 nltk.download('punkt')
 
 app = FastAPI()
-nlp = question_generation.pipeline("question-generation")
+nlp = question_generation.pipeline(
+    "question-generation", model="valhalla/t5-small-qg-prepend", qg_format="prepend")
 
 ###################################################
 
@@ -54,16 +55,15 @@ def detect_labels_uri(source):
 def generateQuestions(concept: str):
     conceptsArr = wikipedia.search(concept)
     page = wikipedia.page(conceptsArr[0])
-    print(page.categories)
-    print(page.summary)
-    print(page.title)
-    print(page.images)
-    questions = nlp(page.summary)
-    for question in questions:
-        print(question)
+    # print(page.categories)
+    # print(page.title)
+    # print(page.images)
+    summary = page.summary
+    # summary = ' '.join(re.split(r'(?<=[.?!])\s+', summary, 5)[:-1])
+    print(summary)
+    questions = nlp(summary)
     return JSONResponse(content={
-        questions,
-        page
+        "questions": questions
     })
 
 
