@@ -1,5 +1,13 @@
 from bs4 import *
 import requests
+import re
+
+
+def cleanString(para: str):
+    out = para.strip()
+    out = re.sub("[\(\[].*?[\)\]]", "", out)
+    out = re.sub(' +', " ", out)
+    return out
 
 
 def wikipedia(pageUrl):
@@ -65,4 +73,6 @@ def wikipedia(pageUrl):
         else:
             remaining_content.append(tag.text)
 
+    paragraphs = filter(lambda para: len(para) > 20,  paragraphs)
+    paragraphs = list(map(lambda para: cleanString(para), paragraphs))
     return {'paragraphs': paragraphs, 'images': images}

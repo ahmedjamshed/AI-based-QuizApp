@@ -23,7 +23,7 @@ import uvicorn
 from bs4 import *
 import requests
 
-import wikipedia_parser
+from parser.wikipedia_parser import wikipedia
 
 config = dotenv_values(".env")
 
@@ -101,26 +101,20 @@ def detect_labels_uri(source):
 
 
 @app.get('/generateQuestions')
-async def generateQuestions(id: str = '', name: str = ''):
+async def generateQuestions(id: str = ''):
     url = getMachineLabel(id)
-    data = wikipedia_parser.wikipedia(url)
-    print(data)
-    # conceptsArr = wikipedia.search(concept)
-    # page = wikipedia.page(conceptsArr[0])
-    # # print(page.categories)
-    # # print(page.title)
-    # # print(page.images)
-    # summary = page.summary
-    # # summary = ' '.join(re.split(r'(?<=[.?!])\s+', summary, 5)[:-1])
-
-    # print(summary)
-    # start = time.time()
-    # questions = nlp(summary)
-    # end = time.time()
-    # print((end - start))
-    # return JSONResponse(content={
-    #     "questions": questions
-    # })
+    data = wikipedia(url)
+    paras = data['paragraphs']
+    text = ' '.join(paras[:5])
+    summary = ' '.join(re.split(r'(?<=[.?!])\s+', text, 15)[:-1])
+    print(summary)
+    start = time.time()
+    questions = nlp(summary)
+    end = time.time()
+    print((end - start))
+    return JSONResponse(content={
+        "questions": questions
+    })
 
 
 @app.post("/predictLabels")
