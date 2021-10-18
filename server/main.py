@@ -27,8 +27,8 @@ from parser.wikipedia_parser import wikipedia
 
 config = dotenv_values(".env")
 
-# nltk.download('wordnet')
-# nltk.download('punkt')
+nltk.download('wordnet')
+nltk.download('punkt')
 
 app = FastAPI()
 
