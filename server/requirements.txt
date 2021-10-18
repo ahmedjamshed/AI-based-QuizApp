@@ -77,4 +77,3 @@ urllib3==1.26.7
 uvicorn==0.14.0
 Werkzeug==0.15.5
 xxhash==2.0.2
--e git+git://github.com/ahmedjamshed/question_generation.git@56f4963f20b19964cf6f496072a5eb35db0c3af6#egg=question_generation
