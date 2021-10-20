@@ -62,13 +62,13 @@ class Image(BaseModel):
     image: str
 
 
-def getMachineLabel(id):
+def getMachineLabel(ids):
     headers = {
         'Accept': 'application/json',
     }
     print(config['GAPI_KEY'])
     params = (
-        ('ids', [id]),
+        ('ids', ids),
         ('key', config['GAPI_KEY']),
     )
     try:
@@ -102,7 +102,8 @@ def detect_labels_uri(source):
 
 @app.get('/generateQuestions')
 async def generateQuestions(id: str = ''):
-    url = getMachineLabel(id)
+    url = getMachineLabel([id])
+    print(url)
     data = wikipedia(url)
     paras = data['paragraphs']
     text = ' '.join(paras[:5])
