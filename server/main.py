@@ -24,6 +24,7 @@ from bs4 import *
 import requests
 
 from parser.wikipedia_parser import wikipedia
+from parser.wikiPage import wikiPage
 
 config = dotenv_values(".env")
 
@@ -104,19 +105,21 @@ def detect_labels_uri(source):
 @app.get('/generateQuestions')
 async def generateQuestions(id: str = ''):
     url = getMachineLabel([id])
-    data = wikipedia(url)
-    paras = data['paragraphs']
-    text = ' '.join(paras[:5])
-    summary = ' '.join(re.split(r'(?<=[.?!])\s+', text, 15)[:-1])
-    print(summary)
-    start = time.time()
-    questions = nlp(summary)
-    end = time.time()
-    print((end - start))
-    return JSONResponse(content={
-        "oaras": paras,
-        "questions": questions
-    })
+    title = url.split("/")[-1]
+    wikiPage(title)
+    # data = wikipedia(url)
+    # paras = data['paragraphs']
+    # text = ' '.join(paras[:5])
+    # summary = ' '.join(re.split(r'(?<=[.?!])\s+', text, 15)[:-1])
+    # print(summary)
+    # start = time.time()
+    # questions = nlp(summary)
+    # end = time.time()
+    # print((end - start))
+    # return JSONResponse(content={
+    #     "oaras": paras,
+    #     "questions": questions
+    # })
 
 
 @app.post("/predictLabels")
