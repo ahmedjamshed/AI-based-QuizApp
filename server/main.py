@@ -114,6 +114,7 @@ async def generateQuestions(id: str = ''):
     end = time.time()
     print((end - start))
     return JSONResponse(content={
+        "oaras": paras,
         "questions": questions
     })
 
