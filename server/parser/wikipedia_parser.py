@@ -73,6 +73,6 @@ def wikipedia(pageUrl):
         else:
             remaining_content.append(tag.text)
 
-    paragraphs = filter(lambda para: len(para) > 20,  paragraphs)
+    paragraphs = filter(lambda para: len(para) > 5,  paragraphs)
     paragraphs = list(map(lambda para: cleanString(para), paragraphs))
     return {'paragraphs': paragraphs, 'images': images}
