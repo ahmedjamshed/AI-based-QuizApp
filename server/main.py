@@ -28,8 +28,8 @@ from parser.wikiPage import wikiPage
 
 config = dotenv_values(".env")
 
-nltk.download('wordnet')
-nltk.download('punkt')
+# nltk.download('wordnet')
+# nltk.download('punkt')
 
 app = FastAPI()
 
@@ -41,8 +41,8 @@ app.add_middleware(
     allow_headers=['*'],
 )
 
-nlp = question_generation.pipeline(
-    "question-generation", model="valhalla/t5-small-qg-prepend", qg_format="prepend")
+# nlp = question_generation.pipeline(
+#     "question-generation", model="valhalla/t5-small-qg-prepend", qg_format="prepend")
 
 ###################################################
 
@@ -107,7 +107,7 @@ async def generateQuestions(id: str = ''):
     url = getMachineLabel([id])
     title = url.split("/")[-1]
     data = wikiPage(title)
-    print(data['extract'])
+    # print(data['extract'])
     # paras = data['paragraphs']
     # text = ' '.join(paras[:5])
     # summary = ' '.join(re.split(r'(?<=[.?!])\s+', text, 15)[:-1])

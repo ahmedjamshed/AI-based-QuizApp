@@ -3,11 +3,45 @@ import requests
 import re
 
 
+class Topics:
+    def __init__(self, title, desc):
+        self.title = title
+        self.description = desc
+        self.subTopics = []
+
+
 def cleanString(para: str):
     out = para.strip()
     out = re.sub("[\(\[].*?[\)\]]", "", out)
     out = re.sub(' +', " ", out)
     return out
+
+
+def wikiHtmlParser(html, head):
+    soup = BeautifulSoup(html, 'html.parser')
+    heading = head
+    subheading = ''
+    description = ''
+
+    for tag in soup.find_all():
+        if 'See_also' == tag.id:
+            print(tag.text)
+        elif "h" in tag.name:
+            print('\n\n')
+            print(heading)
+            print('\t' + subheading)
+            print(description)
+            print('\n\n')
+            description = ''
+            if "h2" == tag.name:
+                heading = tag.text
+                subheading = ''
+            elif "h3" == tag.name:
+                subheading = tag.text
+        elif tag.name == "p":
+            description += tag.text
+
+    return []
 
 
 def wikipedia(pageUrl):

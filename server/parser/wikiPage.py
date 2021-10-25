@@ -1,12 +1,6 @@
 import requests
 import json
-
-
-class Topics:
-    def __init__(self, title, desc):
-        self.title = title
-        self.description = desc
-        self.subTopics = []
+from parser.wikipedia_parser import wikiHtmlParser
 
 
 def wikiPage(title):
@@ -24,4 +18,5 @@ def wikiPage(title):
     json_data = json.loads(response.text)
     page = json_data['query']['pages'][0]
     extract = page['extract']
+    wikiHtmlParser(extract, title)
     return {'page': page, 'extract': extract}
