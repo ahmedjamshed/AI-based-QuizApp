@@ -3,11 +3,11 @@ import requests
 import re
 
 
-class Topics:
-    def __init__(self, title, desc):
-        self.title = title
-        self.description = desc
-        self.subTopics = []
+class Topic:
+    def __init__(self, heading, subheading, description):
+        self.heading = heading
+        self.subheading = subheading
+        self.description = description
 
 
 def cleanString(para: str):
@@ -22,16 +22,15 @@ def wikiHtmlParser(html, head):
     heading = head
     subheading = ''
     description = ''
-
+    topics = []
     for tag in soup.find_all():
-        if 'See_also' == tag.id:
-            print(tag.text)
+        if 'See_also' == tag.get('id'):
+            break
         elif "h" in tag.name:
-            print('\n\n')
-            print(heading)
-            print('\t' + subheading)
-            print(description)
-            print('\n\n')
+
+            if len(description) > 20:
+                topics.append(Topic(heading, subheading, description))
+
             description = ''
             if "h2" == tag.name:
                 heading = tag.text
@@ -40,8 +39,7 @@ def wikiHtmlParser(html, head):
                 subheading = tag.text
         elif tag.name == "p":
             description += tag.text
-
-    return []
+    return topics
 
 
 def wikipedia(pageUrl):

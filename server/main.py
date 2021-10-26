@@ -106,7 +106,8 @@ def detect_labels_uri(source):
 async def generateQuestions(id: str = ''):
     url = getMachineLabel([id])
     title = url.split("/")[-1]
-    data = wikiPage(title)
+    topics = wikiPage(title)
+    return topics
     # print(data['extract'])
     # paras = data['paragraphs']
     # text = ' '.join(paras[:5])
