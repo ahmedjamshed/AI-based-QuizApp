@@ -4,10 +4,13 @@ import re
 
 
 class Topic:
-    def __init__(self, heading, subheading, description):
+    def __init__(self, heading, description):
         self.heading = heading
-        self.subheading = subheading
         self.description = description
+        self.subTopics = []
+
+    def addSubtopic(self, topic):
+        self.subTopics.append(topic)
 
 
 def cleanString(para: str):
@@ -29,7 +32,11 @@ def wikiHtmlParser(html, head):
         elif "h" in tag.name:
 
             if len(description) > 20:
-                topics.append(Topic(heading, subheading, description))
+                runningTopic = topics[-1] if len(topics) else None
+                if(runningTopic and runningTopic.heading == heading):
+                    runningTopic.addSubtopic(Topic(subheading, description))
+                else:
+                    topics.append(Topic(heading, description))
 
             description = ''
             if "h2" == tag.name:
@@ -39,6 +46,7 @@ def wikiHtmlParser(html, head):
                 subheading = tag.text
         elif tag.name == "p":
             description += tag.text
+
     return topics
 
 
