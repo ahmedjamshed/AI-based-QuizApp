@@ -47,4 +47,9 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
     final body = {"image": base64Image};
     return post('predictLabels', body);
   }
+
+  @override
+  Future<Response> getTopic(String id) {
+    return get('generateQuestions?id=$id');
+  }
 }
