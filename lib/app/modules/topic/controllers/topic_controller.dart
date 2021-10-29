@@ -1,21 +1,22 @@
 import 'package:get/get.dart';
 import 'package:quizapp/app/data/api_helper.dart';
 
+class Topic {
+  dynamic page;
+  dynamic topics;
+  Topic({this.page, this.topics});
+}
+
 class TopicController extends GetxController {
   final ApiHelper _apiHelper = Get.find();
 
-  // final RxObjectMixin _dataList = RxObjectMixin()
-  @override
-  void onInit() {
-    super.onInit();
-  }
+  final Rx<Topic> _topic = Topic().obs;
+  Topic get topic => _topic.value;
+  set topic(Topic topic) => _topic.value = topic;
 
-  @override
-  void onReady() {
-    super.onReady();
+  void getTopic(String id) {
+    _apiHelper.getTopic(id).futureValue(
+          (dynamic value) => topic = value,
+        );
   }
-
-  @override
-  void onClose() {}
-  // void increment() => count.value++;
 }
