@@ -12,11 +12,15 @@ class TopicView extends GetView<TopicController> {
         title: const Text('TopicView'),
         centerTitle: true,
       ),
-      body: const Center(
-        child: Text(
-          'TopicView is working',
-          style: TextStyle(fontSize: 20),
-        ),
+      body: Center(
+        child: Obx(() {
+          return controller.isLoading.value
+              ? const Text('')
+              : Text(
+                  '${controller.topic.value['page']['title']}',
+                  style: const TextStyle(fontSize: 20),
+                );
+        }),
       ),
     );
   }

@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
-
-import '../controllers/topic_controller.dart';
+import 'package:quizapp/app/modules/topic/controllers/topic_controller.dart';
 
 class TopicBinding extends Bindings {
   @override

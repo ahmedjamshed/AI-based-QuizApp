@@ -76,7 +76,7 @@ class HomeView extends GetView<HomeController> {
                                 ElevatedButton.styleFrom(primary: Colors.black),
                             onPressed: () {
                               Get.toNamed(Routes.TOPIC,
-                                  arguments: _data['mId']);
+                                  arguments: _data['mid']);
                             },
                             child: const Text('Go'),
                           ),
