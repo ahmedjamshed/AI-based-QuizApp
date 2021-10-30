@@ -22,7 +22,7 @@ class TopicController extends GetxController {
   @override
   void onReady() {
     super.onReady();
-    final id = Get.arguments;
+    final id = Get.arguments[0];
     getTopic(id);
   }
 

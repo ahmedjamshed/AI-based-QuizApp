@@ -9,7 +9,7 @@ class TopicView extends GetView<TopicController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('TopicView'),
+        title: Text(Get.arguments[1]),
         centerTitle: true,
       ),
       body: Center(
