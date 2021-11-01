@@ -4,7 +4,7 @@ This a demo for a machine learning model deployment using flask both locally and
 Kindly refer to the following blog for detialed explanation
 https://towardsdatascience.com/model-deployment-using-flask-c5dcbb6499c9
 
-pip install -r requirements.txt
+
 
 cd your-project
 python -m venv env
@@ -13,12 +13,21 @@ source env/bin/activate
 
 deactivate
 
+pip install -r requirements.txt
 # always run this when opening a terminal
 
 export GOOGLE_APPLICATION_CREDENTIALS="/Users/immentia/Desktop/QuizApp/server/keyFile.json"
+export GOOGLE_APPLICATION_CREDENTIALS="/Users/ahmedjamshed/Desktop/projects/QuizApp/server/keyFile.json"
 
 uvicorn main:app --reload --workers 1 --host 0.0.0.0 --port 8008
 
 # dependencies
 
 pip3 install -e git://github.com/ahmedjamshed/question_generation.git@0.1.0#egg=question_generation
+
+
+# For m1 mac
+brew install miniforge ≈ß
+conda create -n yourenv pip
+conda activate quizapp
+pip install git+https://github.com/ahmedjamshed/question_generation.git@56f4963f20b19964cf6f496072a5eb35db0c3af6#egg=question_generation
