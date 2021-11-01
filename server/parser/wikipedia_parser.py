@@ -3,11 +3,51 @@ import requests
 import re
 
 
+class Topic:
+    def __init__(self, heading, description):
+        self.heading = heading
+        self.description = description
+        self.subTopics = []
+
+    def addSubtopic(self, topic):
+        self.subTopics.append(topic)
+
+
 def cleanString(para: str):
     out = para.strip()
     out = re.sub("[\(\[].*?[\)\]]", "", out)
     out = re.sub(' +', " ", out)
     return out
+
+
+def wikiHtmlParser(html, head):
+    soup = BeautifulSoup(html, 'html.parser')
+    heading = head
+    subheading = ''
+    description = ''
+    topics = []
+    for tag in soup.find_all():
+        if 'See_also' == tag.get('id'):
+            break
+        elif "h" in tag.name:
+
+            if len(description) > 20:
+                runningTopic = topics[-1] if len(topics) else None
+                if(runningTopic and runningTopic.heading == heading):
+                    runningTopic.addSubtopic(Topic(subheading, description))
+                else:
+                    topics.append(Topic(heading, description))
+
+            description = ''
+            if "h2" == tag.name:
+                heading = tag.text
+                subheading = ''
+            elif "h3" == tag.name:
+                subheading = tag.text
+        elif tag.name == "p":
+            description += tag.text
+
+    return topics
 
 
 def wikipedia(pageUrl):
@@ -73,6 +113,6 @@ def wikipedia(pageUrl):
         else:
             remaining_content.append(tag.text)
 
-    paragraphs = filter(lambda para: len(para) > 20,  paragraphs)
+    paragraphs = filter(lambda para: len(para) > 5,  paragraphs)
     paragraphs = list(map(lambda para: cleanString(para), paragraphs))
     return {'paragraphs': paragraphs, 'images': images}

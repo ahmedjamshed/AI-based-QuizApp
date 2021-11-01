@@ -7,6 +7,7 @@ import 'package:quizapp/app/common/util/exports.dart';
 import 'package:quizapp/app/modules/home/controllers/home_controller.dart';
 import 'package:quizapp/app/modules/widgets/base_widget.dart';
 import 'package:quizapp/app/modules/widgets/custom_appbar_widget.dart';
+import 'package:quizapp/app/routes/app_pages.dart';
 
 class HomeView extends GetView<HomeController> {
   @override
@@ -73,7 +74,12 @@ class HomeView extends GetView<HomeController> {
                           ElevatedButton(
                             style:
                                 ElevatedButton.styleFrom(primary: Colors.black),
-                            onPressed: () {},
+                            onPressed: () {
+                              Get.toNamed(Routes.TOPIC, arguments: [
+                                _data['mid'],
+                                _data['description']
+                              ]);
+                            },
                             child: const Text('Go'),
                           ),
                         ],

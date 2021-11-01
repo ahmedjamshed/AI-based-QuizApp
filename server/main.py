@@ -24,11 +24,12 @@ from bs4 import *
 import requests
 
 from parser.wikipedia_parser import wikipedia
+from parser.wikiPage import wikiPage
 
 config = dotenv_values(".env")
 
-nltk.download('wordnet')
-nltk.download('punkt')
+# nltk.download('wordnet')
+# nltk.download('punkt')
 
 app = FastAPI()
 
@@ -40,8 +41,8 @@ app.add_middleware(
     allow_headers=['*'],
 )
 
-nlp = question_generation.pipeline(
-    "question-generation", model="valhalla/t5-small-qg-prepend", qg_format="prepend")
+# nlp = question_generation.pipeline(
+#     "question-generation", model="valhalla/t5-small-qg-prepend", qg_format="prepend")
 
 ###################################################
 
@@ -62,21 +63,22 @@ class Image(BaseModel):
     image: str
 
 
-def getMachineLabel(id):
+def getMachineLabel(ids):
     headers = {
         'Accept': 'application/json',
     }
     print(config['GAPI_KEY'])
     params = (
-        ('ids', [id]),
+        ('ids', ids),
         ('key', config['GAPI_KEY']),
     )
     try:
         response = requests.get(
             'https://kgsearch.googleapis.com/v1/entities:search', headers=headers, params=params)
-        url = response.json()[
-            'itemListElement'][0]['result']['detailedDescription']['url']
-        return url
+        description = response.json()[
+            'itemListElement'][0]['result']['detailedDescription']
+        print(description)
+        return description['url']
     except requests.exceptions.RequestException as err:
         print(err)
         raise err
@@ -102,19 +104,23 @@ def detect_labels_uri(source):
 
 @app.get('/generateQuestions')
 async def generateQuestions(id: str = ''):
-    url = getMachineLabel(id)
-    data = wikipedia(url)
-    paras = data['paragraphs']
-    text = ' '.join(paras[:5])
-    summary = ' '.join(re.split(r'(?<=[.?!])\s+', text, 15)[:-1])
-    print(summary)
-    start = time.time()
-    questions = nlp(summary)
-    end = time.time()
-    print((end - start))
-    return JSONResponse(content={
-        "questions": questions
-    })
+    url = getMachineLabel([id])
+    title = url.split("/")[-1]
+    topics = wikiPage(title)
+    return topics
+    # print(data['extract'])
+    # paras = data['paragraphs']
+    # text = ' '.join(paras[:5])
+    # summary = ' '.join(re.split(r'(?<=[.?!])\s+', text, 15)[:-1])
+    # print(summary)
+    # start = time.time()
+    # questions = nlp(summary)
+    # end = time.time()
+    # print((end - start))
+    # return JSONResponse(content={
+    #     "oaras": paras,
+    #     "questions": questions
+    # })
 
 
 @app.post("/predictLabels")
@@ -127,8 +133,8 @@ LABELS = [{'mid': '/m/0bwd_0j', 'description': 'Elephant', 'score': 0.975124, 't
           {'mid': '/m/05nnm', 'description': 'Organism', 'score': 0.8622507, 'topicality': 0.8622507, 'locale': '', 'confidence': 0.0, 'locations': [], 'properties': []}, {'mid': '/m/03d28y3', 'description': 'Natural landscape', 'score': 0.8577174, 'topicality': 0.8577174, 'locale': '', 'confidence': 0.0, 'locations': [], 'properties': []}, {'mid': '/m/07kbbhf', 'description': 'Elephants and Mammoths', 'score': 0.84533, 'topicality': 0.84533, 'locale': '', 'confidence': 0.0, 'locations': [], 'properties': []}, {'mid': '/m/01jb4', 'description': 'Biome', 'score': 0.8243382, 'topicality': 0.8243382, 'locale': '', 'confidence': 0.0, 'locations': [], 'properties': []}, {'mid': '/m/04_r5c', 'description': 'African elephant', 'score': 0.8185059, 'topicality': 0.8185059, 'locale': '', 'confidence': 0.0, 'locations': [], 'properties': []}]
 
 
-if __name__ == '__main__':
-    ngrok_tunnel = ngrok.connect(8000)
-    print('Public URL:', ngrok_tunnel.public_url)
-    nest_asyncio.apply()
-    uvicorn.run(app, port=8000)
+# if __name__ == '__main__':
+#     ngrok_tunnel = ngrok.connect(8000)
+#     print('Public URL:', ngrok_tunnel.public_url)
+#     nest_asyncio.apply()
+#     uvicorn.run(app, port=8000)

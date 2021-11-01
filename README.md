@@ -104,3 +104,16 @@ Now, lets dive into the lib folder which has the main code for the application.
 ## Conclusion
 
 This boilerplate project maybe seen over-architectured for what it is - but it is an example only. You can always customize it as per your preferences and need. All the issues/pull requests are welcome to make this boilerplate project more easy-to-use. If you liked it then don’t forget to ⭐ the repo to show your support🙂
+
+# To intialze get CLI
+
+```
+flutter pub global activate get_cli
+```
+
+# To create page strucutre
+
+```
+getx create page:Topic
+getx create controller:topic
+```
