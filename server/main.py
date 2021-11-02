@@ -23,13 +23,12 @@ import uvicorn
 from bs4 import *
 import requests
 
-from parser.wikipedia_parser import wikipedia
 from parser.wikiPage import wikiPage
 
 config = dotenv_values(".env")
 
-# nltk.download('wordnet')
-# nltk.download('punkt')
+nltk.download('wordnet')
+nltk.download('punkt')
 
 app = FastAPI()
 
@@ -41,8 +40,8 @@ app.add_middleware(
     allow_headers=['*'],
 )
 
-# nlp = question_generation.pipeline(
-#     "question-generation", model="valhalla/t5-small-qg-prepend", qg_format="prepend")
+nlp = question_generation.pipeline(
+    "question-generation", model="valhalla/t5-small-qg-prepend", qg_format="prepend")
 
 ###################################################
 
@@ -59,8 +58,8 @@ def data_extractor(url):
 ###################################################
 
 
-class Image(BaseModel):
-    image: str
+class Body(BaseModel):
+    data: str
 
 
 def getMachineLabel(ids):
@@ -102,30 +101,37 @@ def detect_labels_uri(source):
     return [proto.Message.to_dict(tag) for tag in response.label_annotations]
 
 
-@app.get('/generateQuestions')
-async def generateQuestions(id: str = ''):
-    url = getMachineLabel([id])
-    title = url.split("/")[-1]
-    topics = wikiPage(title)
-    return topics
+@app.post('/generateQuestions')
+async def generateQuestions(req: Body):
+    # url = getMachineLabel([id])
+    # title = url.split("/")[-1]
+    # topics = wikiPage(title)
+    # return topics
     # print(data['extract'])
     # paras = data['paragraphs']
     # text = ' '.join(paras[:5])
     # summary = ' '.join(re.split(r'(?<=[.?!])\s+', text, 15)[:-1])
     # print(summary)
-    # start = time.time()
-    # questions = nlp(summary)
-    # end = time.time()
-    # print((end - start))
-    # return JSONResponse(content={
-    #     "oaras": paras,
-    #     "questions": questions
-    # })
+    start = time.time()
+    questions = nlp(req.data)
+    end = time.time()
+    print((end - start))
+    return JSONResponse(content={
+        "questions": questions
+    })
+
+
+@app.get('/learningMaterial')
+async def learningMaterial(id: str = ''):
+    url = getMachineLabel([id])
+    title = url.split("/")[-1]
+    topics = wikiPage(title)
+    return topics
 
 
 @app.post("/predictLabels")
-async def predictLabels(req: Image):
-    # labels = detect_labels_uri(req.image)
+async def predictLabels(req: Body):
+    # labels = detect_labels_uri(req.data)
     return JSONResponse(content=LABELS)
 
 
