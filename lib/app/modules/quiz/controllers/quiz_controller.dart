@@ -14,8 +14,7 @@ class QuizController extends GetxController {
   void generateQuestions(String content) {
     _isLoading.value = true;
     _apiHelper.generateQuestions(content).futureValue((dynamic value) {
-      print(value);
-      // quizList = value['questions'];
+      quizList = value['questions'];
       _isLoading.value = false;
     });
   }
