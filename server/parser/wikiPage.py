@@ -20,3 +20,20 @@ def wikiPage(title):
     extract = page.pop('extract', '')
     topics = wikiHtmlParser(extract, title)
     return {'page': page, 'topics': topics}
+
+
+def wikiPages(titles):
+    url = 'https://en.wikipedia.org/w/api.php'
+    data = {
+        'action': 'query',
+        'format': 'json',
+        'formatversion': 2,
+        'prop': 'pageimages',
+        # 'explaintext': True,
+        'piprop': 'original',
+        'titles': titles
+    }
+    response = requests.get(url, data)
+    json_data = json.loads(response.text)
+    print(json_data)
+    return {}
