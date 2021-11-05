@@ -24,6 +24,8 @@ from bs4 import *
 import requests
 
 from parser.wikiPage import wikiPage
+from parser.wikiPage import wikiPages
+
 
 config = dotenv_values(".env")
 
@@ -77,7 +79,7 @@ def getMachineLabel(ids):
         topics = map(lambda item: item['result']['detailedDescription']
                      ['url'].split("/")[-1], response.json()['itemListElement'])
         # print(*topics)
-        return topics
+        return list(topics)
     except requests.exceptions.RequestException as err:
         print(err)
         raise err
@@ -122,10 +124,7 @@ async def generateQuestions(req: Body):
 
 
 @app.get('/learningMaterial')
-async def learningMaterial(id: str = ''):
-    url = getMachineLabel([id])
-    print(url)
-    title = url.split("/")[-1]
+async def learningMaterial(title: str = ''):
     topics = wikiPage(title)
     return topics
 
@@ -135,9 +134,8 @@ async def predictLabels(req: Body):
     # labels = detect_labels_uri(req.data)
     ids = map(lambda label: label['mid'], LABELS)
     topics = getMachineLabel(ids)
-    print(*topics)
-    print(*topics)
-    return JSONResponse(content=[])
+    titles = wikiPages(topics)
+    return JSONResponse(content=titles)
 
 
 LABELS = [{'mid': '/m/0bwd_0j', 'description': 'Elephant', 'score': 0.975124, 'topicality': 0.975124, 'locale': '', 'confidence': 0.0, 'locations': [], 'properties': []}, {'mid': '/m/05s2s', 'description': 'Plant', 'score': 0.96498865, 'topicality': 0.96498865, 'locale': '', 'confidence': 0.0, 'locations': [], 'properties': []}, {'mid': '/m/06600f2', 'description': 'Plant community', 'score': 0.93969685, 'topicality': 0.93969685, 'locale': '', 'confidence': 0.0, 'locations': [], 'properties': []}, {'mid': '/m/0cblv', 'description': 'Ecoregion', 'score': 0.9285802, 'topicality': 0.9285802, 'locale': '', 'confidence': 0.0, 'locations': [], 'properties': []}, {'mid': '/m/07_gml', 'description': 'Working animal', 'score': 0.8963104, 'topicality': 0.8963104, 'locale': '', 'confidence': 0.0, 'locations': [], 'properties': []},

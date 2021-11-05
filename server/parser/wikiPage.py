@@ -23,6 +23,7 @@ def wikiPage(title):
 
 
 def wikiPages(titles):
+    titlesStr = '|'.join(titles)
     url = 'https://en.wikipedia.org/w/api.php'
     data = {
         'action': 'query',
@@ -31,9 +32,8 @@ def wikiPages(titles):
         'prop': 'pageimages',
         # 'explaintext': True,
         'piprop': 'original',
-        'titles': titles
+        'titles': titlesStr
     }
     response = requests.get(url, data)
     json_data = json.loads(response.text)
-    print(json_data)
-    return {}
+    return list(json_data['query']['pages'])
