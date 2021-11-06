@@ -27,7 +27,11 @@ pip3 install -e git://github.com/ahmedjamshed/question_generation.git@0.1.0#egg=
 
 
 # For m1 mac
-brew install miniforge ≈ß
-conda create -n yourenv pip
+brew install miniforge
+conda create -n quizapp pip
 conda activate quizapp
+conda install scikit-learn
+conda install -c pytorch pytorch torchvision
+conda install transformers  
+conda install sentencepiece
 pip install git+https://github.com/ahmedjamshed/question_generation.git@56f4963f20b19964cf6f496072a5eb35db0c3af6#egg=question_generation
