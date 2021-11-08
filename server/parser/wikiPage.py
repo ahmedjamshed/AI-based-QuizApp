@@ -29,7 +29,7 @@ def wikiPages(titles):
         'action': 'query',
         'format': 'json',
         'formatversion': 2,
-        'prop': 'pageimages',
+        'prop': 'pageimages|pageterms',
         # 'explaintext': True,
         'piprop': 'original',
         'titles': titlesStr
