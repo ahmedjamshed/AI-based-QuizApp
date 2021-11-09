@@ -38,6 +38,7 @@ dependencies:
   #for date formatting
   intl:
   change_app_package_name: ^1.0.0
+  masonry_grid: ^1.0.0
 
 dev_dependencies:
   flutter_test:

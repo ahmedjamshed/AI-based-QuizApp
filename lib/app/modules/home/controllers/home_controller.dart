@@ -22,7 +22,7 @@ class HomeController extends GetxController {
       return;
     }
     final bytes = await pickedFile.readAsBytes();
-    getLabels(base64Encode(bytes));
+    // getLabels(base64Encode(bytes));
     selectedImagePath.value = pickedFile.path;
   }
 
