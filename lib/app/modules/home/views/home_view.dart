@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:transparent_image/transparent_image.dart';
+import 'package:flutter_group_sliver/flutter_group_sliver.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:quizapp/app/common/util/exports.dart';
 import 'package:quizapp/app/modules/home/controllers/home_controller.dart';
@@ -18,7 +19,7 @@ class HomeView extends GetView<HomeController> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
+      backgroundColor: AppColors.white,
       body: CustomScrollView(
         slivers: [
           SliverPersistentHeader(
@@ -27,22 +28,28 @@ class HomeView extends GetView<HomeController> {
             maxExtended: size.height * 0.5,
             size: size,
           )),
-          SliverStaggeredGrid.countBuilder(
-            crossAxisCount: 2,
-            itemCount: 8,
-            itemBuilder: (BuildContext context, int index) => Container(
-                color: Colors.green,
-                child: Center(
-                  child: CircleAvatar(
-                    backgroundColor: Colors.white,
-                    child: Text('$index'),
-                  ),
-                )),
-            staggeredTileBuilder: (int index) =>
-                StaggeredTile.count(1, index.isEven ? 2 : 1),
-            mainAxisSpacing: 4.0,
-            crossAxisSpacing: 4.0,
-          )
+          SliverGroupBuilder(
+              margin: EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(2)),
+                  border: Border.all(color: Color.fromRGBO(238, 237, 238, 1))),
+              child: SliverStaggeredGrid.countBuilder(
+                crossAxisCount: 2,
+                itemCount: 8,
+                itemBuilder: (BuildContext context, int index) => Container(
+                    color: Colors.green,
+                    child: Center(
+                      child: CircleAvatar(
+                        backgroundColor: Colors.white,
+                        child: Text('$index'),
+                      ),
+                    )),
+                staggeredTileBuilder: (int index) =>
+                    StaggeredTile.count(1, index.isEven ? 2 : 1),
+                mainAxisSpacing: 4.0,
+                crossAxisSpacing: 4.0,
+              ))
         ],
       ),
     );
@@ -71,18 +78,21 @@ class _CustomAppBar extends SliverPersistentHeaderDelegate {
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Container(
+        color: Theme.of(context).primaryColor,
         child: Stack(
-      children: [
-        Positioned(
-            left: 0,
-            top: 0,
-            right: 0,
-            bottom: 0,
-            child: Container(
-              decoration: BoxDecoration(color: Theme.of(context).primaryColor),
-            ))
-      ],
-    ));
+          children: [
+            Positioned(
+                left: 0,
+                top: 0,
+                right: 0,
+                bottom: 0,
+                child: Container(
+                  decoration:
+                      BoxDecoration(color: Theme.of(context).primaryColor),
+                  child: Center(child: Text('trtretet')),
+                ))
+          ],
+        ));
   }
 
   @override

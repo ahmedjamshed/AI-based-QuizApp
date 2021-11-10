@@ -41,6 +41,8 @@ dependencies:
   change_app_package_name: ^1.0.0
   flutter_staggered_grid_view: ^0.4.1
   transparent_image: ^2.0.0
+  flutter_group_sliver: 
+    git : https://github.com/Ali1Ammar/flutter_group_sliver
 
 dev_dependencies:
   flutter_test:
