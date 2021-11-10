@@ -11,6 +11,10 @@ class HomeController extends GetxController {
   List<dynamic> get dataList => _dataList;
   set dataList(List<dynamic> dataList) => _dataList.addAll(dataList);
 
+  final RxList _imagesList = RxList();
+  List<dynamic> get imagesList => _imagesList;
+  set imagesList(List<dynamic> imagesList) => _imagesList.addAll(imagesList);
+
   RxString selectedImagePath = ''.obs;
 
   Future getImage(ImageSource imageSource) async {
@@ -30,6 +34,13 @@ class HomeController extends GetxController {
     _dataList.clear();
     _apiHelper.getLabels(base64Img).futureValue(
           (dynamic value) => dataList = value,
+        );
+  }
+
+  void getPreloadedImages() {
+    _imagesList.clear();
+    _apiHelper.getPreloadedImages().futureValue(
+          (dynamic value) => imagesList = value,
         );
   }
 

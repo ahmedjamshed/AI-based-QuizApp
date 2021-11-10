@@ -58,4 +58,9 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
     final body = {"data": material};
     return post('generateQuestions', body);
   }
+
+  @override
+  Future<Response> getPreloadedImages() {
+    return get('preloadedImages');
+  }
 }

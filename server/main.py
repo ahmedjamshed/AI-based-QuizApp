@@ -129,6 +129,11 @@ async def learningMaterial(title: str = ''):
     return topics
 
 
+@app.get('/preloadedImages')
+async def learningMaterial():
+    return JSONResponse(content=IMAGES)
+
+
 @app.post("/predictLabels")
 async def predictLabels(req: Body):
     # labels = detect_labels_uri(req.data)
@@ -140,7 +145,8 @@ async def predictLabels(req: Body):
 
 LABELS = [{'mid': '/m/0bwd_0j', 'description': 'Elephant', 'score': 0.975124, 'topicality': 0.975124, 'locale': '', 'confidence': 0.0, 'locations': [], 'properties': []}, {'mid': '/m/05s2s', 'description': 'Plant', 'score': 0.96498865, 'topicality': 0.96498865, 'locale': '', 'confidence': 0.0, 'locations': [], 'properties': []}, {'mid': '/m/06600f2', 'description': 'Plant community', 'score': 0.93969685, 'topicality': 0.93969685, 'locale': '', 'confidence': 0.0, 'locations': [], 'properties': []}, {'mid': '/m/0cblv', 'description': 'Ecoregion', 'score': 0.9285802, 'topicality': 0.9285802, 'locale': '', 'confidence': 0.0, 'locations': [], 'properties': []}, {'mid': '/m/07_gml', 'description': 'Working animal', 'score': 0.8963104, 'topicality': 0.8963104, 'locale': '', 'confidence': 0.0, 'locations': [], 'properties': []},
           {'mid': '/m/05nnm', 'description': 'Organism', 'score': 0.8622507, 'topicality': 0.8622507, 'locale': '', 'confidence': 0.0, 'locations': [], 'properties': []}, {'mid': '/m/03d28y3', 'description': 'Natural landscape', 'score': 0.8577174, 'topicality': 0.8577174, 'locale': '', 'confidence': 0.0, 'locations': [], 'properties': []}, {'mid': '/m/07kbbhf', 'description': 'Elephants and Mammoths', 'score': 0.84533, 'topicality': 0.84533, 'locale': '', 'confidence': 0.0, 'locations': [], 'properties': []}, {'mid': '/m/01jb4', 'description': 'Biome', 'score': 0.8243382, 'topicality': 0.8243382, 'locale': '', 'confidence': 0.0, 'locations': [], 'properties': []}, {'mid': '/m/04_r5c', 'description': 'African elephant', 'score': 0.8185059, 'topicality': 0.8185059, 'locale': '', 'confidence': 0.0, 'locations': [], 'properties': []}]
-
+IMAGES = ['https://i.ibb.co/6J7C2Rk/elephants.jpg', 'https://i.ibb.co/wpzWL7v/lion.jpg', 'https://i.ibb.co/ccNDL2h/auto-shelby-1748c33f675-original-ratio.jpg',
+          'https://i.ibb.co/hYk9zWp/croppedshutterstock439977091jpg-0.jpg', 'https://i.ibb.co/HKHfLZv/penguins.jpg']
 
 # if __name__ == '__main__':
 #     ngrok_tunnel = ngrok.connect(8000)

@@ -7,4 +7,5 @@ abstract class ApiHelper {
   Future<Response> getLabels(String base64Image);
   Future<Response> getTopic(String id);
   Future<Response> generateQuestions(String material);
+  Future<Response> getPreloadedImages();
 }
