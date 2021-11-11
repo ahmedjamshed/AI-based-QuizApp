@@ -19,51 +19,78 @@ class HomeView extends GetView<HomeController> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: Theme.of(context).primaryColor,
       body: CustomScrollView(
         slivers: [
           SliverPersistentHeader(
+              // pinned: true,
               delegate: _CustomAppBar(
             minExtended: kToolbarHeight,
             maxExtended: size.height * 0.5,
             size: size,
           )),
           SliverGroupBuilder(
-              margin: EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(2)),
-                  border: Border.all(color: Color.fromRGBO(238, 237, 238, 1))),
-              child: SliverStaggeredGrid.countBuilder(
-                crossAxisCount: 2,
-                itemCount: 8,
-                itemBuilder: (BuildContext context, int index) => Container(
-                    color: Colors.green,
-                    child: Center(
-                      child: CircleAvatar(
-                        backgroundColor: Colors.white,
-                        child: Text('$index'),
+              padding: const EdgeInsets.all(10),
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(Radius.circular(40)),
+              ),
+              child: Obx(() => controller.imagesList.isNotEmpty
+                  ? SliverStaggeredGrid.countBuilder(
+                      crossAxisCount: 2,
+                      itemCount: controller.imagesList.length,
+                      itemBuilder: (BuildContext context, int index) =>
+                          _ImageBuilder(index: index),
+                      staggeredTileBuilder: (int index) =>
+                          const StaggeredTile.fit(1),
+                      mainAxisSpacing: 10,
+                      crossAxisSpacing: 10,
+                    )
+                  : const SliverToBoxAdapter(
+                      child: Center(
+                        child: Text('Loading'),
                       ),
-                    )),
-                staggeredTileBuilder: (int index) =>
-                    StaggeredTile.count(1, index.isEven ? 2 : 1),
-                mainAxisSpacing: 4.0,
-                crossAxisSpacing: 4.0,
-              ))
+                    )))
         ],
       ),
     );
   }
 }
 
-// class _CustomBody extends StatelessWidget {
-//   const _CustomBody({Key? key}) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return
-//   }
-// }
+class _ImageBuilder extends GetView<HomeController> {
+  const _ImageBuilder({Key? key, required this.index}) : super(key: key);
+  final int index;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: const BoxDecoration(
+          color: Colors.transparent,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey,
+              spreadRadius: 2,
+              blurRadius: 2,
+            ),
+          ],
+          borderRadius: BorderRadius.all(Radius.circular(15))),
+      child: Obx(() {
+        return InkWell(
+          onTap: () {
+            controller.getLabels(controller.imagesList[index]);
+          },
+          child: ClipRRect(
+            borderRadius: const BorderRadius.all(Radius.circular(15)),
+            child: FadeInImage.memoryNetwork(
+              placeholder: kTransparentImage,
+              image: controller.imagesList[index],
+              fit: BoxFit.cover,
+            ),
+          ),
+        );
+      }),
+    );
+  }
+}
 
 class _CustomAppBar extends SliverPersistentHeaderDelegate {
   const _CustomAppBar(
@@ -77,23 +104,69 @@ class _CustomAppBar extends SliverPersistentHeaderDelegate {
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
+    final top = maxExtended - shrinkOffset - 30 / 2;
     return Container(
         color: Theme.of(context).primaryColor,
         child: Stack(
+          clipBehavior: Clip.none,
+          fit: StackFit.expand,
           children: [
+            buildBackground(shrinkOffset),
+            buildAppBar(shrinkOffset),
             Positioned(
-                left: 0,
-                top: 0,
-                right: 0,
-                bottom: 0,
-                child: Container(
-                  decoration:
-                      BoxDecoration(color: Theme.of(context).primaryColor),
-                  child: Center(child: Text('trtretet')),
-                ))
+              top: top,
+              left: 20,
+              right: 20,
+              child: buildFloating(shrinkOffset),
+            ),
           ],
         ));
   }
+
+  double appear(double shrinkOffset) => shrinkOffset / maxExtended;
+
+  double disappear(double shrinkOffset) => 1 - shrinkOffset / maxExtended;
+
+  // Widget buildBackground(double shrinkOffset) => Opacity(
+  //       opacity: disappear(shrinkOffset),
+  //       child: Image.network(
+  //         'https://source.unsplash.com/random?mono+dark',
+  //         fit: BoxFit.cover,
+  //       ),
+  //     );
+
+  Widget buildBackground(double shrinkOffset) => Container(
+      margin: EdgeInsets.only(bottom: 50),
+      decoration: const BoxDecoration(
+        color: Colors.amber,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey,
+            spreadRadius: 2,
+            blurRadius: 2,
+          ),
+        ],
+        borderRadius: BorderRadius.only(bottomLeft: Radius.circular(30)),
+      ));
+
+  Widget buildAppBar(double shrinkOffset) => Opacity(
+        opacity: appear(shrinkOffset),
+        child: AppBar(
+          title: Text('Select Image'),
+          centerTitle: true,
+        ),
+      );
+  Widget buildFloating(double shrinkOffset) => Opacity(
+        opacity: disappear(shrinkOffset),
+        child: Card(
+          child: Row(
+            children: const [
+              Expanded(child: Text("left")),
+              Expanded(child: Text("Right")),
+            ],
+          ),
+        ),
+      );
 
   @override
   double get maxExtent => maxExtended;
@@ -104,60 +177,6 @@ class _CustomAppBar extends SliverPersistentHeaderDelegate {
   @override
   bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) =>
       false;
-}
-
-class IntSize {
-  const IntSize(this.width, this.height);
-
-  final int width;
-  final int height;
-}
-
-class _Tile extends StatelessWidget {
-  const _Tile(this.index, this.size);
-
-  final IntSize size;
-  final int index;
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: Column(
-        children: <Widget>[
-          Stack(
-            children: <Widget>[
-              //Center(child: CircularProgressIndicator()),
-              Center(
-                child: FadeInImage.memoryNetwork(
-                  placeholder: kTransparentImage,
-                  image: 'https://picsum.photos/${size.width}/${size.height}/',
-                ),
-              ),
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.all(4),
-            child: Column(
-              children: <Widget>[
-                Text(
-                  'Image number $index',
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  'Width: ${size.width}',
-                  style: const TextStyle(color: Colors.grey),
-                ),
-                Text(
-                  'Height: ${size.height}',
-                  style: const TextStyle(color: Colors.grey),
-                ),
-              ],
-            ),
-          )
-        ],
-      ),
-    );
-  }
 }
 
 // class HomeView extends GetView<HomeController> {

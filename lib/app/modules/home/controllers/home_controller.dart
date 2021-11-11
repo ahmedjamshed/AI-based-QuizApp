@@ -30,9 +30,9 @@ class HomeController extends GetxController {
     selectedImagePath.value = pickedFile.path;
   }
 
-  void getLabels(String base64Img) {
+  void getLabels(String img) {
     _dataList.clear();
-    _apiHelper.getLabels(base64Img).futureValue(
+    _apiHelper.getLabels(img).futureValue(
           (dynamic value) => dataList = value,
         );
   }
@@ -42,6 +42,12 @@ class HomeController extends GetxController {
     _apiHelper.getPreloadedImages().futureValue(
           (dynamic value) => imagesList = value,
         );
+  }
+
+  @override
+  void onReady() {
+    getPreloadedImages();
+    super.onReady();
   }
 
   void onEditProfileClick() {
