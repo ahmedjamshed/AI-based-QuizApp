@@ -2,6 +2,8 @@ import 'package:get/get.dart';
 
 import 'package:quizapp/app/modules/home/bindings/home_binding.dart';
 import 'package:quizapp/app/modules/home/views/home_view.dart';
+import 'package:quizapp/app/modules/labels/bindings/labels_binding.dart';
+import 'package:quizapp/app/modules/labels/views/labels_view.dart';
 import 'package:quizapp/app/modules/quiz/bindings/quiz_binding.dart';
 import 'package:quizapp/app/modules/quiz/views/quiz_view.dart';
 import 'package:quizapp/app/modules/topic/bindings/topic_binding.dart';
@@ -21,12 +23,17 @@ class AppPages {
       binding: HomeBinding(),
     ),
     GetPage(
+      name: _Paths.LABELS,
+      page: () => LabelsView(),
+      binding: LabelsBinding(),
+    ),
+    GetPage(
       name: _Paths.TOPIC,
       page: () => TopicView(),
       binding: TopicBinding(),
     ),
     GetPage(
-      name: _Paths.Quiz,
+      name: _Paths.QUIZ,
       page: () => QuizView(),
       binding: QuizBinding(),
     ),

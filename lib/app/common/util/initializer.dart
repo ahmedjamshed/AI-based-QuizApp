@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:quizapp/app/controllers/appController.dart';
 import 'package:quizapp/app/data/api_helper.dart';
 import 'package:quizapp/app/data/api_helper_impl.dart';
 import 'package:quizapp/app/data/interface_controller/api_interface_controller.dart';
@@ -41,9 +42,16 @@ class Initializer {
 
       _initScreenPreference();
       _initApis();
+      _initStore();
     } catch (err) {
       rethrow;
     }
+  }
+
+  void _initStore() {
+    Get.put<AppController>(
+      AppController(),
+    );
   }
 
   void _initApis() {

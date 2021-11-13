@@ -76,7 +76,7 @@ class _ImageBuilder extends GetView<HomeController> {
       child: Obx(() {
         return InkWell(
           onTap: () {
-            controller.getLabels(controller.imagesList[index]);
+            // controller.getLabels(controller.imagesList[index]);
           },
           child: ClipRRect(
             borderRadius: const BorderRadius.all(Radius.circular(15)),

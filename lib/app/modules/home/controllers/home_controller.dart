@@ -2,14 +2,12 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:quizapp/app/common/storage/storage.dart';
+import 'package:quizapp/app/controllers/appController.dart';
 import 'package:quizapp/app/data/api_helper.dart';
 
 class HomeController extends GetxController {
   final ApiHelper _apiHelper = Get.find();
-
-  final RxList _dataList = RxList();
-  List<dynamic> get dataList => _dataList;
-  set dataList(List<dynamic> dataList) => _dataList.addAll(dataList);
+  final AppController _appController = Get.find();
 
   final RxList _imagesList = RxList();
   List<dynamic> get imagesList => _imagesList;
@@ -26,15 +24,9 @@ class HomeController extends GetxController {
       return;
     }
     final bytes = await pickedFile.readAsBytes();
-    // getLabels(base64Encode(bytes));
+    _appController.selectedImage = base64Encode(bytes);
+    // getLabels();
     selectedImagePath.value = pickedFile.path;
-  }
-
-  void getLabels(String img) {
-    _dataList.clear();
-    _apiHelper.getLabels(img).futureValue(
-          (dynamic value) => dataList = value,
-        );
   }
 
   void getPreloadedImages() {

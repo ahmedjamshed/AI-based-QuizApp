@@ -34,7 +34,7 @@ class TopicPage extends GetView<TopicController> {
             style: ElevatedButton.styleFrom(
                 primary: Colors.black, padding: const EdgeInsets.all(8)),
             onPressed: () {
-              Get.toNamed(Routes.Quiz, arguments: description);
+              Get.toNamed(Routes.QUIZ, arguments: description);
             },
             child: const Text('Generate Quiz'),
           ),
