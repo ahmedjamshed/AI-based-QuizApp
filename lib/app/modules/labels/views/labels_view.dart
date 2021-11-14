@@ -10,7 +10,7 @@ class LabelsView extends GetView<LabelsController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Quiz'),
+        title: const Text('Labels'),
         centerTitle: true,
       ),
       body: SafeArea(child: Obx(
@@ -23,12 +23,12 @@ class LabelsView extends GetView<LabelsController> {
                   padding: const EdgeInsets.all(16),
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
-                    final dynamic _data = controller.dataList[index];
+                    final Label _data = controller.dataList[index];
                     return Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(_data['question']),
-                        Text(_data['answer']),
+                        Text(_data.name),
+                        Text(_data.description),
                         ElevatedButton(
                           style:
                               ElevatedButton.styleFrom(primary: Colors.black),

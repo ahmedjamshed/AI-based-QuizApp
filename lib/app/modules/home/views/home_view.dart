@@ -35,22 +35,22 @@ class HomeView extends GetView<HomeController> {
                 color: Colors.white,
                 borderRadius: BorderRadius.all(Radius.circular(40)),
               ),
-              child: Obx(() => controller.imagesList.isNotEmpty
-                  ? SliverStaggeredGrid.countBuilder(
-                      crossAxisCount: 2,
-                      itemCount: controller.imagesList.length,
-                      itemBuilder: (BuildContext context, int index) =>
-                          _ImageBuilder(index: index),
-                      staggeredTileBuilder: (int index) =>
-                          const StaggeredTile.fit(1),
-                      mainAxisSpacing: 10,
-                      crossAxisSpacing: 10,
-                    )
-                  : const SliverToBoxAdapter(
-                      child: Center(
-                        child: Text('Loading'),
-                      ),
-                    )))
+              child: Obx(() => SliverStaggeredGrid.countBuilder(
+                        crossAxisCount: 2,
+                        itemCount: controller.imagesList.length,
+                        itemBuilder: (BuildContext context, int index) =>
+                            _ImageBuilder(index: index),
+                        staggeredTileBuilder: (int index) =>
+                            const StaggeredTile.fit(1),
+                        mainAxisSpacing: 10,
+                        crossAxisSpacing: 10,
+                      )
+                  // : const SliverToBoxAdapter(
+                  //     child: Center(
+                  //       child: Text('Loading'),
+                  //     ),
+                  //   )
+                  ))
         ],
       ),
     );
@@ -76,6 +76,8 @@ class _ImageBuilder extends GetView<HomeController> {
       child: Obx(() {
         return InkWell(
           onTap: () {
+            controller.selectedUrl(index);
+            Get.toNamed(Routes.LABELS);
             // controller.getLabels(controller.imagesList[index]);
           },
           child: ClipRRect(

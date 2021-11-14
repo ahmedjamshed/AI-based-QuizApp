@@ -36,6 +36,10 @@ class HomeController extends GetxController {
         );
   }
 
+  void selectedUrl(int index) {
+    _appController.selectedImage = imagesList[index];
+  }
+
   @override
   void onReady() {
     getPreloadedImages();
