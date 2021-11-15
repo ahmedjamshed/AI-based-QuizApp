@@ -4,8 +4,35 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import 'package:quizapp/app/modules/labels/controllers/labels_controller.dart';
+import 'package:quizapp/app/routes/app_pages.dart';
+
+class LabelPage extends GetView<LabelsController> {
+  const LabelPage(this.position);
+  final int position;
+  @override
+  Widget build(BuildContext context) {
+    final _data = controller.dataList[position];
+
+    return Container(
+        margin: const EdgeInsets.all(15),
+        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Hero(tag: _data.name, child: Image(image: NetworkImage(_data.image))),
+          Text(_data.name, style: const TextStyle(fontSize: 20)),
+          Text(_data.description, style: const TextStyle(fontSize: 20)),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                primary: Colors.black, padding: const EdgeInsets.all(8)),
+            onPressed: () {
+              Get.toNamed(Routes.TOPIC, arguments: _data);
+            },
+            child: const Text('TOPIC'),
+          ),
+        ]));
+  }
+}
 
 class LabelsView extends GetView<LabelsController> {
+  final PageController _pageController = PageController(viewportFraction: 0.8);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,28 +44,12 @@ class LabelsView extends GetView<LabelsController> {
         () {
           return controller.isLoading.value
               ? const Text('Loading')
-              : ListView.separated(
-                  separatorBuilder: (context, index) => SizedBox(height: 10.h),
+              : PageView.builder(
+                  controller: _pageController,
                   itemCount: controller.dataList.length,
-                  padding: const EdgeInsets.all(16),
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    final Label _data = controller.dataList[index];
-                    return Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(_data.name),
-                        Text(_data.description),
-                        ElevatedButton(
-                          style:
-                              ElevatedButton.styleFrom(primary: Colors.black),
-                          onPressed: () {},
-                          child: const Text('Go'),
-                        ),
-                      ],
-                    );
-                  },
-                );
+                  itemBuilder: (context, position) {
+                    return LabelPage(position);
+                  });
         },
       )),
     );

@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:quizapp/app/data/api_helper.dart';
+import 'package:quizapp/app/modules/labels/controllers/labels_controller.dart';
 
 class TopicController extends GetxController {
   final ApiHelper _apiHelper = Get.find();
@@ -22,8 +23,8 @@ class TopicController extends GetxController {
   @override
   void onReady() {
     super.onReady();
-    final id = Get.arguments[0];
-    getTopic(id);
+    final Label data = Get.arguments;
+    getTopic(data.name);
   }
 
   @override

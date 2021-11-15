@@ -28,10 +28,10 @@ class AppPages {
       binding: LabelsBinding(),
     ),
     GetPage(
-      name: _Paths.TOPIC,
-      page: () => TopicView(),
-      binding: TopicBinding(),
-    ),
+        name: _Paths.TOPIC,
+        page: () => TopicView(),
+        binding: TopicBinding(),
+        transition: Transition.noTransition),
     GetPage(
       name: _Paths.QUIZ,
       page: () => QuizView(),

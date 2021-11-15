@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:quizapp/app/common/storage/storage.dart';
@@ -15,6 +16,9 @@ class HomeController extends GetxController {
 
   RxString selectedImagePath = ''.obs;
 
+  final RxBool _isLoading = true.obs;
+  dynamic get isLoading => _isLoading;
+
   Future getImage(ImageSource imageSource) async {
     final pickedFile = await ImagePicker().pickImage(
         source: imageSource, maxWidth: 500, maxHeight: 300, imageQuality: 80);
@@ -28,6 +32,11 @@ class HomeController extends GetxController {
     // getLabels();
     selectedImagePath.value = pickedFile.path;
   }
+
+  // Future LoadImages(dynamic images) async {
+  //   images.map((url) => precacheImage(url));
+  //   imagesList =
+  // }
 
   void getPreloadedImages() {
     _imagesList.clear();

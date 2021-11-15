@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:quizapp/app/modules/labels/controllers/labels_controller.dart';
 
 import 'package:quizapp/app/modules/topic/controllers/topic_controller.dart';
 import 'package:quizapp/app/routes/app_pages.dart';
@@ -46,32 +47,28 @@ class TopicPage extends GetView<TopicController> {
 
 class TopicView extends GetView<TopicController> {
   final PageController _pageController = PageController();
+
   @override
   Widget build(BuildContext context) {
+    final Label _data = Get.arguments;
     return Scaffold(
-        appBar: AppBar(
-          title: Text(Get.arguments[1]),
-          centerTitle: true,
-        ),
-        body: SafeArea(
-            child: Obx(() => controller.isLoading.value
-                ? const Text('Topic Loading')
-                : PageView.builder(
-                    controller: _pageController,
-                    itemCount: controller.topic.value['topics'].length,
-                    itemBuilder: (context, position) {
-                      return TopicPage(position);
-                    })))
-        // body: Center(
-        //   child: Obx(() {
-        //     return controller.isLoading.value
-        //         ? const Text('')
-        //         : Text(
-        //             '${controller.topic.value['page']['title']}',
-        //             style: const TextStyle(fontSize: 20),
-        //           );
-        //   }),
-        // ),
-        );
+      appBar: AppBar(
+        title: Text(_data.name),
+        centerTitle: true,
+      ),
+      // body: SafeArea(
+      //     child: Obx(() => controller.isLoading.value
+      //         ? const Text('Topic Loading')
+      //         : PageView.builder(
+      //             controller: _pageController,
+      //             itemCount: controller.topic.value['topics'].length,
+      //             itemBuilder: (context, position) {
+      //               return TopicPage(position);
+      //             })))
+      body: Container(
+        child: Hero(
+            tag: _data.name, child: Image(image: NetworkImage(_data.image))),
+      ),
+    );
   }
 }
