@@ -12,9 +12,9 @@ class TopicController extends GetxController {
   final RxBool _isLoading = true.obs;
   dynamic get isLoading => _isLoading;
 
-  void getTopic(String id) {
+  void getTopic(String title) {
     _isLoading.value = true;
-    _apiHelper.getTopic(id).futureValue((dynamic value) {
+    _apiHelper.getTopic(title).futureValue((dynamic value) {
       topic = value;
       _isLoading.value = false;
     });

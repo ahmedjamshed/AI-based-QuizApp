@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -5,6 +6,7 @@ import 'package:get/get.dart';
 
 import 'package:quizapp/app/modules/labels/controllers/labels_controller.dart';
 import 'package:quizapp/app/routes/app_pages.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class LabelPage extends GetView<LabelsController> {
   const LabelPage(this.position);
@@ -14,9 +16,22 @@ class LabelPage extends GetView<LabelsController> {
     final _data = controller.dataList[position];
 
     return Container(
+        key: ValueKey(_data.name),
         margin: const EdgeInsets.all(15),
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Hero(tag: _data.name, child: Image(image: NetworkImage(_data.image))),
+          Hero(
+              tag: _data.name,
+              child: ClipRRect(
+                  borderRadius: const BorderRadius.all(Radius.circular(15)),
+                  child: CachedNetworkImage(
+                    imageUrl: _data.image,
+                    progressIndicatorBuilder:
+                        (context, url, downloadProgress) =>
+                            CircularProgressIndicator(
+                                value: downloadProgress.progress),
+                    errorWidget: (context, url, error) =>
+                        const Icon(Icons.error),
+                  ))),
           Text(_data.name, style: const TextStyle(fontSize: 20)),
           Text(_data.description, style: const TextStyle(fontSize: 20)),
           ElevatedButton(

@@ -49,8 +49,8 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
   }
 
   @override
-  Future<Response> getTopic(String id) {
-    return get('learningMaterial?id=$id');
+  Future<Response> getTopic(String title) {
+    return get('learningMaterial?title=$title');
   }
 
   @override

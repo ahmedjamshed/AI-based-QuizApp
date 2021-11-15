@@ -5,12 +5,12 @@ import 'package:quizapp/app/common/util/exports.dart';
 import 'package:quizapp/app/common/util/initializer.dart';
 import 'package:quizapp/app/common/values/styles/theme.dart';
 import 'package:quizapp/app/routes/app_pages.dart';
-import 'package:flutter/scheduler.dart' show timeDilation;
+// import 'package:flutter/scheduler.dart' show timeDilation;
 
 import 'app/modules/widgets/base_widget.dart';
 
 void main() {
-  timeDilation = 5.0;
+  // timeDilation = 2.0; // slow animation in debug mode
   Initializer.instance.init(() {
     runApp(MyApp());
   });

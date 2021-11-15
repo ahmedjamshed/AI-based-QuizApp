@@ -32,8 +32,10 @@ dependencies:
   get:
   get_storage:
 
+  #image utils
   image_picker:
   image_cropper:
+  cached_network_image: ^3.1.0+1
 
   #for date formatting
   intl:
