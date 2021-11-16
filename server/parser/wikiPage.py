@@ -29,9 +29,10 @@ def wikiPages(titles):
         'action': 'query',
         'format': 'json',
         'formatversion': 2,
-        'prop': 'pageimages|pageterms',
+        'prop': 'pageimages|pageterms|pageprops',
+        'piprop': 'thumbnail|original|name',
+        'pithumbsize': 500,
         # 'explaintext': True,
-        'piprop': 'original',
         'titles': titlesStr
     }
     response = requests.get(url, data)

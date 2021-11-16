@@ -17,7 +17,7 @@ class Label {
       json['title'].toString(),
       json['terms']['description'][0].toString(),
       (json['terms']['alias'] ?? []).cast<String>(),
-      json['original']['source'].toString(),
+      json['thumbnail']['source'].toString(),
     );
   }
 }

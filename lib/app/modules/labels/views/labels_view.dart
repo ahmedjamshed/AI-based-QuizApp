@@ -11,38 +11,55 @@ import 'package:transparent_image/transparent_image.dart';
 class LabelPage extends GetView<LabelsController> {
   const LabelPage(this.position);
   final int position;
+  static const imageHeight = 250.0;
   @override
   Widget build(BuildContext context) {
     final _data = controller.dataList[position];
 
-    return Container(
-        key: ValueKey(_data.name),
-        margin: const EdgeInsets.all(15),
-        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Hero(
-              tag: _data.name,
-              child: ClipRRect(
-                  borderRadius: const BorderRadius.all(Radius.circular(15)),
-                  child: CachedNetworkImage(
-                    imageUrl: _data.image,
-                    progressIndicatorBuilder:
-                        (context, url, downloadProgress) =>
-                            CircularProgressIndicator(
-                                value: downloadProgress.progress),
-                    errorWidget: (context, url, error) =>
-                        const Icon(Icons.error),
-                  ))),
-          Text(_data.name, style: const TextStyle(fontSize: 20)),
-          Text(_data.description, style: const TextStyle(fontSize: 20)),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-                primary: Colors.black, padding: const EdgeInsets.all(8)),
-            onPressed: () {
-              Get.toNamed(Routes.TOPIC, arguments: _data);
-            },
-            child: const Text('TOPIC'),
-          ),
-        ]));
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        InkWell(
+          onTap: () {
+            Get.toNamed(Routes.TOPIC, arguments: _data);
+          },
+          child: Stack(alignment: Alignment.topCenter, children: [
+            Padding(
+              padding: const EdgeInsets.only(top: imageHeight / 2),
+              child: Card(
+                color: Colors.green,
+                child: Container(
+                  margin: EdgeInsets.only(top: imageHeight / 2),
+                  child: Column(
+                    children: [
+                      Text(_data.name, style: const TextStyle(fontSize: 20)),
+                      Text(_data.description,
+                          style: const TextStyle(fontSize: 20)),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Hero(
+                tag: _data.name,
+                child: ClipRRect(
+                    borderRadius: const BorderRadius.all(Radius.circular(15)),
+                    child: CachedNetworkImage(
+                      height: imageHeight,
+                      fit: BoxFit.fitHeight,
+                      imageUrl: _data.image,
+                      progressIndicatorBuilder:
+                          (context, url, downloadProgress) =>
+                              CircularProgressIndicator(
+                                  value: downloadProgress.progress),
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.error),
+                    ))),
+          ]),
+        )
+      ],
+    );
   }
 }
 
@@ -55,17 +72,19 @@ class LabelsView extends GetView<LabelsController> {
         title: const Text('Labels'),
         centerTitle: true,
       ),
-      body: SafeArea(child: Obx(
-        () {
-          return controller.isLoading.value
-              ? const Text('Loading')
-              : PageView.builder(
-                  controller: _pageController,
-                  itemCount: controller.dataList.length,
-                  itemBuilder: (context, position) {
-                    return LabelPage(position);
-                  });
-        },
+      body: SafeArea(child: Container(
+        child: Obx(
+          () {
+            return controller.isLoading.value
+                ? const Text('Loading')
+                : PageView.builder(
+                    controller: _pageController,
+                    itemCount: controller.dataList.length,
+                    itemBuilder: (context, position) {
+                      return LabelPage(position);
+                    });
+          },
+        ),
       )),
     );
   }
