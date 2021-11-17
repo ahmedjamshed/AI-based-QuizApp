@@ -81,7 +81,7 @@ class _ImageBuilder extends GetView<HomeController> {
             // controller.getLabels(controller.imagesList[index]);
           },
           child: ClipRRect(
-            borderRadius: const BorderRadius.all(Radius.circular(15)),
+            borderRadius: 15.borderRadius,
             child: FadeInImage.memoryNetwork(
               placeholder: kTransparentImage,
               image: controller.imagesList[index],

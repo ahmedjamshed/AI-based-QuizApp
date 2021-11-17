@@ -34,12 +34,23 @@ class LabelsController extends GetxController
   final RxBool _isLoading = true.obs;
   dynamic get isLoading => _isLoading;
 
+  final RxInt currentPage = 0.obs;
+  final PageController pageController = PageController(viewportFraction: 0.8);
+
   void getLabels(String img) {
     _dataList.clear();
     _apiHelper.getLabels(img).futureValue((dynamic value) {
       dataList = value.map<Label>((val) => Label.fromMap(val)).toList();
       _isLoading.value = false;
     });
+  }
+
+  @override
+  void onInit() {
+    pageController.addListener(() {
+      currentPage.value = pageController.page?.toInt() ?? 0;
+    });
+    super.onInit();
   }
 
   @override

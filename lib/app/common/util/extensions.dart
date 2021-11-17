@@ -13,6 +13,17 @@ import 'utils.dart';
 
 class Extensions {}
 
+extension ExtendedText on Widget {
+  Widget addContainer({double num = 0, Color color = Colors.yellow}) {
+    return Container(
+      padding: EdgeInsets.all(num),
+      margin: EdgeInsets.all(num),
+      color: color,
+      child: this,
+    );
+  }
+}
+
 extension BorderRadiusExt on num {
   BorderRadius get borderRadius => BorderRadius.circular(this.r);
 
