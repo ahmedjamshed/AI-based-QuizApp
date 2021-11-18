@@ -14,12 +14,14 @@ class LabelPage extends GetView<LabelsController> {
   const LabelPage(this.position);
   final int position;
   static const imageHeight = 200.0;
+  static num border = 25;
   @override
   Widget build(BuildContext context) {
     final _data = controller.dataList[position];
-
-    return Container(
-      margin: EdgeInsets.all(15),
+    final margin = controller.currentPage.value == position ? 0.0 : 50.0;
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 200),
+      margin: EdgeInsets.only(top: margin, bottom: margin, right: 15, left: 15),
       child: InkWell(
         onTap: () {
           Get.toNamed(Routes.TOPIC, arguments: _data);
@@ -28,28 +30,36 @@ class LabelPage extends GetView<LabelsController> {
           fit: StackFit.expand,
           children: [
             ClipRRect(
+              borderRadius: border.borderRadius,
               child: ImageFiltered(
-                imageFilter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
-                child: CachedNetworkImage(imageUrl: _data.image),
+                imageFilter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                child: CachedNetworkImage(
+                    width: double.infinity,
+                    height: double.infinity,
+                    fit: BoxFit.fill,
+                    imageUrl: _data.image),
               ),
             ),
             Container(
-              margin: EdgeInsets.all(15),
+              padding: const EdgeInsets.all(15),
+              decoration: BoxDecoration(
+                borderRadius: border.borderRadius,
+                color: Colors.black.withOpacity(0.2),
+              ),
+              clipBehavior: Clip.hardEdge,
               child: Hero(
                   tag: _data.name,
-                  child: ClipRRect(
-                      borderRadius: const BorderRadius.all(Radius.circular(15)),
-                      child: CachedNetworkImage(
-                        height: imageHeight,
-                        fit: BoxFit.fitHeight,
-                        imageUrl: _data.image,
-                        progressIndicatorBuilder:
-                            (context, url, downloadProgress) =>
-                                CircularProgressIndicator(
-                                    value: downloadProgress.progress),
-                        errorWidget: (context, url, error) =>
-                            const Icon(Icons.error),
-                      ))),
+                  child: CachedNetworkImage(
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    fit: BoxFit.contain,
+                    imageUrl: _data.image,
+                    progressIndicatorBuilder:
+                        (context, url, downloadProgress) =>
+                            CircularProgressIndicator(
+                                value: downloadProgress.progress),
+                    errorWidget: (context, url, error) =>
+                        const Icon(Icons.error),
+                  )),
             ),
           ],
         ),
@@ -85,7 +95,7 @@ class LabelsView extends GetView<LabelsController> {
                         _data.name,
                         key: ValueKey<String>(_data.name),
                         style:
-                            const TextStyle(fontSize: 40, color: Colors.black),
+                            const TextStyle(fontSize: 30, color: Colors.black),
                       ))),
                       Expanded(
                         flex: 2,
@@ -93,32 +103,13 @@ class LabelsView extends GetView<LabelsController> {
                             controller: controller.pageController,
                             itemCount: controller.dataList.length,
                             itemBuilder: (context, position) {
-                              // Future.delayed(Duration.zero, () async {
-                              //   currentPosition.value = position;
-                              // });
                               return LabelPage(position);
                             }),
                       ),
                       Expanded(
-                          child: animatedSlide(Container(
-                        height: double.infinity,
-                        width: double.infinity,
-                        margin: const EdgeInsets.only(top: 10),
-                        key: ValueKey<String>(_data.description),
-                        clipBehavior: Clip.antiAlias,
-                        decoration: BoxDecoration(
-                            borderRadius: const BorderRadius.vertical(
-                                top: Radius.circular(25)),
-                            color: Theme.of(context).primaryColor),
-                        child: SingleChildScrollView(
-                          padding: const EdgeInsets.all(10),
-                          child: Text(
-                            _data.description,
-                            style: const TextStyle(
-                                fontSize: 20, color: Colors.white),
-                          ),
-                        ),
-                      ))),
+                          child: animatedSlide(BottomDesc(
+                              key: ValueKey<String>(_data.description),
+                              data: _data))),
                     ],
                   );
           },
@@ -133,7 +124,7 @@ class LabelsView extends GetView<LabelsController> {
           return ScaleTransition(
             scale: CurvedAnimation(
               parent: animation,
-              curve: Curves.fastOutSlowIn,
+              curve: Curves.elasticInOut,
             ),
             child: child,
           );
@@ -142,7 +133,7 @@ class LabelsView extends GetView<LabelsController> {
       );
 
   Widget animatedSlide(Widget child) => AnimatedSwitcher(
-        duration: const Duration(milliseconds: 500),
+        duration: const Duration(milliseconds: 200),
         transitionBuilder: (Widget child, Animation<double> animation) {
           return SlideTransition(
             position: Tween<Offset>(
@@ -153,4 +144,43 @@ class LabelsView extends GetView<LabelsController> {
         },
         child: child,
       );
+}
+
+class BottomDesc extends StatelessWidget {
+  const BottomDesc({
+    Key? key,
+    required Label data,
+  })  : _data = data,
+        super(key: key);
+
+  final Label _data;
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: Alignment.bottomCenter,
+      child: Container(
+        width: double.infinity,
+        margin: const EdgeInsets.only(top: 10),
+        clipBehavior: Clip.antiAlias,
+        decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                  color: Colors.black87.withOpacity(0.3),
+                  blurRadius: 3,
+                  offset: const Offset(0, -2.5))
+            ],
+            // borderRadius: const BorderRadius.vertical(
+            //     top: Radius.circular(40)),
+            color: Theme.of(context).primaryColor),
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(15),
+          child: Text(
+            _data.description,
+            style: const TextStyle(fontSize: 20, color: Colors.white),
+          ),
+        ),
+      ),
+    );
+  }
 }

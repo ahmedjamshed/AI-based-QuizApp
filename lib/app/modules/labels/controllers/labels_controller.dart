@@ -48,7 +48,7 @@ class LabelsController extends GetxController
   @override
   void onInit() {
     pageController.addListener(() {
-      currentPage.value = pageController.page?.toInt() ?? 0;
+      currentPage.value = pageController.page?.round() ?? 0;
     });
     super.onInit();
   }
