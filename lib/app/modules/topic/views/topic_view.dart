@@ -1,3 +1,4 @@
+import 'package:another_transformer_page_view/another_transformer_page_view.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
@@ -8,25 +9,63 @@ import 'package:quizapp/app/modules/topic/controllers/topic_controller.dart';
 import 'package:quizapp/app/routes/app_pages.dart';
 import 'package:transparent_image/transparent_image.dart';
 
+class DeepthPageTransformer extends PageTransformer {
+  DeepthPageTransformer() : super(reverse: true);
+
+  @override
+  Widget transform(Widget child, TransformInfo info) {
+    final double position = info.position ?? 0.0;
+    if (position <= 0) {
+      return Opacity(
+        opacity: 1.0,
+        child: Transform.translate(
+          offset: Offset(0.0, 0.0),
+          child: Transform.scale(
+            scale: 1.0,
+            child: child,
+          ),
+        ),
+      );
+    } else if (position <= 1) {
+      const double MIN_SCALE = 0.75;
+      // Scale the page down (between MIN_SCALE and 1)
+      double scaleFactor = MIN_SCALE + (1 - MIN_SCALE) * (1 - position);
+
+      return Opacity(
+        opacity: 1.0 - position,
+        child: Transform.translate(
+          offset: Offset(
+              0.0, -position * (info.width ?? 0.0)), // info.width * -position
+          child: Transform.scale(
+            scale: scaleFactor,
+            child: child,
+          ),
+        ),
+      );
+    }
+
+    return child;
+  }
+}
+
 class TopicPage extends GetView<TopicController> {
   const TopicPage(this.position);
   final int position;
   @override
   Widget build(BuildContext context) {
+    final heading = controller.dataList[position].heading;
+    final description = controller.dataList[position].description;
+
     return Container(
-      margin: const EdgeInsets.all(15),
-      child: Obx(() {
-        final img = controller.topic.value['page']['original']['source'];
-        final description =
-            controller.topic.value['topics'][position]['description'];
-        final heading = controller.topic.value['topics'][position]['heading'];
-        return Column(children: [
+        color: position % 2 == 0 ? Colors.blue : Colors.pink,
+        margin: const EdgeInsets.all(15),
+        child: Column(children: [
           // ignore: prefer_if_elements_to_conditional_expressions
-          Text('$heading', style: const TextStyle(fontSize: 20)),
+          Text(heading, style: const TextStyle(fontSize: 20)),
           Expanded(
             child: SingleChildScrollView(
               child: Text(
-                '$description',
+                description,
                 style: const TextStyle(fontSize: 16),
               ),
             ),
@@ -39,9 +78,7 @@ class TopicPage extends GetView<TopicController> {
             },
             child: const Text('Generate Quiz'),
           ),
-        ]);
-      }),
-    );
+        ]));
   }
 }
 
@@ -77,8 +114,6 @@ class CoverPage extends GetView<TopicController> {
 }
 
 class TopicView extends GetView<TopicController> {
-  final PageController _pageController = PageController();
-
   @override
   Widget build(BuildContext context) {
     final Label _data = Get.arguments;
@@ -88,14 +123,18 @@ class TopicView extends GetView<TopicController> {
           centerTitle: true,
         ),
         body: SafeArea(
-            child: Obx(() => PageView.builder(
-                // allowImplicitScrolling: true,
-                controller: _pageController,
-                itemCount: (controller.topic.value['topics']?.length ?? 0) + 1,
-                itemBuilder: (context, position) {
-                  return position == 0
-                      ? const CoverPage()
-                      : TopicPage(position - 1);
-                }))));
+            child: Obx(() => controller.isLoading.value
+                ? const CoverPage()
+                : TransformerPageView(
+                    // allowImplicitScrolling: true,
+                    // controller: controller.pageController,
+                    curve: Curves.easeInBack,
+                    transformer: DeepthPageTransformer(),
+                    itemCount: controller.dataList.length,
+                    itemBuilder: (context, position) {
+                      return position == 0
+                          ? const CoverPage()
+                          : TopicPage(position - 1);
+                    }))));
   }
 }

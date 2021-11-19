@@ -27,6 +27,7 @@ dependencies:
 
   #for dynamic ui
   flutter_screenutil:
+  another_transformer_page_view:
 
   #for state management
   get:
