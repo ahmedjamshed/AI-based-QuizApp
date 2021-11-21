@@ -34,6 +34,12 @@ class TopicController extends GetxController {
 
   final pageCtrl = TransformerPageController();
 
+  final RxBool isDrawerOpen = true.obs;
+
+  void toggleDrawer() {
+    isDrawerOpen.value = !isDrawerOpen.value;
+  }
+
   void getTopic(String title) {
     _isLoading.value = true;
     _apiHelper.getTopic(title).futureValue((dynamic value) {
