@@ -15,10 +15,9 @@ class DrawerView extends GetView<TopicController> {
         itemBuilder: (context, position) {
           return TimelineTile(
             endChild: Container(
-              color: Colors.lightGreenAccent,
               child: Text(
                 position.toString(),
-                style: Theme.of(context).textTheme.headline1,
+                style: Theme.of(context).textTheme.headline6,
               ),
             ),
           );

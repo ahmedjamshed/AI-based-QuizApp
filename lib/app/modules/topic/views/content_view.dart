@@ -123,6 +123,7 @@ class ContentView extends GetView<TopicController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Colors.amber,
         body: SafeArea(
             child: Obx(() => controller.isLoading.value
                 ? const CoverPage()

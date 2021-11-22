@@ -9,13 +9,15 @@ def wikiPage(title):
         'action': 'query',
         'format': 'json',
         'formatversion': 2,
-        'prop': 'pageimages|pageterms|extracts',
+        'prop': 'pageimages|pageterms|extracts|images',
         # 'explaintext': True,
         'piprop': 'original',
+        "imlimit": 500,
         'titles': title
     }
     response = requests.get(url, data)
     json_data = json.loads(response.text)
+    print(json_data)
     page = json_data['query']['pages'][0]
     extract = page.pop('extract', '')
     topics = wikiHtmlParser(extract, title)
