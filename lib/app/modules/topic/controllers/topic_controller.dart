@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:quizapp/app/data/api_helper.dart';
 import 'package:quizapp/app/modules/labels/controllers/labels_controller.dart';
+import 'package:scroll_to_index/scroll_to_index.dart';
 
 class Topic {
   final String heading;
@@ -29,10 +30,10 @@ class TopicController extends GetxController {
   final RxBool _isLoading = true.obs;
   dynamic get isLoading => _isLoading;
 
-  final RxDouble currentPage = 0.0.obs;
-  final PageController pageController = PageController();
+  final RxInt currentPage = 0.obs;
 
-  final pageCtrl = TransformerPageController();
+  final pageController = IndexController();
+  final itemScrollController = AutoScrollController();
 
   final RxBool isDrawerOpen = true.obs;
 
@@ -52,7 +53,8 @@ class TopicController extends GetxController {
   @override
   void onInit() {
     pageController.addListener(() {
-      currentPage.value = pageController.page ?? 0.0;
+      currentPage.value = pageController.index ?? 0;
+      print(pageController.index);
     });
     super.onInit();
   }

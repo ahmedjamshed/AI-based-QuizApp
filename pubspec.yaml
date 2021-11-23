@@ -29,6 +29,7 @@ dependencies:
   flutter_screenutil:
   another_transformer_page_view:
   timeline_tile: ^2.0.0
+  scroll_to_index:
 
   #for state management
   get:
