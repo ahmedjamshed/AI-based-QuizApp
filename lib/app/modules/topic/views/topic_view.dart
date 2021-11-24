@@ -33,9 +33,7 @@ class TopicView extends GetView<TopicController> {
                 width: animatedWidth,
                 decoration:
                     BoxDecoration(color: Theme.of(context).primaryColor),
-                child: InkWell(
-                    onTap: () => controller.toggleDrawer(),
-                    child: const DrawerView())),
+                child: const DrawerView()),
             AnimatedContainer(
                 duration: _duration,
                 // transform:

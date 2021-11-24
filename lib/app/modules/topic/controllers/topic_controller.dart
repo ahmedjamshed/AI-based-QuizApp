@@ -35,7 +35,7 @@ class TopicController extends GetxController {
   final pageController = IndexController();
   final itemScrollController = AutoScrollController();
 
-  final RxBool isDrawerOpen = true.obs;
+  final RxBool isDrawerOpen = false.obs;
 
   void toggleDrawer() {
     isDrawerOpen.value = !isDrawerOpen.value;
@@ -50,12 +50,19 @@ class TopicController extends GetxController {
     });
   }
 
+  void gotoPage(int position, bool fromDrawer) {
+    currentPage.value = position;
+    fromDrawer
+        ? pageController.move(position)
+        : itemScrollController.scrollToIndex(position);
+  }
+
   @override
   void onInit() {
-    pageController.addListener(() {
-      currentPage.value = pageController.index ?? 0;
-      print(pageController.index);
-    });
+    // pageController.addListener(() {
+    //   currentPage.value = pageController.index ?? 0;
+    //   print('ahmed' + pageController.index.toString());
+    // });
     super.onInit();
   }
 

@@ -131,11 +131,11 @@ class ContentView extends GetView<TopicController> {
                     // allowImplicitScrolling: true,
                     controller: controller.pageController,
                     onPageChanged: (index) {
-                      controller.itemScrollController.scrollToIndex(index ?? 0);
+                      controller.gotoPage(index ?? 0, false);
                     },
                     curve: Curves.easeInBack,
                     transformer: DeepthPageTransformer(),
-                    itemCount: controller.dataList.length,
+                    itemCount: controller.dataList.length + 1,
                     itemBuilder: (context, position) {
                       return position == 0
                           ? const CoverPage()

@@ -23,9 +23,10 @@ class DrawerView extends GetView<TopicController> {
                   key: ValueKey(position),
                   controller: controller.itemScrollController,
                   index: position,
+                  highlightColor: Colors.black,
                   child: TimelineTile(
                     key: ValueKey(position),
-                    alignment: TimelineAlign.center,
+                    alignment: TimelineAlign.end,
                     isFirst: position == 0,
                     isLast: position == controller.dataList.length - 1,
                     beforeLineStyle: const LineStyle(color: Colors.white),
@@ -43,20 +44,37 @@ class DrawerView extends GetView<TopicController> {
                           ),
                           shape: BoxShape.circle,
                         ),
-                        child: Center(
-                            child: Text(position.toString(),
-                                style: const TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold))),
+                        child: Obx(
+                          () => Center(
+                              child: Text(position.toString(),
+                                  style: TextStyle(
+                                      color: controller.currentPage.value ==
+                                              position
+                                          ? Colors.amber
+                                          : Colors.white,
+                                      fontWeight: FontWeight.bold))),
+                        ),
                       ),
                     ),
-                    startChild: Container(
-                      margin: const EdgeInsets.symmetric(vertical: 5),
-                      color: Colors.teal,
-                      height: 180,
-                      width: 2,
-                      // child: Text(_data.heading,
-                      //     style: const TextStyle(color: Colors.white)),
+                    startChild: InkWell(
+                      onTap: () {
+                        controller.gotoPage(position, true);
+                      },
+                      child: Container(
+                          margin: const EdgeInsets.symmetric(vertical: 5),
+                          padding: const EdgeInsets.symmetric(vertical: 5),
+                          decoration: const BoxDecoration(
+                              color: Colors.amber,
+                              borderRadius: BorderRadius.only(
+                                  topRight: Radius.circular(10),
+                                  bottomRight: Radius.circular(10))),
+                          child: RotatedBox(
+                            quarterTurns: -1,
+                            child: Text(_data.heading,
+                                maxLines: 1,
+                                textAlign: TextAlign.center,
+                                style: Theme.of(context).textTheme.bodyText1),
+                          )),
                     ),
                   ),
                 );
