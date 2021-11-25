@@ -63,16 +63,19 @@ class TopicPage extends GetView<TopicController> {
     final description = controller.dataList[position].description;
 
     return Container(
-        color: position % 2 == 0 ? Colors.blue : Colors.pink,
         margin: const EdgeInsets.all(15),
+        padding: const EdgeInsets.all(15),
+        decoration: const BoxDecoration(
+            color: Colors.pink,
+            borderRadius: BorderRadius.all(Radius.circular(15))),
         child: Column(children: [
           // ignore: prefer_if_elements_to_conditional_expressions
-          Text(heading, style: const TextStyle(fontSize: 20)),
+          Text(heading, style: Theme.of(context).textTheme.headline6),
           Expanded(
             child: SingleChildScrollView(
               child: Text(
                 description,
-                style: const TextStyle(fontSize: 16),
+                style: Theme.of(context).textTheme.bodyText1,
               ),
             ),
           ),
