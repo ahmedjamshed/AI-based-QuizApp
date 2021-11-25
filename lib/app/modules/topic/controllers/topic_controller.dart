@@ -23,7 +23,7 @@ class Topic {
 class TopicController extends GetxController {
   final ApiHelper _apiHelper = Get.find();
 
-  final List<Topic> _dataList = [];
+  final List<Topic> _dataList = [Topic('Intro', '', [])];
   List<Topic> get dataList => _dataList;
   set dataList(List<Topic> dataList) => _dataList.addAll(dataList);
 
@@ -50,7 +50,7 @@ class TopicController extends GetxController {
     });
   }
 
-  void gotoPage(int position, bool fromDrawer) {
+  void gotoPage(int position, {bool fromDrawer = false}) {
     currentPage.value = position;
     fromDrawer
         ? pageController.move(position)

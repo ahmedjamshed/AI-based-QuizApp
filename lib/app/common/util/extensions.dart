@@ -24,6 +24,14 @@ extension ExtendedText on Widget {
   }
 }
 
+extension LimitText on String {
+  String limit(int limit) {
+    return this.length > limit
+        ? '${this.substring(0, limit).trim()}..'
+        : this.trim();
+  }
+}
+
 extension BorderRadiusExt on num {
   BorderRadius get borderRadius => BorderRadius.circular(this.r);
 

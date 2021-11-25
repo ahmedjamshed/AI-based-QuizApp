@@ -94,11 +94,17 @@ class AppTheme {
         backgroundColor: AppColors.kPrimaryColor,
       ),
       textTheme: TextTheme(
-        subtitle1: AppTextStyle.regularStyle.copyWith(
-          color: AppColors.mineShaft,
-          fontSize: Dimens.fontSize14,
-        ),
-      ),
+          subtitle1: AppTextStyle.regularStyle.copyWith(
+            color: AppColors.mineShaft,
+            fontSize: Dimens.fontSize14,
+          ),
+          headline6: AppTextStyle.regularStyle.copyWith(
+            color: AppColors.white,
+          ),
+          bodyText1: AppTextStyle.regularStyle.copyWith(
+            color: AppColors.white,
+            fontSize: Dimens.fontSize12,
+          )),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         contentPadding: const EdgeInsets.symmetric(

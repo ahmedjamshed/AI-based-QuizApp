@@ -26,7 +26,7 @@ class AppTextStyle {
   );
 
   static final TextStyle _textStyle = TextStyle(
-    color: Colors.black,
+    color: Colors.white,
     fontSize: Dimens.fontSize14,
   );
 }

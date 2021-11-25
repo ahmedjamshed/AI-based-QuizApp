@@ -123,7 +123,6 @@ class ContentView extends GetView<TopicController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.amber,
         body: SafeArea(
             child: Obx(() => controller.isLoading.value
                 ? const CoverPage()
@@ -131,15 +130,15 @@ class ContentView extends GetView<TopicController> {
                     // allowImplicitScrolling: true,
                     controller: controller.pageController,
                     onPageChanged: (index) {
-                      controller.gotoPage(index ?? 0, false);
+                      controller.gotoPage(index ?? 0);
                     },
                     curve: Curves.easeInBack,
                     transformer: DeepthPageTransformer(),
-                    itemCount: controller.dataList.length + 1,
+                    itemCount: controller.dataList.length,
                     itemBuilder: (context, position) {
                       return position == 0
                           ? const CoverPage()
-                          : TopicPage(position - 1);
+                          : TopicPage(position);
                     }))));
   }
 }

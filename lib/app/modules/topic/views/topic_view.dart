@@ -18,31 +18,15 @@ class TopicView extends GetView<TopicController> {
   Widget build(BuildContext context) {
     final Label _data = Get.arguments;
     return Scaffold(
-      appBar: AppBar(
-        title: Text(_data.name),
-        centerTitle: true,
-      ),
-      body: Obx(() {
-        final isOpen = controller.isDrawerOpen.value;
-        final width = MediaQuery.of(context).size.width;
-        final animatedWidth = isOpen ? (width * 0.6) : (width * 0.2);
-        return Row(
+        appBar: AppBar(
+          title: Text(_data.name),
+          centerTitle: true,
+        ),
+        body: Row(
           children: [
-            AnimatedContainer(
-                duration: _duration,
-                width: animatedWidth,
-                decoration:
-                    BoxDecoration(color: Theme.of(context).primaryColor),
-                child: const DrawerView()),
-            AnimatedContainer(
-                duration: _duration,
-                // transform:
-                //     Matrix4.translationValues(isOpen ? 300.0 : 0.0, 0.0, 0.0),
-                width: width - animatedWidth,
-                child: ContentView())
+            const Flexible(child: DrawerView()),
+            Flexible(flex: 9, child: ContentView())
           ],
-        );
-      }),
-    );
+        ));
   }
 }
