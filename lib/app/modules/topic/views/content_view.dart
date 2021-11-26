@@ -16,32 +16,37 @@ class DeepthPageTransformer extends PageTransformer {
   @override
   Widget transform(Widget child, TransformInfo info) {
     final double position = info.position ?? 0.0;
+    print(position);
     if (position <= 0) {
       return Opacity(
         opacity: 1.0,
-        // child: Transform(
-        //     transform: Matrix4.identity()
-        //       ..setEntry(3, 2, 0.001)
-        //       ..rotateZ(1 - position),
-        //     child: child),
         child: Transform.translate(
           offset: Offset(0.0, 0.0),
-          child: Transform.scale(
-            scale: 1.0,
-            child: child,
-          ),
+          child: Transform(
+              transform: Matrix4.identity()
+                ..setEntry(3, 2, 0.001)
+                ..rotateY(-position),
+              child: child),
         ),
+        // child: Transform.translate(
+        //   offset: Offset(0.0, 0.0),
+        //   child: Transform.scale(
+        //     scale: 1.0,
+        //     child: child,
+        //   ),
+        // ),
       );
     } else if (position <= 1) {
       const double MIN_SCALE = 0.75;
       // Scale the page down (between MIN_SCALE and 1)
-      double scaleFactor = MIN_SCALE + (1 - MIN_SCALE) * (1 - position);
+      final double scaleFactor =
+          1.0; //MIN_SCALE + (1 - MIN_SCALE) * (1 - position);
 
       return Opacity(
         opacity: 1.0 - position,
         child: Transform.translate(
           offset: Offset(
-              0.0, -position * (info.width ?? 0.0)), // info.width * -position
+              -position * (info.width ?? 0.0), 0.0), // info.width * -position
           child: Transform.scale(
             scale: scaleFactor,
             child: child,

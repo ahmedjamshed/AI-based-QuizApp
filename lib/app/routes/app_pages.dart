@@ -29,13 +29,13 @@ class AppPages {
     ),
     GetPage(
         name: _Paths.TOPIC,
-        page: () => TopicView(),
+        page: () => const TopicView(),
         binding: TopicBinding(),
         transition: Transition.noTransition),
     GetPage(
-      name: _Paths.QUIZ,
-      page: () => QuizView(),
-      binding: QuizBinding(),
-    ),
+        name: _Paths.QUIZ,
+        page: () => QuizView(),
+        binding: QuizBinding(),
+        fullscreenDialog: true),
   ];
 }

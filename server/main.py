@@ -6,6 +6,7 @@ from google.cloud import vision
 import proto
 from pydantic import BaseModel
 import base64
+from pydantic.types import Json
 import question_generation
 import numpy as np
 import pandas as pd
@@ -118,12 +119,14 @@ async def generateQuestions(req: Body):
     # text = ' '.join(paras[:5])
     # summary = ' '.join(re.split(r'(?<=[.?!])\s+', text, 15)[:-1])
     # print(summary)
-    start = time.time()
-    questions = nlp(req.data)
-    end = time.time()
-    print((end - start))
+
+    # main
+    # start = time.time()
+    # questions = nlp(req.data)
+    # end = time.time()
+    # print((end - start))
     return JSONResponse(content={
-        "questions": questions
+        "questions": QUESTIONS
     })
 
 
@@ -152,7 +155,8 @@ LABELS = [{'mid': '/m/0bwd_0j', 'description': 'Elephant', 'score': 0.975124, 't
           {'mid': '/m/05nnm', 'description': 'Organism', 'score': 0.8622507, 'topicality': 0.8622507, 'locale': '', 'confidence': 0.0, 'locations': [], 'properties': []}, {'mid': '/m/03d28y3', 'description': 'Natural landscape', 'score': 0.8577174, 'topicality': 0.8577174, 'locale': '', 'confidence': 0.0, 'locations': [], 'properties': []}, {'mid': '/m/07kbbhf', 'description': 'Elephants and Mammoths', 'score': 0.84533, 'topicality': 0.84533, 'locale': '', 'confidence': 0.0, 'locations': [], 'properties': []}, {'mid': '/m/01jb4', 'description': 'Biome', 'score': 0.8243382, 'topicality': 0.8243382, 'locale': '', 'confidence': 0.0, 'locations': [], 'properties': []}, {'mid': '/m/04_r5c', 'description': 'African elephant', 'score': 0.8185059, 'topicality': 0.8185059, 'locale': '', 'confidence': 0.0, 'locations': [], 'properties': []}]
 IMAGES = ['https://i.ibb.co/19dPN18/goose.jpg', 'https://i.ibb.co/6J7C2Rk/elephants.jpg', 'https://i.ibb.co/wpzWL7v/lion.jpg', 'https://i.ibb.co/JFfsTmc/canal.jpg', 'https://i.ibb.co/ccNDL2h/auto-shelby-1748c33f675-original-ratio.jpg',
           'https://i.ibb.co/hYk9zWp/croppedshutterstock439977091jpg-0.jpg', 'https://i.ibb.co/nwFXPkh/giraffe.jpg', 'https://i.ibb.co/HKHfLZv/penguins.jpg']
-
+QUESTIONS = [{'answer': '<pad> Elephants', 'question': 'What are the largest existing land animals?'}, {'answer': '<pad> three', 'question': 'How many living species are elephants currently recognised?'}, {'answer': '<pad> Elephantidae', 'question': 'What is the only surviving family of proboscideans?'}, {'answer': '<pad> mastodons', 'question': 'What are the extinct members of the proboscidean family?'}, {'answer': '<pad> mammoths and straight-tusked elephants', 'question': 'What are the extinct groups of elephantidae?'}, {'answer': '<pad> larger ears and concave backs', 'question': 'What do African elephants have?'}, {'answer': '<pad> a trunk, tusks, large ear flaps, massive legs, and tough but sensitive skin', 'question': 'What is a long proboscis called?'}, {'answer': '<pad> breathing, bringing food and water to the mouth, and grasping objects', 'question': 'What is the trunk used for?'}, {'answer': '<pad> Tusks', 'question': 'What is derived from the incisor teeth?'}, {'answer': '<pad> The large ear flaps', 'question': 'What aids in maintaining a constant body temperature?'}, {'answer': '<pad> The pillar-like legs',
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           'question': 'What type of legs carry their great weight?'}, {'answer': '<pad> sub-Saharan Africa, South Asia, and Southeast Asia', 'question': 'Where are elephants scattered?'}, {'answer': '<pad> herbivorous', 'question': 'What type of species are elephants found in savannahs, forests, deserts, and marshes?'}, {'answer': '<pad> their impact on their environments', 'question': 'What are elephants considered to be keystone species?'}, {'answer': '<pad> fission–fusion society', 'question': 'What type of society does elephants have?'}, {'answer': '<pad> Females (cows)', 'question': 'What group of females tend to live in family groups?'}, {'answer': '<pad> matriarch', 'question': 'What is the oldest cow called?'}, {'answer': '<pad> Males (bulls)', 'question': 'Who leaves their family groups when they reach puberty?'}, {'answer': '<pad> Adult bulls', 'question': 'What type of bulls interact with family groups when looking for a mate?'}, {'answer': '<pad> musth', 'question': 'What is a state of increased testosterone and aggression known as?'}, {'answer': '<pad> Calves', 'question': 'What is the name of a female elephant?'}]
 # if __name__ == '__main__':
 #     ngrok_tunnel = ngrok.connect(8000)
 #     print('Public URL:', ngrok_tunnel.public_url)
