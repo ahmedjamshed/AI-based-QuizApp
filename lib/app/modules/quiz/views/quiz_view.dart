@@ -1,46 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import 'package:get/get.dart';
-
 import 'package:quizapp/app/modules/quiz/controllers/quiz_controller.dart';
+import 'package:quizapp/app/modules/quiz/views/quiz_page.dart';
+import 'package:quizapp/app/modules/topic/views/drawer_view.dart';
+
+const xOffset = 230.0;
+const yOffset = 150.0;
+const scaleFactor = 0.6;
+
+const _duration = Duration(milliseconds: 250);
 
 class QuizView extends GetView<QuizController> {
+  const QuizView({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Quiz'),
-        centerTitle: true,
-      ),
-      body: SafeArea(child: Obx(
-        () {
-          return controller.isLoading.value
-              ? const Text('Loading')
-              : ListView.separated(
-                  separatorBuilder: (context, index) => SizedBox(height: 10.h),
-                  itemCount: controller.quizList.length,
-                  padding: const EdgeInsets.all(16),
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    final dynamic _data = controller.quizList[index];
-                    return Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(_data['question']),
-                        Text(_data['answer']),
-                        ElevatedButton(
-                          style:
-                              ElevatedButton.styleFrom(primary: Colors.black),
-                          onPressed: () {},
-                          child: const Text('Go'),
-                        ),
-                      ],
-                    );
-                  },
-                );
-        },
-      )),
-    );
+        appBar: AppBar(
+          title: const Text('Quiz Time'),
+          centerTitle: true,
+        ),
+        body: Row(
+          children: [
+            Flexible(child: QuizPage()),
+          ],
+        ));
   }
 }
