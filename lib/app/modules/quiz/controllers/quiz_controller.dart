@@ -9,11 +9,13 @@ class Question {
 
   Question(this.question, this.answer, this.options);
   factory Question.fromMap(dynamic json) {
-    final List<String> options = [];
+    final answer = json['answer'] ?? 'No Answer';
+    final List<String> options = ['Lion', 'Botany', 'Fintech', answer]
+      ..shuffle();
     // for (final option in json['options']) {
     //   options.add(option);
     // }
-    return Question(json['question'], json['answer'], options);
+    return Question(json['question'], answer, options);
   }
 }
 

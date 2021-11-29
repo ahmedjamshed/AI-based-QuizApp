@@ -35,7 +35,10 @@ class QuestionPage extends GetView<QuizController> {
   @override
   Widget build(BuildContext context) {
     final question = controller.quizList[position].question;
-    final answer = controller.quizList[position].answer;
+    // final answer = controller.quizList[position].answer;
+    final options = controller.quizList[position].options;
+
+    final selected
 
     return Container(
         margin: const EdgeInsets.all(15),
@@ -45,27 +48,42 @@ class QuestionPage extends GetView<QuizController> {
             borderRadius: BorderRadius.all(Radius.circular(15))),
         child: Column(children: [
           // ignore: prefer_if_elements_to_conditional_expressions
-          Text(question, style: Theme.of(context).textTheme.headline4),
-          Text(answer, style: Theme.of(context).textTheme.headline4),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-                primary: Colors.black, padding: const EdgeInsets.all(8)),
-            onPressed: () {
-              // Get.toNamed(Routes.QUIZ, arguments: description);
-              controller.pageController.previous();
-            },
-            child: const Text('Prev'),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    primary: Colors.black, padding: const EdgeInsets.all(8)),
+                onPressed: () {
+                  // Get.toNamed(Routes.QUIZ, arguments: description);
+                  controller.pageController.previous();
+                },
+                child: const Text('Skip'),
+              )
+            ],
           ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-                primary: Colors.black, padding: const EdgeInsets.all(8)),
-            onPressed: () {
-              // Get.toNamed(Routes.QUIZ, arguments: description);
-              controller.pageController.next();
-            },
-            child: const Text('Next'),
-          )
+          Text(question, style: Theme.of(context).textTheme.headline4),
+          ...getOptions(options, context),
         ]));
+  }
+
+  List<Widget> getOptions(List<String> options, BuildContext context) {
+    return options
+        .map((answer) =>
+            Option())
+        .toList();
+  }
+}
+
+class Option extends StatelessWidget {
+  const Option({
+    Key? key,
+    this.answer
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(answer, style: Theme.of(context).textTheme.bodyText2);
   }
 }
 
