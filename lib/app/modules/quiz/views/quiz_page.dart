@@ -70,6 +70,7 @@ class QuestionPage extends GetView<QuizController> {
     // Mutiple words, one answer senetence with fill in the blank type mcq from sense2vec
     // Single option card flip and fill in the blanks with no sense2vec results
     // Single words from sense2vec not containg that word
+    // https://towardsdatascience.com/practical-ai-automatically-generate-multiple-choice-questions-mcqs-from-any-content-with-bert-2140d53a9bf5
     return options
         .asMap()
         .map((i, option) => MapEntry(
