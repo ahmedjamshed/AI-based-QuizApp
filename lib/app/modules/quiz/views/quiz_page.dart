@@ -30,15 +30,14 @@ class DeepthPageTransformer extends PageTransformer {
 }
 
 class QuestionPage extends GetView<QuizController> {
-  const QuestionPage(this.position);
+  QuestionPage(this.position);
   final int position;
+  RxInt selectedOption = RxInt(-1);
   @override
   Widget build(BuildContext context) {
     final question = controller.quizList[position].question;
     // final answer = controller.quizList[position].answer;
     final options = controller.quizList[position].options;
-
-    final selected
 
     return Container(
         margin: const EdgeInsets.all(15),
@@ -56,7 +55,7 @@ class QuestionPage extends GetView<QuizController> {
                     primary: Colors.black, padding: const EdgeInsets.all(8)),
                 onPressed: () {
                   // Get.toNamed(Routes.QUIZ, arguments: description);
-                  controller.pageController.previous();
+                  controller.pageController.next();
                 },
                 child: const Text('Skip'),
               )
@@ -68,22 +67,43 @@ class QuestionPage extends GetView<QuizController> {
   }
 
   List<Widget> getOptions(List<String> options, BuildContext context) {
+    // Mutiple words, one answer senetence with fill in the blank type mcq from sense2vec
+    // Single option card flip and fill in the blanks with no sense2vec results
+    // Single words from sense2vec not containg that word
     return options
-        .map((answer) =>
-            Option())
+        .asMap()
+        .map((i, option) => MapEntry(
+            i,
+            InkWell(
+              onTap: () async {
+                selectedOption.value = i;
+                await Future.delayed(const Duration(seconds: 1));
+                controller.pageController.next();
+              },
+              child: Obx(() => Option(
+                  answer: option, isSelected: selectedOption.value == i)),
+            )))
+        .values
         .toList();
   }
 }
 
 class Option extends StatelessWidget {
-  const Option({
-    Key? key,
-    this.answer
-  }) : super(key: key);
+  final String answer;
+  final bool isSelected;
+  const Option({Key? key, required this.answer, required this.isSelected})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Text(answer, style: Theme.of(context).textTheme.bodyText2);
+    return Container(
+        padding: EdgeInsets.all(10),
+        margin: EdgeInsets.all(10),
+        decoration: BoxDecoration(
+            color: isSelected
+                ? Colors.amber.withOpacity(0.3)
+                : Colors.transparent),
+        child: Text(answer, style: Theme.of(context).textTheme.bodyText2));
   }
 }
 
