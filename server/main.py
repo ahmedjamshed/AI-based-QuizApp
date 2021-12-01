@@ -27,11 +27,14 @@ import requests
 from parser.wikiPage import wikiPage
 from parser.wikiPage import wikiPages
 
+from options.options import getOptions
+
 
 config = dotenv_values(".env")
 
 nltk.download('wordnet')
 nltk.download('punkt')
+nltk.download('averaged_perceptron_tagger')
 
 app = FastAPI()
 
@@ -138,6 +141,9 @@ async def learningMaterial(title: str = ''):
 
 @app.get('/preloadedImages')
 async def learningMaterial():
+    options = getOptions(
+        'The Nile provided so well for Egyptians that sometimes they had surpluses, or more goods than they needed.', 'Egyptians')
+    print(options)
     return JSONResponse(content=IMAGES)
 
 
