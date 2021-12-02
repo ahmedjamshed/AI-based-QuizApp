@@ -12,17 +12,22 @@ def _get_distractors_wordnet(syn, word):
     if len(word.split()) > 0:
         word = word.replace(" ", "_")
     hypernym = syn.hypernyms()
+    print(hypernym)
     if len(hypernym) == 0:
         return distractors
-    for item in hypernym[0].hyponyms():
-        name = item.lemmas()[0].name()
-        #print ("name ",name, " word",orig_word)
-        if name == orig_word:
-            continue
-        name = name.replace("_", " ")
-        name = " ".join(w.capitalize() for w in name.split())
-        if name is not None and name not in distractors:
-            distractors.append(name)
+    for hyp in hypernym:
+        for hyper in hyp.hypernyms():
+            for item in hyper.hyponyms():
+                for term in item.lemmas():
+                    name = term.name()
+                    print(name)
+                    #print ("name ",name, " word",orig_word)
+                    if name == orig_word:
+                        continue
+                    name = name.replace("_", " ")
+                    name = " ".join(w.capitalize() for w in name.split())
+                    if name is not None and name not in distractors:
+                        distractors.append(name)
     return distractors
 
 

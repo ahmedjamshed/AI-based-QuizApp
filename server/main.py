@@ -32,9 +32,9 @@ from options.options import getOptions
 
 config = dotenv_values(".env")
 
-nltk.download('wordnet')
-nltk.download('punkt')
-nltk.download('averaged_perceptron_tagger')
+# nltk.download('wordnet')
+# nltk.download('punkt')
+# nltk.download('averaged_perceptron_tagger')
 
 app = FastAPI()
 
@@ -46,8 +46,8 @@ app.add_middleware(
     allow_headers=['*'],
 )
 
-nlp = question_generation.pipeline(
-    "question-generation", model="valhalla/t5-small-qg-prepend", qg_format="prepend")
+# nlp = question_generation.pipeline(
+#     "question-generation", model="valhalla/t5-small-qg-prepend", qg_format="prepend")
 
 ###################################################
 
@@ -142,7 +142,7 @@ async def learningMaterial(title: str = ''):
 @app.get('/preloadedImages')
 async def learningMaterial():
     options = getOptions(
-        'The Nile provided so well for Egyptians that sometimes they had surpluses, or more goods than they needed.', 'Egyptians')
+        'withdraw money to purchase a car, bank', 'bank')
     print(options)
     return JSONResponse(content=IMAGES)
 
@@ -163,8 +163,8 @@ IMAGES = ['https://i.ibb.co/19dPN18/goose.jpg', 'https://i.ibb.co/6J7C2Rk/elepha
           'https://i.ibb.co/hYk9zWp/croppedshutterstock439977091jpg-0.jpg', 'https://i.ibb.co/nwFXPkh/giraffe.jpg', 'https://i.ibb.co/HKHfLZv/penguins.jpg']
 QUESTIONS = [{'answer': '<pad> Elephants', 'question': 'What are the largest existing land animals?'}, {'answer': '<pad> three', 'question': 'How many living species are elephants currently recognised?'}, {'answer': '<pad> Elephantidae', 'question': 'What is the only surviving family of proboscideans?'}, {'answer': '<pad> mastodons', 'question': 'What are the extinct members of the proboscidean family?'}, {'answer': '<pad> mammoths and straight-tusked elephants', 'question': 'What are the extinct groups of elephantidae?'}, {'answer': '<pad> larger ears and concave backs', 'question': 'What do African elephants have?'}, {'answer': '<pad> a trunk, tusks, large ear flaps, massive legs, and tough but sensitive skin', 'question': 'What is a long proboscis called?'}, {'answer': '<pad> breathing, bringing food and water to the mouth, and grasping objects', 'question': 'What is the trunk used for?'}, {'answer': '<pad> Tusks', 'question': 'What is derived from the incisor teeth?'}, {'answer': '<pad> The large ear flaps', 'question': 'What aids in maintaining a constant body temperature?'}, {'answer': '<pad> The pillar-like legs',
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            'question': 'What type of legs carry their great weight?'}, {'answer': '<pad> sub-Saharan Africa, South Asia, and Southeast Asia', 'question': 'Where are elephants scattered?'}, {'answer': '<pad> herbivorous', 'question': 'What type of species are elephants found in savannahs, forests, deserts, and marshes?'}, {'answer': '<pad> their impact on their environments', 'question': 'What are elephants considered to be keystone species?'}, {'answer': '<pad> fission–fusion society', 'question': 'What type of society does elephants have?'}, {'answer': '<pad> Females (cows)', 'question': 'What group of females tend to live in family groups?'}, {'answer': '<pad> matriarch', 'question': 'What is the oldest cow called?'}, {'answer': '<pad> Males (bulls)', 'question': 'Who leaves their family groups when they reach puberty?'}, {'answer': '<pad> Adult bulls', 'question': 'What type of bulls interact with family groups when looking for a mate?'}, {'answer': '<pad> musth', 'question': 'What is a state of increased testosterone and aggression known as?'}, {'answer': '<pad> Calves', 'question': 'What is the name of a female elephant?'}]
-# if __name__ == '__main__':
-#     ngrok_tunnel = ngrok.connect(8000)
-#     print('Public URL:', ngrok_tunnel.public_url)
-#     nest_asyncio.apply()
-#     uvicorn.run(app, port=8000)
+if __name__ == '__main__':
+    # ngrok_tunnel = ngrok.connect(8000)
+    # print('Public URL:', ngrok_tunnel.public_url)
+    # nest_asyncio.apply()
+    uvicorn.run(app, port=8000)
