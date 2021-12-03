@@ -11,8 +11,12 @@ def _get_distractors_wordnet(syn, word):
     orig_word = word
     if len(word.split()) > 0:
         word = word.replace(" ", "_")
+    if syn.pos() in ['a', 's']:
+        for lemma in syn.lemmas():
+            if lemma.antonyms():
+                for ant in lemma.antonyms():
+                    distractors.append(ant.name())
     hypernym = syn.hypernyms()
-    print(hypernym)
     if len(hypernym) == 0:
         return distractors
     for hyp in hypernym:
@@ -36,11 +40,11 @@ def _get_wordsense(sent, word):
 
     if len(word.split()) > 0:
         word = word.replace(" ", "_")
-
-    synsets = wn.synsets(word, 'n')
+    rootWord = wn.morphy(word)
+    synsets = wn.synsets(rootWord)
     if synsets:
-        wup = max_similarity(sent, word, 'wup', pos='n')
-        adapted_lesk_output = adapted_lesk(sent, word, pos='n')
+        wup = max_similarity(sent, rootWord, 'wup')
+        adapted_lesk_output = adapted_lesk(sent, rootWord)
         lowest_index = min(synsets.index(
             wup), synsets.index(adapted_lesk_output))
         return synsets[lowest_index]
