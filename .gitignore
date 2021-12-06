@@ -125,3 +125,4 @@ coverage/
 # Python Server
 server/env
 server/src
+server/s2v_old

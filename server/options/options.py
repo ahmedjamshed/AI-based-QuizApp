@@ -3,6 +3,12 @@ from pywsd.similarity import max_similarity
 from pywsd.lesk import adapted_lesk
 from pywsd.lesk import simple_lesk
 from pywsd.lesk import cosine_lesk
+import spacy
+import re
+
+nlp = spacy.load("en_core_web_sm")
+# s2v = nlp.add_pipe("sense2vec")
+# s2v.from_disk("s2v_old")
 
 
 def _get_distractors_wordnet(syn, word):
@@ -36,11 +42,10 @@ def _get_distractors_wordnet(syn, word):
 
 
 def _get_wordsense(sent, word):
-    word = word.lower()
-
-    if len(word.split()) > 0:
-        word = word.replace(" ", "_")
-    rootWord = wn.morphy(word)
+    rootWord = word.lower()
+    if len(rootWord.split()) > 0:
+        rootWord = rootWord.replace(" ", "_")
+    # rootWord = wn.morphy(word)
     synsets = wn.synsets(rootWord)
     if synsets:
         wup = max_similarity(sent, rootWord, 'wup')
@@ -52,9 +57,34 @@ def _get_wordsense(sent, word):
         return None
 
 
-def getOptions(sent, word):
-    wordsense = _get_wordsense(sent, word)
-    if wordsense:
-        distractors = _get_distractors_wordnet(wordsense, word)
-        return distractors
+def _getAntonyms(word, context):
+    syn = _get_wordsense(context, word)
+    antonyms = []
+    if syn:
+        for lemma in syn.lemmas():
+            if lemma.antonyms():
+                for ant in lemma.antonyms():
+                    antonyms.append(ant.name())
+    return antonyms
+
+
+def getOptions(question):
+    print('\n\n')
+    context = question['context']
+    answer = question['answer'][6:].strip()
+    print(context, answer)
+    doc = nlp(context)
+    for token in doc:
+        if token.is_alpha and not token.is_stop and re.search(token.text, answer, re.IGNORECASE):
+            antonyms = _getAntonyms(token.lemma_, context)
+            # if len(antonyms) == 0 and token._.in_s2v:
+            #     print(token.text, token.lemma_, token.pos_, token.tag_, token.dep_,
+            #           token.shape_, token.is_alpha, token.is_stop, token._.s2v_most_similar(3))
+            # else:
+            #     print(token.text, antonyms)
+
+    # wordsense = _get_wordsense(context, answer)
+    # if wordsense:
+    #     distractors = _get_distractors_wordnet(wordsense, answer)
+    #     return distractors
     return []
