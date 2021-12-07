@@ -46,7 +46,7 @@ def _get_wordsense(sent, word):
     if len(rootWord.split()) > 0:
         rootWord = rootWord.replace(" ", "_")
     # rootWord = wn.morphy(word)
-    synsets = wn.synsets(rootWord)
+    synsets = wn.synswordets(rootWord)
     if synsets:
         wup = max_similarity(sent, rootWord, 'wup')
         adapted_lesk_output = adapted_lesk(sent, rootWord)
@@ -57,7 +57,7 @@ def _get_wordsense(sent, word):
         return None
 
 
-def _getAntonyms(word, context):
+def _getAntonyms(word, pos, context):
     syn = _get_wordsense(context, word)
     antonyms = []
     if syn:
@@ -74,17 +74,28 @@ def getOptions(question):
     answer = question['answer'][6:].strip()
     print(context, answer)
     doc = nlp(context)
+
     for token in doc:
         if token.is_alpha and not token.is_stop and re.search(token.text, answer, re.IGNORECASE):
             antonyms = _getAntonyms(token.lemma_, context)
-            # if len(antonyms) == 0 and token._.in_s2v:
-            #     print(token.text, token.lemma_, token.pos_, token.tag_, token.dep_,
-            #           token.shape_, token.is_alpha, token.is_stop, token._.s2v_most_similar(3))
-            # else:
-            #     print(token.text, antonyms)
+            if len(antonyms) == 0 and token._.in_s2v:
+                print(token.text, token.lemma_, token.pos_, token.tag_, token.dep_,
+                      token.shape_, token.is_alpha, token.is_stop, token._.s2v_most_similar(3))
+            else:
+                print(token.text, antonyms)
 
     # wordsense = _get_wordsense(context, answer)
     # if wordsense:
     #     distractors = _get_distractors_wordnet(wordsense, answer)
     #     return distractors
     return []
+
+
+# Rules
+# 1. Single word, single option => true/false => possible hypernyms
+# 2. Multiple words, single option => true/false => possible hypernyms will replace the word
+# 3. Multiple words, multiple options => antonyms replace with specific word, options will depend on antonym
+# 4. Multiple words, multiple options => pref according to
+
+
+# Words =>  POS => find antonyms => find sense2vec
