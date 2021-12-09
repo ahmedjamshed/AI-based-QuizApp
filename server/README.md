@@ -20,6 +20,16 @@ pip3 install -U pip setuptools wheel
 pip3 install -U spacy
 python3 -m spacy download en_core_web_sm
 
+# download sense2vec file
+
+import requests
+import tarfile
+
+url = "https://github.com/explosion/sense2vec/releases/download/v1.0.0/s2v_reddit_2015_md.tar.gz"
+response = requests.get(url, stream=True)
+file = tarfile.open(fileobj=response.raw, mode="r|gz")
+file.extractall(path=".")
+
 # wordnet
 
 pip3 install spacy-wordnet
