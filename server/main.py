@@ -135,8 +135,11 @@ async def generateQuestions(req: Body):
     # questions = nlp(req.data)
     # end = time.time()
     # print((end - start))
+    questions = []
+    for ques in QUESTIONS:
+        questions.append(getOptions(ques))
     return JSONResponse(content={
-        "questions": QUESTIONS
+        "questions": questions
     })
 
 
@@ -148,9 +151,6 @@ async def learningMaterial(title: str = ''):
 
 @app.get('/preloadedImages')
 async def learningMaterial():
-    for ques in QUESTIONS:
-        options = getOptions(ques)
-        print(options)
     return JSONResponse(content=IMAGES)
 
 

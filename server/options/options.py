@@ -95,7 +95,8 @@ def getOptions(item):
                         'answer': answer.replace(ent.text, '________'),
                         'correct': ent.text,
                         'options': options,
-                        'question': question
+                        'question': question,
+                        'context': context
                     }
 
     if len(options) == 0:
@@ -113,7 +114,8 @@ def getOptions(item):
                         'answer': answer.replace(token.text, '________'),
                         'correct': token.text,
                         'options': options,
-                        'question': question
+                        'question': question,
+                        'context': context
                     }
 
         if len(options) == 0:
@@ -124,7 +126,8 @@ def getOptions(item):
                         'answer': answer.replace(token.text, '________'),
                         'correct': token.text,
                         'options': options,
-                        'question': question
+                        'question': question,
+                        'context': context
                     }
 
         if len(options) == 0:
@@ -135,12 +138,14 @@ def getOptions(item):
                         'answer': answer.replace(token.text, '________'),
                         'correct': token.text,
                         'options': options,
-                        'question': question
+                        'question': question,
+                        'context': context
                     }
 
     return {
         'answer': answer,
         'correct': token.text,
         'options': ['True', 'False'],
-        'question': question
+        'question': question,
+        'context': context
     }
