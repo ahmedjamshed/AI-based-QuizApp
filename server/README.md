@@ -13,6 +13,19 @@ deactivate
 
 pip install -r requirements.txt
 
+# spacy
+
+pip3 install sense2vec
+pip3 install -U pip setuptools wheel
+pip3 install -U spacy
+python3 -m spacy download en_core_web_sm
+
+# wordnet
+
+pip3 install spacy-wordnet
+python3 -m nltk.downloader wordnet
+python3 -m nltk.downloader omw
+
 # always run this when opening a terminal
 
 export GOOGLE_APPLICATION_CREDENTIALS="/Users/immentia/Desktop/QuizApp/server/keyFile.json"
