@@ -5,17 +5,21 @@ import 'package:quizapp/app/data/api_helper.dart';
 class Question {
   final String question;
   final String answer;
+  final String correct;
+  final String context;
   final List<String> options;
 
-  Question(this.question, this.answer, this.options);
+  Question(
+      this.question, this.answer, this.context, this.correct, this.options);
   factory Question.fromMap(dynamic json) {
-    final answer = json['answer'] ?? 'No Answer';
-    final List<String> options = ['Lion', 'Botany', 'Fintech', answer]
-      ..shuffle();
+    final correct = json['correct'] ?? 'No Answer';
+    final List<String> options =
+        json['options'].map<String>((val) => val).toList()..shuffle();
     // for (final option in json['options']) {
     //   options.add(option);
     // }
-    return Question(json['question'], answer, options);
+    return Question(
+        json['question'], json['answer'], json['context'], correct, options);
   }
 }
 
