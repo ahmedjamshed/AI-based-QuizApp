@@ -3,10 +3,11 @@ import 'dart:ui';
 import 'package:another_transformer_page_view/another_transformer_page_view.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-
+export 'package:quizapp/app/common/util/extensions.dart';
 import 'package:get/get.dart';
 import 'package:quizapp/app/modules/quiz/controllers/quiz_controller.dart';
 import 'package:quizapp/app/routes/app_pages.dart';
+import 'package:percent_indicator/percent_indicator.dart';
 
 class DeepthPageTransformer extends PageTransformer {
   DeepthPageTransformer() : super(reverse: true);
@@ -40,6 +41,7 @@ class QuestionPage extends GetView<QuizController> {
     // final answer = controller.quizList[position].answer;
     final answer = item.answer;
     final options = item.options;
+    final cheatText = item.context;
 
     return Container(
         margin: const EdgeInsets.all(15),
@@ -48,11 +50,31 @@ class QuestionPage extends GetView<QuizController> {
             color: Colors.transparent,
             borderRadius: BorderRadius.all(Radius.circular(15))),
         child: SingleChildScrollView(
-          child: Column(children: [
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             // ignore: prefer_if_elements_to_conditional_expressions
             Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      primary: Colors.black, padding: const EdgeInsets.all(8)),
+                  onPressed: () {
+                    Get.defaultDialog(
+                      title: 'Cheat Context',
+                      middleText: cheatText,
+                      titleStyle: const TextStyle(color: Colors.black),
+                      middleTextStyle: const TextStyle(color: Colors.black),
+                      textConfirm: 'Ok',
+                      buttonColor: Colors.black,
+                      confirmTextColor: Colors.white,
+                      onConfirm: () {
+                        Get.back();
+                      },
+                    );
+                  },
+                  child: const Text('Cheat'),
+                ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                       primary: Colors.black, padding: const EdgeInsets.all(8)),
@@ -64,9 +86,18 @@ class QuestionPage extends GetView<QuizController> {
                 )
               ],
             ),
-            Text(question, style: Theme.of(context).textTheme.headline4),
-            Text(answer, style: Theme.of(context).textTheme.headline4),
-            ...getOptions(options, context),
+            Text('Q: $question',
+                style: const TextStyle(color: Colors.black, fontSize: 16)),
+            // Text(question, style: Theme.of(context).textTheme.headline4),
+            const SizedBox(
+              height: 10,
+            ),
+            Text('A: $answer',
+                style: const TextStyle(color: Colors.black, fontSize: 16)),
+            const SizedBox(
+              height: 10,
+            ),
+            Wrap(children: [...getOptions(options, context)])
           ]),
         ));
   }
@@ -87,7 +118,8 @@ class QuestionPage extends GetView<QuizController> {
                 controller.pageController.next();
               },
               child: Obx(() => Option(
-                  answer: option, isSelected: selectedOption.value == i)),
+                  answer: '${i + 1}) ${option.capitalizeFirst}',
+                  isSelected: selectedOption.value == i)),
             )))
         .values
         .toList();
@@ -103,13 +135,41 @@ class Option extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: EdgeInsets.all(10),
-        margin: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
+        margin: const EdgeInsets.all(10),
         decoration: BoxDecoration(
             color: isSelected
-                ? Colors.amber.withOpacity(0.3)
-                : Colors.transparent),
+                ? Theme.of(context).primaryColor.withOpacity(0.3)
+                : Colors.transparent,
+            border: Border.all(color: Theme.of(context).primaryColor),
+            borderRadius: BorderRadius.circular(15)),
         child: Text(answer, style: Theme.of(context).textTheme.bodyText2));
+  }
+}
+
+class ResultPage extends GetView<QuizController> {
+  const ResultPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: CircularPercentIndicator(
+        radius: 120.0,
+        lineWidth: 13.0,
+        animation: true,
+        percent: 0.7,
+        center: const Text(
+          "70.0%",
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),
+        ),
+        footer: const Text(
+          "Quiz Score",
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0),
+        ),
+        circularStrokeCap: CircularStrokeCap.round,
+        progressColor: Theme.of(context).primaryColor,
+      ),
+    );
   }
 }
 
@@ -129,9 +189,11 @@ class QuizPage extends GetView<QuizController> {
               duration: const Duration(milliseconds: 500),
               curve: Curves.fastOutSlowIn,
               transformer: DeepthPageTransformer(),
-              itemCount: controller.quizList.length,
+              itemCount: controller.quizList.length + 1,
               itemBuilder: (context, position) {
-                return QuestionPage(position);
+                return controller.quizList.length == position
+                    ? const ResultPage()
+                    : QuestionPage(position);
               })),
     ));
   }

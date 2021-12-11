@@ -30,6 +30,7 @@ dependencies:
   another_transformer_page_view:
   timeline_tile: ^2.0.0
   scroll_to_index:
+  percent_indicator: ^3.4.0
 
   #for state management
   get:

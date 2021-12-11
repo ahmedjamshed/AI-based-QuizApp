@@ -107,20 +107,23 @@ class _CustomAppBar extends SliverPersistentHeaderDelegate {
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     final top = maxExtended - shrinkOffset - 30 / 2;
+    final iconSize = (maxExtended - shrinkOffset) / 2;
+
     return Container(
         color: Theme.of(context).primaryColor,
         child: Stack(
           clipBehavior: Clip.none,
           fit: StackFit.expand,
           children: [
-            buildBackground(shrinkOffset),
-            buildAppBar(shrinkOffset),
-            Positioned(
-              top: top,
-              left: 20,
-              right: 20,
-              child: buildFloating(shrinkOffset),
-            ),
+            HeaderWidget(iconSize: iconSize)
+            // buildBackground(shrinkOffset),
+            // buildAppBar(shrinkOffset),
+            // Positioned(
+            //   top: top,
+            //   left: 20,
+            //   right: 20,
+            //   child: buildFloating(shrinkOffset),
+            // ),
           ],
         ));
   }
@@ -137,7 +140,7 @@ class _CustomAppBar extends SliverPersistentHeaderDelegate {
   //       ),
   //     );
 
-  Widget buildBackground(double shrinkOffset) => Container(
+  Widget buildBackground(double iconSize) => Container(
       margin: EdgeInsets.only(bottom: 50),
       decoration: const BoxDecoration(
         color: Colors.amber,
@@ -179,6 +182,50 @@ class _CustomAppBar extends SliverPersistentHeaderDelegate {
   @override
   bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) =>
       false;
+}
+
+class HeaderWidget extends GetView<HomeController> {
+  const HeaderWidget({
+    Key? key,
+    required this.iconSize,
+  }) : super(key: key);
+
+  final double iconSize;
+
+  @override
+  Widget build(BuildContext context) => Opacity(
+      opacity: 1, //appear(shrinkOffset),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Expanded(
+              child: Obx(
+            () => controller.selectedImagePath.value != ''
+                ? Image.file(File(controller.selectedImagePath.value))
+                : IconButton(
+                    onPressed: () {
+                      controller.getImage(ImageSource.gallery);
+                    },
+                    color: Colors.white,
+                    icon: Icon(
+                      Icons.add_photo_alternate_rounded,
+                      size: iconSize,
+                    )),
+          )),
+          Expanded(
+              child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              IconButton(
+                  onPressed: () {},
+                  color: Colors.white,
+                  icon: Icon(Icons.arrow_forward_rounded,
+                      size: iconSize > 50 ? 60 : 0))
+            ],
+          ))
+        ],
+      ));
 }
 
 // class HomeView extends GetView<HomeController> {

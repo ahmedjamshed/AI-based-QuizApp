@@ -16,7 +16,7 @@ class DeepthPageTransformer extends PageTransformer {
   @override
   Widget transform(Widget child, TransformInfo info) {
     final double position = info.position ?? 0.0;
-    print(position);
+    // print(position);
     if (position <= 0) {
       return Opacity(
         opacity: 1.0,
