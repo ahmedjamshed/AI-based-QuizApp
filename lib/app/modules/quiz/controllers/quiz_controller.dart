@@ -13,8 +13,9 @@ class Question {
       this.question, this.answer, this.context, this.correct, this.options);
   factory Question.fromMap(dynamic json) {
     final correct = json['correct'] ?? 'No Answer';
-    final List<String> options =
-        json['options'].map<String>((val) => val).toList()..shuffle();
+    final List<String> options = json['options'].cast<String>()
+      ..add(correct)
+      ..shuffle();
     // for (final option in json['options']) {
     //   options.add(option);
     // }

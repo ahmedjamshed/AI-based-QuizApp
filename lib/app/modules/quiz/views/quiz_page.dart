@@ -35,9 +35,11 @@ class QuestionPage extends GetView<QuizController> {
   RxInt selectedOption = RxInt(-1);
   @override
   Widget build(BuildContext context) {
-    final question = controller.quizList[position].question;
+    final item = controller.quizList[position];
+    final question = item.question;
     // final answer = controller.quizList[position].answer;
-    final options = controller.quizList[position].options;
+    final answer = item.answer;
+    final options = item.options;
 
     return Container(
         margin: const EdgeInsets.all(15),
@@ -45,25 +47,28 @@ class QuestionPage extends GetView<QuizController> {
         decoration: const BoxDecoration(
             color: Colors.transparent,
             borderRadius: BorderRadius.all(Radius.circular(15))),
-        child: Column(children: [
-          // ignore: prefer_if_elements_to_conditional_expressions
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    primary: Colors.black, padding: const EdgeInsets.all(8)),
-                onPressed: () {
-                  // Get.toNamed(Routes.QUIZ, arguments: description);
-                  controller.pageController.next();
-                },
-                child: const Text('Skip'),
-              )
-            ],
-          ),
-          Text(question, style: Theme.of(context).textTheme.headline4),
-          ...getOptions(options, context),
-        ]));
+        child: SingleChildScrollView(
+          child: Column(children: [
+            // ignore: prefer_if_elements_to_conditional_expressions
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      primary: Colors.black, padding: const EdgeInsets.all(8)),
+                  onPressed: () {
+                    // Get.toNamed(Routes.QUIZ, arguments: description);
+                    controller.pageController.next();
+                  },
+                  child: const Text('Skip'),
+                )
+              ],
+            ),
+            Text(question, style: Theme.of(context).textTheme.headline4),
+            Text(answer, style: Theme.of(context).textTheme.headline4),
+            ...getOptions(options, context),
+          ]),
+        ));
   }
 
   List<Widget> getOptions(List<String> options, BuildContext context) {
