@@ -34,7 +34,6 @@ file.extractall(path=".")
 
 pip3 install spacy-wordnet
 python3 -m nltk.downloader wordnet
-python3 -m nltk.downloader omw
 
 # always run this when opening a terminal
 
