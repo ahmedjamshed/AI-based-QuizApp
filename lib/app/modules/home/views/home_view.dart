@@ -218,7 +218,9 @@ class HeaderWidget extends GetView<HomeController> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Get.toNamed(Routes.LABELS);
+                  },
                   color: Colors.white,
                   icon: Icon(Icons.arrow_forward_rounded,
                       size: iconSize > 50 ? 60 : 0))

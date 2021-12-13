@@ -21,7 +21,7 @@ class DeepthPageTransformer extends PageTransformer {
       return Opacity(
         opacity: 1.0,
         child: Transform.translate(
-          offset: Offset(0.0, 0.0),
+          offset: const Offset(0.0, 0.0),
           child: Transform(
               transform: Matrix4.identity()
                 ..setEntry(3, 2, 0.001)
@@ -39,8 +39,8 @@ class DeepthPageTransformer extends PageTransformer {
     } else if (position <= 1) {
       const double MIN_SCALE = 0.75;
       // Scale the page down (between MIN_SCALE and 1)
-      final double scaleFactor =
-          1.0; //MIN_SCALE + (1 - MIN_SCALE) * (1 - position);
+      const double scaleFactor = 1.0;
+      // MIN_SCALE + (1 - MIN_SCALE) * (1 - position);
 
       return Opacity(
         opacity: 1.0 - position,
