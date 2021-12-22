@@ -17,7 +17,7 @@ class Label {
       json['title'].toString(),
       json['terms']['description'][0].toString(),
       (json['terms']['alias'] ?? []).cast<String>(),
-      json['thumbnail']['source'].toString(),
+      json['thumbnail'] == null ? '' : json['thumbnail']['source'].toString(),
     );
   }
 }
@@ -41,6 +41,7 @@ class LabelsController extends GetxController
     _dataList.clear();
     _apiHelper.getLabels(img).futureValue((dynamic value) {
       dataList = value.map<Label>((val) => Label.fromMap(val)).toList();
+
       _isLoading.value = false;
     });
   }
