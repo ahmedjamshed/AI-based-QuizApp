@@ -37,8 +37,8 @@ python3 -m nltk.downloader wordnet
 
 # always run this when opening a terminal
 
-export GOOGLE_APPLICATION_CREDENTIALS="/Users/immentia/Desktop/QuizApp/server/keyFile.json"
-export GOOGLE_APPLICATION_CREDENTIALS="/Users/ahmedjamshed/Desktop/projects/QuizApp/server/keyFile.json"
+export GOOGLE_APPLICATION_CREDENTIALS="/Users/immentia/Desktop/QuizApp/server/keyFile.json" (for computer 1)
+export GOOGLE_APPLICATION_CREDENTIALS="/Users/ahmedjamshed/Desktop/projects/QuizApp/server/keyFile.json" (for computer 2)
 
 uvicorn main:app --reload --workers 1 --host 0.0.0.0 --port 8008
 

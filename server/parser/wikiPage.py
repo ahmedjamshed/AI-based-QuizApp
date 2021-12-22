@@ -17,7 +17,7 @@ def wikiPage(title):
     }
     response = requests.get(url, data)
     json_data = json.loads(response.text)
-    print(json_data)
+    # print(json_data)
     page = json_data['query']['pages'][0]
     extract = page.pop('extract', '')
     topics = wikiHtmlParser(extract, title)

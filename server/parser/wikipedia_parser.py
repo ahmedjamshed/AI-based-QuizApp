@@ -32,6 +32,7 @@ def wikiHtmlParser(html, head):
         elif "h" in tag.name:
 
             if len(description) > 20:
+                description = description.strip().replace('\n', '')
                 runningTopic = topics[-1] if len(topics) else None
                 if(runningTopic and runningTopic.heading == heading):
                     runningTopic.addSubtopic(Topic(subheading, description))
@@ -70,7 +71,7 @@ def wikipedia(pageUrl):
         if tag.name == "p":
 
             # use text for fetch the content inside p tag
-            paragraphs.append(tag.text)
+            paragraphs.append(tag.text.strip().replace('\n', ''))
 
         # For Image use img tag
         elif tag.name == "img":

@@ -58,11 +58,11 @@ def _createOptions(token):
     #                     token.shape_, token.is_alpha, token.is_stop, senseWords)
     filteredSense = dict()
     for sense in senseWords:
-        avoidWord = ps.stem(token.lemma_)
+        avoidWord = str(ps.stem(token.lemma_)).strip()
         reWord = ''
         reKey = ''
         for word in sense[0][0].split():
-            stemmed = ps.stem(word)
+            stemmed = ps.stem(word).strip()
             if avoidWord == stemmed:
                 reWord = ''
                 reKey = ''
@@ -70,17 +70,39 @@ def _createOptions(token):
             else:
                 reKey = reKey + ' ' + stemmed
                 reWord = reWord + ' ' + word
-
-        if reWord:
-            filteredSense[reKey.strip()] = reWord.strip().rstrip('-')
+        reWord = reWord.strip().rstrip('-')
+        if reWord and reWord != avoidWord:
+            filteredSense[reKey.strip()] = reWord
     options = list(filteredSense.values())
 
     return options
 
 
+def case_insensitive_unique_list(data, answer):
+    seen, result = set(), []
+    seen.add(answer.lower())
+    for item in data:
+        if item.lower() not in seen:
+            seen.add(item.lower())
+            result.append(item)
+    return result
+
+
+def formattedOptions(answer, correct, options, question, context):
+    ans = re.sub(correct, '________', answer, flags=re.IGNORECASE)
+    opts = case_insensitive_unique_list(options, correct)
+    return {
+        'answer': ans,
+        'correct': correct,
+        'options': opts,
+        'question': question,
+        'context': context
+    }
+
+
 def getOptions(item):
     context = item['context']
-    answer = item['answer'][6:].strip()
+    answer = item['answer'].strip()  # [6:].strip()
     question = item['question']
 
     doc = nlp(context)
@@ -91,13 +113,7 @@ def getOptions(item):
             if ent._.in_s2v:
                 options = _createOptions(ent)
                 if(len(options) > 0):
-                    return {
-                        'answer': answer.replace(ent.text, '________'),
-                        'correct': ent.text,
-                        'options': options,
-                        'question': question,
-                        'context': context
-                    }
+                    return formattedOptions(answer, ent.text, options, question, context)
 
     if len(options) == 0:
         tokenList = []
@@ -110,42 +126,18 @@ def getOptions(item):
             if token._.in_s2v:
                 options = _createOptions(token)
                 if(len(options) > 0):
-                    return {
-                        'answer': answer.replace(token.text, '________'),
-                        'correct': token.text,
-                        'options': options,
-                        'question': question,
-                        'context': context
-                    }
+                    return formattedOptions(answer, token.text, options, question, context)
 
         if len(options) == 0:
             for token in tokenList:
                 options = _getAntonyms(token)
                 if(len(options) > 0):
-                    return {
-                        'answer': answer.replace(token.text, '________'),
-                        'correct': token.text,
-                        'options': options,
-                        'question': question,
-                        'context': context
-                    }
+                    return formattedOptions(answer, token.text, options, question, context)
 
         if len(options) == 0:
             for token in tokenList:
                 options = _forcedOptions(token)
                 if(len(options) > 0):
-                    return {
-                        'answer': answer.replace(token.text, '________'),
-                        'correct': token.text,
-                        'options': options,
-                        'question': question,
-                        'context': context
-                    }
+                    return formattedOptions(answer, token.text, options, question, context)
 
-    return {
-        'answer': answer,
-        'correct': token.text,
-        'options': ['True', 'False'],
-        'question': question,
-        'context': context
-    }
+    return formattedOptions(answer, token.text, ['True', 'False'], question, context)
