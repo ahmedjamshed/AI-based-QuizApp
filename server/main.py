@@ -99,15 +99,18 @@ def getMachineLabel(ids):
 def detect_labels_uri(source: str):
     """Detects labels in the file located in Google Cloud Storage or on the Web."""
     client = vision.ImageAnnotatorClient()
-    request = {
-        'image': {
-            'source': {'image_uri': source},
-        },
-    } if source.startswith('http') else {
-        'image': {
-            "content": base64.decodebytes(source.encode('utf-8'))
-        },
-    }
+    request = {}
+    if source.startswith('http'):
+        gs = source.replace('https://storage.googleapis.com/', 'gs://')
+        request = {'image': {
+            'source': {'image_uri': gs},
+        }}
+    else:
+        request = {
+            'image': {
+                "content": base64.decodebytes(source.encode('utf-8'))
+            },
+        }
     response = client.annotate_image(request)
 
     if response.error.message:
@@ -166,7 +169,7 @@ async def predictLabels(req: Body):
 
 # LABELS = [{'mid': '/m/0bwd_0j', 'description': 'Elephant', 'score': 0.975124, 'topicality': 0.975124, 'locale': '', 'confidence': 0.0, 'locations': [], 'properties': []}, {'mid': '/m/05s2s', 'description': 'Plant', 'score': 0.96498865, 'topicality': 0.96498865, 'locale': '', 'confidence': 0.0, 'locations': [], 'properties': []}, {'mid': '/m/06600f2', 'description': 'Plant community', 'score': 0.93969685, 'topicality': 0.93969685, 'locale': '', 'confidence': 0.0, 'locations': [], 'properties': []}, {'mid': '/m/0cblv', 'description': 'Ecoregion', 'score': 0.9285802, 'topicality': 0.9285802, 'locale': '', 'confidence': 0.0, 'locations': [], 'properties': []}, {'mid': '/m/07_gml', 'description': 'Working animal', 'score': 0.8963104, 'topicality': 0.8963104, 'locale': '', 'confidence': 0.0, 'locations': [], 'properties': []},
 #           {'mid': '/m/05nnm', 'description': 'Organism', 'score': 0.8622507, 'topicality': 0.8622507, 'locale': '', 'confidence': 0.0, 'locations': [], 'properties': []}, {'mid': '/m/03d28y3', 'description': 'Natural landscape', 'score': 0.8577174, 'topicality': 0.8577174, 'locale': '', 'confidence': 0.0, 'locations': [], 'properties': []}, {'mid': '/m/07kbbhf', 'description': 'Elephants and Mammoths', 'score': 0.84533, 'topicality': 0.84533, 'locale': '', 'confidence': 0.0, 'locations': [], 'properties': []}, {'mid': '/m/01jb4', 'description': 'Biome', 'score': 0.8243382, 'topicality': 0.8243382, 'locale': '', 'confidence': 0.0, 'locations': [], 'properties': []}, {'mid': '/m/04_r5c', 'description': 'African elephant', 'score': 0.8185059, 'topicality': 0.8185059, 'locale': '', 'confidence': 0.0, 'locations': [], 'properties': []}]
-IMAGES = ['https://i.ibb.co/19dPN18/goose.jpg', 'https://i.ibb.co/6J7C2Rk/elephants.jpg', 'https://i.ibb.co/wpzWL7v/lion.jpg', 'https://i.ibb.co/JFfsTmc/canal.jpg', 'https://i.ibb.co/ccNDL2h/auto-shelby-1748c33f675-original-ratio.jpg',
+IMAGES = ['https://storage.googleapis.com/visionappquiz/elephants.jpg', 'https://storage.googleapis.com/visionappquiz/goose.jpg', 'https://i.ibb.co/wpzWL7v/lion.jpg', 'https://i.ibb.co/JFfsTmc/canal.jpg', 'https://i.ibb.co/ccNDL2h/auto-shelby-1748c33f675-original-ratio.jpg',
           'https://i.ibb.co/hYk9zWp/croppedshutterstock439977091jpg-0.jpg', 'https://i.ibb.co/nwFXPkh/giraffe.jpg', 'https://i.ibb.co/HKHfLZv/penguins.jpg', 'https://i.ibb.co/N6SgqFn/AP21083627122061.jpg']
 # QUESTIONS = [{'answer': '<pad> Elephants', 'question': 'What are the largest existing land animals?', 'context': 'Elephants are the largest existing land animals.'}, {'answer': '<pad> three', 'question': 'How many living species are elephants currently recognised?', 'context': 'Three living species are currently recognised: the African bush elephant, the African forest elephant, and the Asian elephant.'}, {'answer': '<pad> Elephantidae', 'question': 'What is the only surviving family of proboscideans?', 'context': 'They are an informal grouping within the proboscidean family Elephantidae.'}, {'answer': '<pad> mastodons', 'question': 'What are the extinct members of the proboscidean family?', 'context': 'Elephantidae is the only surviving family of proboscideans; extinct members include the mastodons.'}, {'answer': '<pad> mammoths and straight-tusked elephants', 'question': 'What are the extinct groups of elephantidae?', 'context': 'Elephantidae also contains several extinct groups, including the mammoths and straight-tusked elephants.'}, {'answer': '<pad> larger ears and concave backs', 'question': 'What do African elephants have?', 'context': 'African elephants have larger ears and concave backs, whereas Asian elephants have smaller ears, and convex or level backs.'},
 #              {'answer': '<pad> a trunk, tusks, large ear flaps, massive legs, and tough but sensitive skin', 'question': 'What is a long proboscis called?', 'context': 'Distinctive features of all elephants include a long proboscis called a trunk, tusks, large ear flaps, massive legs, and tough but sensitive skin.'}, {'answer': '<pad> breathing, bringing food and water to the mouth, and grasping objects', 'question': 'What is the trunk used for?', 'context': 'The trunk is used for breathing, bringing food and water to the mouth, and grasping objects.'}, {'answer': '<pad> Tusks', 'question': 'What is derived from the incisor teeth?', 'context': 'Tusks, which are derived from the incisor teeth, serve both as weapons and as tools for moving objects and digging.'}, {'answer': '<pad> The large ear flaps', 'question': 'What aids in maintaining a constant body temperature?', 'context': 'The large ear flaps assist in maintaining a constant body temperature as well as in communication.'}, {'answer': '<pad> The pillar-like legs', 'question': 'What type of legs carry their great weight?',
