@@ -2,10 +2,9 @@ import nltk
 from nltk.stem import WordNetLemmatizer
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
-from google.cloud import vision
-import proto
+
 from pydantic import BaseModel
-import base64
+
 from pydantic.types import Json
 import question_generation
 import numpy as np
@@ -14,7 +13,6 @@ from sklearn import linear_model
 import joblib
 import re
 import time
-from dotenv import dotenv_values
 from sklearn.feature_extraction.text import CountVectorizer
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -22,10 +20,10 @@ import nest_asyncio
 from pyngrok import ngrok
 import uvicorn
 from bs4 import *
-import requests
 
-from parser.wikiPage import wikiPage
-from parser.wikiPage import wikiPages
+from parser.wikiPage import *
+from labels.glabels import *
+
 
 from options.options import getOptions
 # import requests
@@ -36,8 +34,6 @@ from options.options import getOptions
 # file = tarfile.open(fileobj=response.raw, mode="r|gz")
 # file.extractall(path=".")
 
-
-config = dotenv_values(".env")
 
 # nltk.download('wordnet')
 # nltk.download('punkt')
@@ -75,52 +71,6 @@ class Body(BaseModel):
     data: str
 
 
-def getMachineLabel(ids):
-    headers = {
-        'Accept': 'application/json',
-    }
-    print(config['GAPI_KEY'])
-    params = (
-        ('ids', ids),
-        ('key', config['GAPI_KEY']),
-    )
-    try:
-        response = requests.get(
-            'https://kgsearch.googleapis.com/v1/entities:search', headers=headers, params=params)
-        topics = map(lambda item: item['result']['detailedDescription']
-                     ['url'].split("/")[-1], response.json()['itemListElement'])
-        # print(*topics)
-        return list(topics)
-    except requests.exceptions.RequestException as err:
-        print(err)
-        raise err
-
-
-def detect_labels_uri(source: str):
-    """Detects labels in the file located in Google Cloud Storage or on the Web."""
-    client = vision.ImageAnnotatorClient()
-    request = {}
-    if source.startswith('http'):
-        gs = source.replace('https://storage.googleapis.com/', 'gs://')
-        request = {'image': {
-            'source': {'image_uri': gs},
-        }}
-    else:
-        request = {
-            'image': {
-                "content": base64.decodebytes(source.encode('utf-8'))
-            },
-        }
-    response = client.annotate_image(request)
-
-    if response.error.message:
-        raise Exception(
-            '{}\nFor more info on error messages, check: '
-            'https://cloud.google.com/apis/design/errors'.format(
-                response.error.message))
-    return [proto.Message.to_dict(tag) for tag in response.label_annotations]
-
-
 @app.post('/generateQuestions')
 async def generateQuestions(req: Body):
     # url = getMachineLabel([id])
@@ -135,13 +85,12 @@ async def generateQuestions(req: Body):
 
     # main
     # start = time.time()
-    QUESTIONS = qgPipe(req.data)
+    questions = qgPipe(req.data)
     # end = time.time()
     # print((end - start))
-    questions = []
-    for ques in QUESTIONS:
-        # TODO: Remove answer from options and match case
-        questions.append(getOptions(ques))
+    quesAns = []
+    for ques in questions:
+        quesAns.append(getOptions(ques))
     return JSONResponse(content={
         "questions": questions
     })
