@@ -11,7 +11,7 @@ config = dotenv_values(".env")
 def _parseMachineData(item):
     print(item)
     try:
-        return item['itemListElement']['result']['detailedDescription']['url'].split("/")[-1]
+        return item['result']['detailedDescription']['url'].split("/")[-1]
     except Exception as e:
         return None
 
@@ -29,8 +29,9 @@ def getMachineLabel(ids):
     try:
         response = requests.get(
             'https://kgsearch.googleapis.com/v1/entities:search', headers=headers, params=params)
-        topics = filter(None, map(_parseMachineData, response.json()))
-        print(*topics)
+        topics = filter(None, map(_parseMachineData,
+                        response.json()['itemListElement']))
+        # print(*topics)
         return list(topics)
     except requests.exceptions.RequestException as err:
         print(err)
