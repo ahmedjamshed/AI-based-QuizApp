@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
       title: Strings.appName,
       debugShowCheckedModeBanner: false,
       theme: AppTheme.theme,
-      initialRoute: Routes.HOME,
+      initialRoute: AppPages.INITIAL,
       getPages: AppPages.routes,
       builder: (_, child) => BaseWidget(
         child: child!,
