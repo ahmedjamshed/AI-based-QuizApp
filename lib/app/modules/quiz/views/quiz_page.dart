@@ -33,10 +33,10 @@ class DeepthPageTransformer extends PageTransformer {
 class QuestionPage extends GetView<QuizController> {
   QuestionPage(this.position);
   final int position;
-  RxInt selectedOption = RxInt(-1);
   @override
   Widget build(BuildContext context) {
     final item = controller.quizList[position];
+    final total = controller.quizList.length;
     final question = item.question;
     // final answer = controller.quizList[position].answer;
     final answer = item.answer;
@@ -44,7 +44,6 @@ class QuestionPage extends GetView<QuizController> {
     final cheatText = item.context;
 
     return Container(
-        margin: const EdgeInsets.all(15),
         padding: const EdgeInsets.all(15),
         decoration: const BoxDecoration(
             color: Colors.transparent,
@@ -55,45 +54,63 @@ class QuestionPage extends GetView<QuizController> {
             // ignore: prefer_if_elements_to_conditional_expressions
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      primary: Colors.black, padding: const EdgeInsets.all(8)),
-                  onPressed: () {
-                    Get.defaultDialog(
-                      title: 'Cheat Context',
-                      middleText: cheatText,
-                      titleStyle: const TextStyle(color: Colors.black),
-                      middleTextStyle: const TextStyle(color: Colors.black),
-                      textConfirm: 'Ok',
-                      buttonColor: Colors.black,
-                      confirmTextColor: Colors.white,
-                      onConfirm: () {
-                        Get.back();
-                      },
-                    );
-                  },
-                  child: const Text('Cheat'),
+                Padding(
+                  padding: const EdgeInsets.all(18.0),
+                  child: Text(
+                    '${position + 1} / $total',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 28.0,
+                        color: Theme.of(context).primaryColor),
+                  ),
                 ),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      primary: Colors.black, padding: const EdgeInsets.all(8)),
-                  onPressed: () {
-                    // Get.toNamed(Routes.QUIZ, arguments: description);
-                    controller.pageController.next();
-                  },
-                  child: const Text('Skip'),
-                )
+                IconButton(
+                    onPressed: () {
+                      Get.defaultDialog(
+                        title: 'Cheat Context',
+                        middleText: cheatText,
+                        titleStyle: const TextStyle(color: Colors.black),
+                        middleTextStyle: const TextStyle(color: Colors.black),
+                        textConfirm: 'Ok',
+                        buttonColor: Colors.black,
+                        confirmTextColor: Colors.white,
+                        onConfirm: () {
+                          Get.back();
+                        },
+                      );
+                    },
+                    color: Theme.of(context).primaryColor,
+                    icon: const Icon(
+                      Icons.policy_sharp,
+                      size: 30,
+                    )),
+                // ElevatedButton(
+                //   style: ElevatedButton.styleFrom(
+                //       primary: Colors.black, padding: const EdgeInsets.all(8)),
+                //   onPressed: () {
+                //     // Get.toNamed(Routes.QUIZ, arguments: description);
+                //     controller.pageController.next();
+                //   },
+                //   child: const Text('Skip'),
+                // )
               ],
             ),
-            Text('Q: $question',
-                style: const TextStyle(color: Colors.black, fontSize: 16)),
+            Text('Q) $question',
+                style: const TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20)),
             // Text(question, style: Theme.of(context).textTheme.headline4),
             const SizedBox(
               height: 10,
             ),
-            Text('A: $answer',
-                style: const TextStyle(color: Colors.black, fontSize: 16)),
+            Text('A) $answer',
+                style: const TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18)),
             const SizedBox(
               height: 10,
             ),
@@ -103,23 +120,19 @@ class QuestionPage extends GetView<QuizController> {
   }
 
   List<Widget> getOptions(List<String> options, BuildContext context) {
-    // Mutiple words, one answer senetence with fill in the blank type mcq from sense2vec
-    // Single option card flip and fill in the blanks with no sense2vec results
-    // Single words from sense2vec not containg that word
-    // https://towardsdatascience.com/practical-ai-automatically-generate-multiple-choice-questions-mcqs-from-any-content-with-bert-2140d53a9bf5
     return options
         .asMap()
         .map((i, option) => MapEntry(
             i,
             InkWell(
               onTap: () async {
-                selectedOption.value = i;
-                await Future.delayed(const Duration(seconds: 1));
+                controller.markAnswer(position, option);
+                await Future.delayed(const Duration(milliseconds: 500));
                 controller.pageController.next();
               },
               child: Obx(() => Option(
                   answer: '${i + 1}) ${option.capitalizeFirst}',
-                  isSelected: selectedOption.value == i)),
+                  isSelected: controller.isSelected(position, option))),
             )))
         .values
         .toList();
@@ -141,9 +154,13 @@ class Option extends StatelessWidget {
             color: isSelected
                 ? Theme.of(context).primaryColor.withOpacity(0.3)
                 : Colors.transparent,
-            border: Border.all(color: Theme.of(context).primaryColor),
+            border: Border.all(color: Theme.of(context).primaryColor, width: 2),
             borderRadius: BorderRadius.circular(15)),
-        child: Text(answer, style: Theme.of(context).textTheme.bodyText2));
+        child: Text(answer,
+            style: const TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+                fontSize: 14)));
   }
 }
 
@@ -152,22 +169,47 @@ class ResultPage extends GetView<QuizController> {
 
   @override
   Widget build(BuildContext context) {
+    final result = controller.calulateResult();
+    final int resultPer = (result * 100).round();
+    MaterialColor color = Colors.red;
+    String header = "Alas";
+    String footer = "Better luck next time!";
+    if (resultPer >= 70) {
+      color = Colors.green;
+      header = "Excellent";
+      footer = "Keep it up!";
+    } else if (resultPer >= 40) {
+      color = Colors.amber;
+      header = "Sigh";
+      footer = "You can do better!";
+    }
     return Center(
       child: CircularPercentIndicator(
-        radius: 120.0,
-        lineWidth: 13.0,
+        radius: 180.0,
+        lineWidth: 28.0,
         animation: true,
-        percent: 0.7,
-        center: const Text(
-          "70.0%",
+        percent: result,
+        animationDuration: 1500,
+        header: Padding(
+          padding: const EdgeInsets.all(18.0),
+          child: Text(
+            header,
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 28.0),
+          ),
+        ),
+        center: Text(
+          '$resultPer%',
           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),
         ),
-        footer: const Text(
-          "Quiz Score",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0),
+        footer: Padding(
+          padding: const EdgeInsets.all(18.0),
+          child: Text(
+            footer,
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 26.0),
+          ),
         ),
         circularStrokeCap: CircularStrokeCap.round,
-        progressColor: Theme.of(context).primaryColor,
+        progressColor: color,
       ),
     );
   }
@@ -187,6 +229,7 @@ class QuizPage extends GetView<QuizController> {
                 // controller.gotoPage(index ?? 0);
               },
               duration: const Duration(milliseconds: 500),
+              // physics: const NeverScrollableScrollPhysics(),
               curve: Curves.fastOutSlowIn,
               transformer: DeepthPageTransformer(),
               itemCount: controller.quizList.length + 1,
