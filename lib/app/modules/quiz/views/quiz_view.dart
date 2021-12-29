@@ -35,7 +35,7 @@ class QuizPage extends GetView<QuizController> {
     return Scaffold(
         body: SafeArea(
       child: Obx(() => controller.isLoading.value
-          ? const Text('loading')
+          ? const Center(child: Text('loading'))
           : TransformerPageView(
               // allowImplicitScrolling: true,
               controller: controller.pageController,

@@ -25,41 +25,45 @@ class DrawerView extends GetView<TopicController> {
                   child: Obx(() {
                     final isSelected = controller.currentPage.value == position;
                     final style = isSelected
-                        ? Theme.of(context).textTheme.headline6
-                        : Theme.of(context).textTheme.bodyText1;
-                    final width = MediaQuery.of(context).size.width;
-                    final animatedWidth =
-                        isSelected ? (width * 0.1) : (width * 0.05);
-                    return AnimatedAlign(
-                      duration: const Duration(seconds: 2),
-                      alignment: Alignment.topLeft,
-                      widthFactor: animatedWidth,
-                      child: InkWell(
-                        onTap: () {
-                          controller.gotoPage(position, fromDrawer: true);
-                        },
-                        child: Container(
-                            margin: const EdgeInsets.fromLTRB(0, 5, 5, 5),
-                            padding: const EdgeInsets.fromLTRB(0, 5, 5, 5),
-                            decoration: BoxDecoration(
-                                boxShadow: [
-                                  BoxShadow(
-                                      color: Colors.black87.withOpacity(0.3),
-                                      blurRadius: 3,
-                                      spreadRadius: 1,
-                                      offset: const Offset(1, 0))
-                                ],
-                                color: Theme.of(context).primaryColor,
-                                borderRadius: const BorderRadius.only(
-                                    topRight: Radius.circular(15),
-                                    bottomRight: Radius.circular(15))),
+                        ? const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 22)
+                        : const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20);
+                    // final width = MediaQuery.of(context).size.width;
+                    final double p = isSelected ? 5 : 0;
+                    return InkWell(
+                      onTap: () {
+                        controller.gotoPage(position, fromDrawer: true);
+                      },
+                      child: AnimatedContainer(
+                          duration: const Duration(microseconds: 500),
+                          margin: EdgeInsets.fromLTRB(5 - p, 5, 5 - p, 5),
+                          padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
+                          decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                  color: Colors.black87.withOpacity(0.3),
+                                  blurRadius: 3,
+                                  spreadRadius: 1,
+                                  offset: const Offset(1, 0))
+                            ],
+                            color: Theme.of(context).primaryColor,
+                            // borderRadius: const BorderRadius.only(
+                            //     topRight: Radius.circular(15),
+                            //     bottomRight: Radius.circular(15)),
+                          ),
+                          child: Center(
                             child: RotatedBox(
                                 quarterTurns: -1,
                                 child: Text(_data.heading.limit(30),
                                     maxLines: 1,
                                     textAlign: TextAlign.center,
-                                    style: style))),
-                      ),
+                                    style: style)),
+                          )),
                     );
                   }),
                 );

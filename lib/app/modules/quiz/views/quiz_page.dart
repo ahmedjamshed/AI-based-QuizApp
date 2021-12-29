@@ -22,14 +22,11 @@ class QuestionPage extends GetView<QuizController> {
     final cheatText = item.context;
 
     return Container(
-        padding: const EdgeInsets.all(15),
         decoration: const BoxDecoration(
             color: Colors.transparent,
             borderRadius: BorderRadius.all(Radius.circular(15))),
-        child: SingleChildScrollView(
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            // ignore: prefer_if_elements_to_conditional_expressions
+        child: Column(
+          children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -48,10 +45,15 @@ class QuestionPage extends GetView<QuizController> {
                       Get.defaultDialog(
                         title: 'Cheat Context',
                         middleText: cheatText,
-                        titleStyle: const TextStyle(color: Colors.black),
-                        middleTextStyle: const TextStyle(color: Colors.black),
+                        titleStyle: TextStyle(
+                            color: Theme.of(context).primaryColor,
+                            fontWeight: FontWeight.bold),
+                        middleTextStyle: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 18.0,
+                        ),
                         textConfirm: 'Ok',
-                        buttonColor: Colors.black,
+                        buttonColor: Theme.of(context).primaryColor,
                         confirmTextColor: Colors.white,
                         onConfirm: () {
                           Get.back();
@@ -63,36 +65,37 @@ class QuestionPage extends GetView<QuizController> {
                       Icons.vpn_key_sharp,
                       size: 30,
                     )),
-                // ElevatedButton(
-                //   style: ElevatedButton.styleFrom(
-                //       primary: Colors.black, padding: const EdgeInsets.all(8)),
-                //   onPressed: () {
-                //     // Get.toNamed(Routes.QUIZ, arguments: description);
-                //     controller.pageController.next();
-                //   },
-                //   child: const Text('Skip'),
-                // )
               ],
             ),
-            Text('Q) $question',
-                style: const TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20)),
-            // Text(question, style: Theme.of(context).textTheme.headline4),
-            const SizedBox(
-              height: 10,
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // ignore: prefer_if_elements_to_conditional_expressions
+
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text('Q) $question',
+                            style: const TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20)),
+                      ),
+                      // Text(question, style: Theme.of(context).textTheme.headline4),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text('A) $answer',
+                            style: const TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18)),
+                      ),
+                      Wrap(children: [...getOptions(options, context)])
+                    ]),
+              ),
             ),
-            Text('A) $answer',
-                style: const TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18)),
-            const SizedBox(
-              height: 10,
-            ),
-            Wrap(children: [...getOptions(options, context)])
-          ]),
+          ],
         ));
   }
 
@@ -125,8 +128,8 @@ class Option extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: const EdgeInsets.all(10),
-        margin: const EdgeInsets.all(10),
+        padding: const EdgeInsets.all(7),
+        margin: const EdgeInsets.all(6),
         decoration: BoxDecoration(
             color: isSelected
                 ? Theme.of(context).primaryColor.withOpacity(0.3)
@@ -137,7 +140,7 @@ class Option extends StatelessWidget {
             style: const TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
-                fontSize: 14)));
+                fontSize: 15)));
   }
 }
 

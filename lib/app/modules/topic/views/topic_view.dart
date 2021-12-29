@@ -16,7 +16,7 @@ class TopicView extends GetView<TopicController> {
 
   @override
   Widget build(BuildContext context) {
-    final Label _data = Get.arguments;
+    final Label _data = Get.arguments ?? Label('', '', [], '');
     return Scaffold(
         appBar: AppBar(
           title: Text(_data.name),

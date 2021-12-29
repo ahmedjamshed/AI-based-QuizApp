@@ -68,19 +68,20 @@ class TopicPage extends GetView<TopicController> {
     final description = controller.dataList[position].description;
 
     return Container(
-        margin: const EdgeInsets.all(15),
+        margin: const EdgeInsets.fromLTRB(0, 5, 5, 5),
         padding: const EdgeInsets.all(15),
         decoration: const BoxDecoration(
-            color: Colors.pink,
-            borderRadius: BorderRadius.all(Radius.circular(15))),
+          color: Colors.pink,
+          // borderRadius: BorderRadius.all(Radius.circular(15)),
+        ),
         child: Column(children: [
           // ignore: prefer_if_elements_to_conditional_expressions
-          Text(heading, style: Theme.of(context).textTheme.headline6),
+          // Text(heading, style: Theme.of(context).textTheme.headline6),
           Expanded(
             child: SingleChildScrollView(
               child: Text(
                 description,
-                style: Theme.of(context).textTheme.bodyText1,
+                style: const TextStyle(color: Colors.white, fontSize: 20),
               ),
             ),
           ),
@@ -100,7 +101,7 @@ class CoverPage extends GetView<TopicController> {
   const CoverPage();
   @override
   Widget build(BuildContext context) {
-    final Label _data = Get.arguments;
+    final Label _data = Get.arguments ?? Label('', '', [], '');
     return Container(
         margin: const EdgeInsets.all(15),
         child: Column(children: [
