@@ -222,95 +222,10 @@ class HeaderWidget extends GetView<HomeController> {
                     Get.toNamed(Routes.LABELS);
                   },
                   color: Colors.white,
-                  icon: Icon(Icons.arrow_forward_rounded,
+                  icon: Icon(Icons.travel_explore_sharp,
                       size: iconSize > 50 ? 60 : 0))
             ],
           ))
         ],
       ));
 }
-
-// class HomeView extends GetView<HomeController> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//         appBar: CustomAppbarWidget(
-//           addBackButton: false,
-//           title: Strings.home,
-//         ),
-//         body: Column(
-//           children: [
-//             Row(
-//               mainAxisAlignment: MainAxisAlignment.spaceAround,
-//               children: [
-//                 IconButton(
-//                     onPressed: () {
-//                       controller.getImage(ImageSource.camera);
-//                     },
-//                     icon: const Icon(Icons.camera)),
-//                 IconButton(
-//                     onPressed: () {
-//                       controller.getImage(ImageSource.gallery);
-//                     },
-//                     icon: const Icon(Icons.image)),
-//               ],
-//             ),
-//             Obx(() => controller.selectedImagePath.value != ''
-//                 ? Image.file(File(controller.selectedImagePath.value))
-//                 : const Text('Select the Image')),
-//             Expanded(
-//               child: Obx(
-//                 () {
-//                   return ListView.separated(
-//                     separatorBuilder: (context, index) =>
-//                         SizedBox(height: 10.h),
-//                     itemCount: controller.dataList.length,
-//                     padding: const EdgeInsets.all(16),
-//                     shrinkWrap: true,
-//                     itemBuilder: (context, index) {
-//                       final dynamic _data = controller.dataList[index];
-
-//                       return Row(
-//                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                         children: [
-//                           Column(
-//                             mainAxisSize: MainAxisSize.min,
-//                             crossAxisAlignment: CrossAxisAlignment.start,
-//                             children: [
-//                               Text(
-//                                 _data['description'].toString(),
-//                                 style: const TextStyle(
-//                                     fontSize: 18, fontWeight: FontWeight.bold),
-//                               ),
-//                               SizedBox(height: 5.h),
-//                               Text(
-//                                 'Score: ${_data['score'].toString()}',
-//                               ),
-//                               SizedBox(height: 5.h),
-//                               Text(
-//                                 'Relevance: ${_data['topicality'].toString()}',
-//                               ),
-//                             ],
-//                           ),
-//                           ElevatedButton(
-//                             style:
-//                                 ElevatedButton.styleFrom(primary: Colors.black),
-//                             onPressed: () {
-//                               Get.toNamed(Routes.TOPIC, arguments: [
-//                                 _data['mid'],
-//                                 _data['description']
-//                               ]);
-//                             },
-//                             child: const Text('Go'),
-//                           ),
-//                         ],
-//                       );
-//                     },
-//                   );
-//                 },
-//               ),
-//             )
-//           ],
-//         ));
-//   }
-// }

@@ -1,6 +1,5 @@
 import 'dart:ui';
 
-import 'package:another_transformer_page_view/another_transformer_page_view.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 export 'package:quizapp/app/common/util/extensions.dart';
@@ -8,27 +7,6 @@ import 'package:get/get.dart';
 import 'package:quizapp/app/modules/quiz/controllers/quiz_controller.dart';
 import 'package:quizapp/app/routes/app_pages.dart';
 import 'package:percent_indicator/percent_indicator.dart';
-
-class DeepthPageTransformer extends PageTransformer {
-  DeepthPageTransformer() : super(reverse: true);
-
-  @override
-  Widget transform(Widget child, TransformInfo info) {
-    final double position = info.position ?? 0.0;
-    if (position <= 0) {
-      return Opacity(
-        opacity: (position + 1.0).abs(),
-        child: child,
-      );
-    } else if (position <= 1) {
-      return Opacity(
-        opacity: 1.0 - position,
-        child: child,
-      );
-    }
-    return child;
-  }
-}
 
 class QuestionPage extends GetView<QuizController> {
   QuestionPage(this.position);
@@ -54,7 +32,6 @@ class QuestionPage extends GetView<QuizController> {
             // ignore: prefer_if_elements_to_conditional_expressions
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Padding(
                   padding: const EdgeInsets.all(18.0),
@@ -83,7 +60,7 @@ class QuestionPage extends GetView<QuizController> {
                     },
                     color: Theme.of(context).primaryColor,
                     icon: const Icon(
-                      Icons.policy_sharp,
+                      Icons.vpn_key_sharp,
                       size: 30,
                     )),
                 // ElevatedButton(
@@ -184,60 +161,47 @@ class ResultPage extends GetView<QuizController> {
       footer = "You can do better!";
     }
     return Center(
-      child: CircularPercentIndicator(
-        radius: 180.0,
-        lineWidth: 28.0,
-        animation: true,
-        percent: result,
-        animationDuration: 1500,
-        header: Padding(
-          padding: const EdgeInsets.all(18.0),
-          child: Text(
-            header,
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 28.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Icon(
+            Icons.school_sharp,
+            color: Theme.of(context).primaryColor,
+            size: 200.0,
           ),
-        ),
-        center: Text(
-          '$resultPer%',
-          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),
-        ),
-        footer: Padding(
-          padding: const EdgeInsets.all(18.0),
-          child: Text(
-            footer,
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 26.0),
+          CircularPercentIndicator(
+            radius: 180.0,
+            lineWidth: 28.0,
+            animation: true,
+            percent: result,
+            animationDuration: 1500,
+            header: Padding(
+              padding: const EdgeInsets.all(18.0),
+              child: Text(
+                header,
+                style: const TextStyle(
+                    fontWeight: FontWeight.bold, fontSize: 28.0),
+              ),
+            ),
+            center: Text(
+              '$resultPer%',
+              style:
+                  const TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),
+            ),
+            footer: Padding(
+              padding: const EdgeInsets.all(18.0),
+              child: Text(
+                footer,
+                style: const TextStyle(
+                    fontWeight: FontWeight.bold, fontSize: 26.0),
+              ),
+            ),
+            circularStrokeCap: CircularStrokeCap.round,
+            progressColor: color,
           ),
-        ),
-        circularStrokeCap: CircularStrokeCap.round,
-        progressColor: color,
+          const Spacer()
+        ],
       ),
     );
-  }
-}
-
-class QuizPage extends GetView<QuizController> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        body: SafeArea(
-      child: Obx(() => controller.isLoading.value
-          ? const Text('loading')
-          : TransformerPageView(
-              // allowImplicitScrolling: true,
-              controller: controller.pageController,
-              onPageChanged: (index) {
-                // controller.gotoPage(index ?? 0);
-              },
-              duration: const Duration(milliseconds: 500),
-              // physics: const NeverScrollableScrollPhysics(),
-              curve: Curves.fastOutSlowIn,
-              transformer: DeepthPageTransformer(),
-              itemCount: controller.quizList.length + 1,
-              itemBuilder: (context, position) {
-                return controller.quizList.length == position
-                    ? const ResultPage()
-                    : QuestionPage(position);
-              })),
-    ));
   }
 }
