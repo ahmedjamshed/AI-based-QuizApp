@@ -21,12 +21,23 @@ class TopicView extends GetView<TopicController> {
         appBar: AppBar(
           title: Text(_data.name),
           centerTitle: true,
-        ),
-        body: Row(
-          children: [
-            const Flexible(child: DrawerView()),
-            Flexible(flex: 9, child: ContentView())
+          actions: [
+            IconButton(
+                onPressed: () {},
+                color: Colors.white,
+                icon: const Icon(
+                  Icons.quiz,
+                  size: 30,
+                ))
           ],
+        ),
+        body: SafeArea(
+          child: Row(
+            children: [
+              const Flexible(child: DrawerView()),
+              Flexible(flex: 9, child: ContentView())
+            ],
+          ),
         ));
   }
 }

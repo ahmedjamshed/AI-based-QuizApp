@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:another_transformer_page_view/another_transformer_page_view.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 import 'package:get/get.dart';
 import 'package:quizapp/app/modules/labels/controllers/labels_controller.dart';
@@ -59,41 +60,100 @@ class DeepthPageTransformer extends PageTransformer {
   }
 }
 
+class SubTopic extends StatelessWidget {
+  const SubTopic(this.subTopic, {required this.isMain});
+  final Topic subTopic;
+  final bool isMain;
+  @override
+  Widget build(BuildContext context) {
+    final heading = this.subTopic.heading;
+    final description = this.subTopic.description;
+
+    return Column(
+      children: [
+        if (this.isMain)
+          const SizedBox.shrink()
+        else
+          Padding(
+            padding: const EdgeInsets.fromLTRB(2, 8, 2, 8),
+            child: Text(heading,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold)),
+          ),
+        Container(
+          padding: const EdgeInsets.all(8),
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.all(Radius.circular(15)),
+          ),
+          child: Text(description,
+              style: const TextStyle(color: Colors.black, fontSize: 18)),
+        ),
+      ],
+    );
+    // Expanded(
+    //   child: Column(children: [
+    //     // ignore: prefer_if_elements_to_conditional_expressions
+    //     Container(
+    //         margin: const EdgeInsets.fromLTRB(0, 5, 5, 5),
+    //         padding: const EdgeInsets.all(15),
+    //         decoration: const BoxDecoration(
+    //           color: Colors.deepOrange,
+    //           borderRadius: BorderRadius.all(Radius.circular(15)),
+    //         ),
+    //         child: Text(heading,
+    //             style: const TextStyle(color: Colors.white, fontSize: 20))),
+    //     Expanded(
+    //       child: Container(
+    //           margin: const EdgeInsets.fromLTRB(0, 5, 5, 5),
+    //           padding: const EdgeInsets.all(15),
+    //           decoration: const BoxDecoration(
+    //             color: Colors.white,
+    //             borderRadius: BorderRadius.all(Radius.circular(15)),
+    //           ),
+    //           child: Text(description,
+    //               style: const TextStyle(color: Colors.black, fontSize: 18))),
+    //     ),
+    //     // ElevatedButton(
+    //     //   style: ElevatedButton.styleFrom(
+    //     //       primary: Colors.black, padding: const EdgeInsets.all(8)),
+    //     //   onPressed: () {
+    //     //     Get.toNamed(Routes.QUIZ, arguments: description);
+    //     //   },
+    //     //   child: const Text('Generate Quiz'),
+    //     // ),
+    //   ]),
+    // );
+  }
+}
+
 class TopicPage extends GetView<TopicController> {
   const TopicPage(this.position);
   final int position;
   @override
   Widget build(BuildContext context) {
-    final heading = controller.dataList[position].heading;
-    final description = controller.dataList[position].description;
-
+    final topic = controller.dataList[position];
+    final subTopics = topic.subTopics;
     return Container(
         margin: const EdgeInsets.fromLTRB(0, 5, 5, 5),
-        padding: const EdgeInsets.all(15),
+        padding: const EdgeInsets.all(8),
         decoration: const BoxDecoration(
           color: Colors.pink,
-          // borderRadius: BorderRadius.all(Radius.circular(15)),
+          borderRadius: BorderRadius.all(Radius.circular(5)),
         ),
-        child: Column(children: [
-          // ignore: prefer_if_elements_to_conditional_expressions
-          // Text(heading, style: Theme.of(context).textTheme.headline6),
-          Expanded(
-            child: SingleChildScrollView(
-              child: Text(
-                description,
-                style: const TextStyle(color: Colors.white, fontSize: 20),
-              ),
-            ),
-          ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-                primary: Colors.black, padding: const EdgeInsets.all(8)),
-            onPressed: () {
-              Get.toNamed(Routes.QUIZ, arguments: description);
-            },
-            child: const Text('Generate Quiz'),
-          ),
-        ]));
+        child: ListView.builder(
+            itemCount: subTopics.length + 1,
+            itemBuilder: (context, pos) {
+              return pos == 0
+                  ? SubTopic(
+                      topic,
+                      isMain: true,
+                    )
+                  : SubTopic(subTopics[pos - 1], isMain: false);
+            }));
   }
 }
 
