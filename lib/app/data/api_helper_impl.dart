@@ -55,8 +55,7 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
 
   @override
   Future<Response> generateQuestions(String material) {
-    final body = {"data": material};
-    return post('generateQuestions', body);
+    return post('generateQuestions', material);
   }
 
   @override

@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:ui';
 
 import 'package:another_transformer_page_view/another_transformer_page_view.dart';
@@ -61,8 +62,9 @@ class DeepthPageTransformer extends PageTransformer {
 }
 
 class SubTopic extends StatelessWidget {
-  const SubTopic(this.subTopic, {required this.isMain});
+  const SubTopic(this.subTopic, {required this.pos, required this.isMain});
   final Topic subTopic;
+  final int pos;
   final bool isMain;
   @override
   Widget build(BuildContext context) {
@@ -72,7 +74,31 @@ class SubTopic extends StatelessWidget {
     return Column(
       children: [
         if (this.isMain)
-          const SizedBox.shrink()
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Text('Chapter: ${this.pos}',
+                  style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold)),
+              ElevatedButton.icon(
+                  onPressed: () {
+                    Get.toNamed(Routes.QUIZ,
+                        arguments: jsonEncode(this.subTopic));
+                  },
+                  icon: Icon(Icons.quiz, color: Theme.of(context).primaryColor),
+                  style: ElevatedButton.styleFrom(
+                      primary: Colors.white,
+                      padding: const EdgeInsets.all(8.0),
+                      elevation: 0),
+                  label: Text("Generate Quiz",
+                      style: TextStyle(
+                          color: Theme.of(context).primaryColor,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold))),
+            ],
+          )
         else
           Padding(
             padding: const EdgeInsets.fromLTRB(2, 8, 2, 8),
@@ -94,39 +120,6 @@ class SubTopic extends StatelessWidget {
         ),
       ],
     );
-    // Expanded(
-    //   child: Column(children: [
-    //     // ignore: prefer_if_elements_to_conditional_expressions
-    //     Container(
-    //         margin: const EdgeInsets.fromLTRB(0, 5, 5, 5),
-    //         padding: const EdgeInsets.all(15),
-    //         decoration: const BoxDecoration(
-    //           color: Colors.deepOrange,
-    //           borderRadius: BorderRadius.all(Radius.circular(15)),
-    //         ),
-    //         child: Text(heading,
-    //             style: const TextStyle(color: Colors.white, fontSize: 20))),
-    //     Expanded(
-    //       child: Container(
-    //           margin: const EdgeInsets.fromLTRB(0, 5, 5, 5),
-    //           padding: const EdgeInsets.all(15),
-    //           decoration: const BoxDecoration(
-    //             color: Colors.white,
-    //             borderRadius: BorderRadius.all(Radius.circular(15)),
-    //           ),
-    //           child: Text(description,
-    //               style: const TextStyle(color: Colors.black, fontSize: 18))),
-    //     ),
-    //     // ElevatedButton(
-    //     //   style: ElevatedButton.styleFrom(
-    //     //       primary: Colors.black, padding: const EdgeInsets.all(8)),
-    //     //   onPressed: () {
-    //     //     Get.toNamed(Routes.QUIZ, arguments: description);
-    //     //   },
-    //     //   child: const Text('Generate Quiz'),
-    //     // ),
-    //   ]),
-    // );
   }
 }
 
@@ -150,9 +143,14 @@ class TopicPage extends GetView<TopicController> {
               return pos == 0
                   ? SubTopic(
                       topic,
+                      pos: position,
                       isMain: true,
                     )
-                  : SubTopic(subTopics[pos - 1], isMain: false);
+                  : SubTopic(
+                      subTopics[pos - 1],
+                      pos: position,
+                      isMain: false,
+                    );
             }));
   }
 }

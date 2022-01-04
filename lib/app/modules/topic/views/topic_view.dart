@@ -22,13 +22,13 @@ class TopicView extends GetView<TopicController> {
           title: Text(_data.name),
           centerTitle: true,
           actions: [
-            IconButton(
-                onPressed: () {},
-                color: Colors.white,
-                icon: const Icon(
-                  Icons.quiz,
-                  size: 30,
-                ))
+            // IconButton(
+            //     onPressed: () {},
+            //     color: Colors.white,
+            //     icon: const Icon(
+            //       Icons.quiz,
+            //       size: 30,
+            //     ))
           ],
         ),
         body: SafeArea(

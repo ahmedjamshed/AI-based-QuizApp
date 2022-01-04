@@ -43,12 +43,12 @@ class QuizController extends GetxController {
 
   void generateQuestions(String content) {
     _isLoading.value = true;
-    // _apiHelper.generateQuestions(content).futureValue((dynamic value) {
-    quizList = QUES['questions']
-        .map<Question>((val) => Question.fromMap(val))
-        .toList();
-    _isLoading.value = false;
-    // });
+    _apiHelper.generateQuestions(content).futureValue((dynamic value) {
+      quizList = value['questions']
+          .map<Question>((val) => Question.fromMap(val))
+          .toList();
+      _isLoading.value = false;
+    });
   }
 
   void markAnswer(int position, String selectedAnswer) {
@@ -76,7 +76,7 @@ class QuizController extends GetxController {
   }
 }
 
-const dynamic QUES = {
+const dynamic value = {
   "questions": [
     {
       "answer": "________",

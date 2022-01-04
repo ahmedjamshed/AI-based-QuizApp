@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:another_transformer_page_view/another_transformer_page_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -18,6 +20,11 @@ class Topic {
     }
     return Topic(json['heading'], json['description'], subTopics);
   }
+  Map<String, dynamic> toJson() => {
+        'heading': heading,
+        'description': description,
+        'subTopics': subTopics.map((e) => e.toJson()).toList()
+      };
 }
 
 class TopicController extends GetxController {
