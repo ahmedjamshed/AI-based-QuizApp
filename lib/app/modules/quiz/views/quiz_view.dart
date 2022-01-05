@@ -34,8 +34,13 @@ class QuizPage extends GetView<QuizController> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: SafeArea(
-      child: Obx(() => controller.isLoading.value
-          ? const Center(child: Text('loading'))
+      child: Obx(() => controller.isLoading != ""
+          ? Center(
+              child: Text(
+              controller.isLoading,
+              style:
+                  const TextStyle(fontWeight: FontWeight.bold, fontSize: 22.0),
+            ))
           : TransformerPageView(
               // allowImplicitScrolling: true,
               controller: controller.pageController,

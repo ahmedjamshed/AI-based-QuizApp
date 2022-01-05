@@ -36,18 +36,21 @@ class QuizController extends GetxController {
 
   final RxMap<int, String> _questionMap = RxMap();
 
-  final RxBool _isLoading = true.obs;
-  dynamic get isLoading => _isLoading;
+  final RxString _isLoading = "".obs;
+  String get isLoading => _isLoading.value;
 
   final pageController = IndexController();
 
   void generateQuestions(String content) {
-    _isLoading.value = true;
+    _isLoading.value = "Loading";
     _apiHelper.generateQuestions(content).futureValue((dynamic value) {
       quizList = value['questions']
           .map<Question>((val) => Question.fromMap(val))
           .toList();
-      _isLoading.value = false;
+      _isLoading.value = "";
+    }, onError: (err) {
+      _isLoading.value =
+          "You learned well.\n Go back. \n Learn more exciting stuff!";
     });
   }
 

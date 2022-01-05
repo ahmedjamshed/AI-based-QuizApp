@@ -73,19 +73,35 @@ class SubTopic extends StatelessWidget {
 
     return Column(
       children: [
-        if (this.isMain)
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Text('Chapter: ${this.pos}',
+        Padding(
+          padding: const EdgeInsets.fromLTRB(2, 8, 2, 8),
+          child: this.isMain
+              ? Text('Chapter: ${this.pos}',
                   style: const TextStyle(
                       color: Colors.white,
-                      fontSize: 20,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold))
+              : Text(heading,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 22,
                       fontWeight: FontWeight.bold)),
+        ),
+        Container(
+          padding: const EdgeInsets.all(8),
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.all(Radius.circular(15)),
+          ),
+          child: Column(
+            children: [
+              Text(description,
+                  style: const TextStyle(color: Colors.black, fontSize: 18)),
               ElevatedButton.icon(
                   onPressed: () {
                     Get.toNamed(Routes.QUIZ,
-                        arguments: jsonEncode(this.subTopic));
+                        arguments: this.subTopic.description);
                   },
                   icon: Icon(Icons.quiz, color: Theme.of(context).primaryColor),
                   style: ElevatedButton.styleFrom(
@@ -98,25 +114,7 @@ class SubTopic extends StatelessWidget {
                           fontSize: 18,
                           fontWeight: FontWeight.bold))),
             ],
-          )
-        else
-          Padding(
-            padding: const EdgeInsets.fromLTRB(2, 8, 2, 8),
-            child: Text(heading,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold)),
           ),
-        Container(
-          padding: const EdgeInsets.all(8),
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.all(Radius.circular(15)),
-          ),
-          child: Text(description,
-              style: const TextStyle(color: Colors.black, fontSize: 18)),
         ),
       ],
     );

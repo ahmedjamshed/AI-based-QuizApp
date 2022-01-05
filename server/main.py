@@ -73,7 +73,7 @@ class Body(BaseModel):
 
 
 @app.post('/generateQuestions')
-async def generateQuestions(req: Request):
+async def generateQuestions(req: Body):
     # url = getMachineLabel([id])
     # title = url.split("/")[-1]
     # topics = wikiPage(title)
@@ -83,11 +83,10 @@ async def generateQuestions(req: Request):
     # text = ' '.join(paras[:5])
     # summary = ' '.join(re.split(r'(?<=[.?!])\s+', text, 15)[:-1])
     # print(summary)
-    req_info = await req.json()
-    print(req_info['description'])
+
     # main
     # start = time.time()
-    questions = []  # qgPipe(req.data)
+    questions = qgPipe(req.data)
     # end = time.time()
     # print((end - start))
     quesAns = []
@@ -125,8 +124,8 @@ IMAGES = ['https://storage.googleapis.com/visionappquiz/elephants.jpg', 'https:/
 # QUESTIONS = [{'answer': '<pad> Elephants', 'question': 'What are the largest existing land animals?', 'context': 'Elephants are the largest existing land animals.'}, {'answer': '<pad> three', 'question': 'How many living species are elephants currently recognised?', 'context': 'Three living species are currently recognised: the African bush elephant, the African forest elephant, and the Asian elephant.'}, {'answer': '<pad> Elephantidae', 'question': 'What is the only surviving family of proboscideans?', 'context': 'They are an informal grouping within the proboscidean family Elephantidae.'}, {'answer': '<pad> mastodons', 'question': 'What are the extinct members of the proboscidean family?', 'context': 'Elephantidae is the only surviving family of proboscideans; extinct members include the mastodons.'}, {'answer': '<pad> mammoths and straight-tusked elephants', 'question': 'What are the extinct groups of elephantidae?', 'context': 'Elephantidae also contains several extinct groups, including the mammoths and straight-tusked elephants.'}, {'answer': '<pad> larger ears and concave backs', 'question': 'What do African elephants have?', 'context': 'African elephants have larger ears and concave backs, whereas Asian elephants have smaller ears, and convex or level backs.'},
 #              {'answer': '<pad> a trunk, tusks, large ear flaps, massive legs, and tough but sensitive skin', 'question': 'What is a long proboscis called?', 'context': 'Distinctive features of all elephants include a long proboscis called a trunk, tusks, large ear flaps, massive legs, and tough but sensitive skin.'}, {'answer': '<pad> breathing, bringing food and water to the mouth, and grasping objects', 'question': 'What is the trunk used for?', 'context': 'The trunk is used for breathing, bringing food and water to the mouth, and grasping objects.'}, {'answer': '<pad> Tusks', 'question': 'What is derived from the incisor teeth?', 'context': 'Tusks, which are derived from the incisor teeth, serve both as weapons and as tools for moving objects and digging.'}, {'answer': '<pad> The large ear flaps', 'question': 'What aids in maintaining a constant body temperature?', 'context': 'The large ear flaps assist in maintaining a constant body temperature as well as in communication.'}, {'answer': '<pad> The pillar-like legs', 'question': 'What type of legs carry their great weight?',
 #                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    'context': 'The pillar-like legs carry their great weight.'}, {'answer': '<pad> sub-Saharan Africa, South Asia, and Southeast Asia', 'question': 'Where are elephants scattered?', 'context': 'Elephants are scattered throughout sub-Saharan Africa, South Asia, and Southeast Asia and are found in different habitats, including savannahs, forests, deserts, and marshes.'}, {'answer': '<pad> herbivorous', 'question': 'What type of species are elephants found in savannahs, forests, deserts, and marshes?', 'context': 'They are herbivorous, and they stay near water when it is accessible.'}, {'answer': '<pad> their impact on their environments', 'question': 'What are elephants considered to be keystone species?', 'context': 'They are considered to be keystone species, due to their impact on their environments.'}, {'answer': '<pad> fission–fusion society', 'question': 'What type of society does elephants have?', 'context': 'Elephants have a fission–fusion society, in which multiple family groups come together to socialise.'}, {'answer': '<pad> Females (cows)', 'question': 'What group of females tend to live in family groups?', 'context': 'Females (cows) tend to live in family groups, which can consist of one female with her calves or several related females with offspring.'}, {'answer': '<pad> matriarch', 'question': 'What is the oldest cow called?', 'context': 'The groups, which do not include bulls, are usually led by the oldest cow, known as the matriarch.'}, {'answer': '<pad> Males (bulls)', 'question': 'Who leaves their family groups when they reach puberty?', 'context': 'Males (bulls) leave their family groups when they reach puberty and may live alone or with other males.'}, {'answer': '<pad> Adult bulls', 'question': 'What type of bulls interact with family groups when looking for a mate?', 'context': 'Adult bulls mostly interact with family groups when looking for a mate.'}, {'answer': '<pad> musth', 'question': 'What is a state of increased testosterone and aggression known as?', 'context': 'They enter a state of increased testosterone and aggression known as musth, which helps them gain dominance over other males as well as reproductive success.'}, {'answer': '<pad> Calves', 'question': 'What is the name of a female elephant?', 'context': 'Calves are the centre of attention in their family groups and rely on their mothers for as long as three years.'}]
-# if __name__ == '__main__':
-#     ngrok_tunnel = ngrok.connect(8000)
-#     print('Public URL:', ngrok_tunnel.public_url)
-#     nest_asyncio.apply()
-#     uvicorn.run(app, port=8000)
+if __name__ == '__main__':
+    ngrok_tunnel = ngrok.connect(8000)
+    print('Public URL:', ngrok_tunnel.public_url)
+    nest_asyncio.apply()
+    uvicorn.run(app, port=8000)
