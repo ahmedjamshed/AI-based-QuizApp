@@ -45,7 +45,7 @@ uvicorn main:app --reload --workers 1 --host 0.0.0.0 --port 8008
 # dependencies
 
 python -m spacy download en_core_web_sm
-pip3 install -e git://github.com/ahmedjamshed/question_generation.git@0.3.0#egg=question_generation
+pip3 install -e git://github.com/ahmedjamshed/question_generation.git@0.4.0#egg=question_generation
 
 # For m1 mac
 
