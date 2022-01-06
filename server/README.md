@@ -22,13 +22,7 @@ python3 -m spacy download en_core_web_sm
 
 # download sense2vec file
 
-import requests
-import tarfile
-
-url = "https://github.com/explosion/sense2vec/releases/download/v1.0.0/s2v_reddit_2015_md.tar.gz"
-response = requests.get(url, stream=True)
-file = tarfile.open(fileobj=response.raw, mode="r|gz")
-file.extractall(path=".")
+python3 dloader.py
 
 # wordnet
 
@@ -56,5 +50,6 @@ conda install scikit-learn
 conda install -c pytorch pytorch torchvision
 conda install transformers  
 conda install sentencepiece
+conda install -c conda-forge spacy
 ALWAYS USE pip instead of pip3
-pip install git+https://github.com/ahmedjamshed/question_generation.git@56f4963f20b19964cf6f496072a5eb35db0c3af6#egg=question_generation
+<!-- pip install git+https://github.com/ahmedjamshed/question_generation.git@56f4963f20b19964cf6f496072a5eb35db0c3af6#egg=question_generation -->
