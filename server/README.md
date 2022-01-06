@@ -56,4 +56,5 @@ conda install scikit-learn
 conda install -c pytorch pytorch torchvision
 conda install transformers  
 conda install sentencepiece
+ALWAYS USE pip instead of pip3
 pip install git+https://github.com/ahmedjamshed/question_generation.git@56f4963f20b19964cf6f496072a5eb35db0c3af6#egg=question_generation
