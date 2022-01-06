@@ -91,10 +91,12 @@ def _getNumOptions(token):
 
 def _mispelledOptions(token):
     options = []
-    for i in range(5):
-        ch = token.text[random.randint(0, len(token.text)-1)]
-        rep = re.sub(ch, random.choice(string.ascii_letters), token.text)
-        options.append(rep)
+    for i in range(6):
+        ind = random.randint(0, len(token.text)-1)
+        rep = token.text[:ind] + \
+            random.choice(string.ascii_letters) + token.text[ind+1:]
+        if(token.text is not rep):
+            options.append(rep)
     return options
 
 
