@@ -140,8 +140,10 @@ def getOptions(item):
         for token in doc:
             if not token.is_punct and not token.is_stop and re.search(token.text, answer, re.IGNORECASE):
                 tokenList.append(token)
-        random.shuffle(tokenList)
 
+        random.shuffle(tokenList)
+        tokenList.sort(key=lambda tok: PRIOR_LIST.index(
+            tok.pos_) if tok.pos_ in PRIOR_LIST else 1000)
         # if num
         if (len(tokenList) > 0 and tokenList[0].pos_ == PRIOR_LIST[0]):
             token = tokenList[0]
@@ -149,12 +151,12 @@ def getOptions(item):
             if(len(options) > 0):
                 return formattedOptions(answer, token.text, options, question, context)
 
-    if len(options) == 0:
-        for token in tokenList:  # random check options significantly
-            if token._.in_s2v:
-                options = _createOptions(token)
-                if(len(options) > 0):
-                    return formattedOptions(answer, token.text, options, question, context)
+        if len(options) == 0:
+            for token in tokenList:  # random check options significantly
+                if token._.in_s2v:
+                    options = _createOptions(token)
+                    if(len(options) > 0):
+                        return formattedOptions(answer, token.text, options, question, context)
 
         if len(options) == 0:
             for token in tokenList:
@@ -167,5 +169,11 @@ def getOptions(item):
                 options = _forcedOptions(token)
                 if(len(options) > 0):
                     return formattedOptions(answer, token.text, options, question, context)
-    options = _mispelledOptions(token)
-    return formattedOptions(answer, token.text, options, question, context)
+
+        if len(options) == 0:
+            for token in tokenList:
+                options = _mispelledOptions(token)
+                if(len(options) > 0):
+                    return formattedOptions(answer, token.text, options, question, context)
+
+    return formattedOptions(answer, answer, ['True', 'False'], question, context)
