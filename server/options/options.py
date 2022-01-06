@@ -118,7 +118,7 @@ def getOptions(item):
     if len(options) == 0:
         tokenList = []
         for token in doc:
-            if token.is_alpha and not token.is_stop and re.search(token.text, answer, re.IGNORECASE):
+            if not token.is_punct and not token.is_stop and re.search(token.text, answer, re.IGNORECASE):
                 tokenList.append(token)
         random.shuffle(tokenList)
 
