@@ -3,7 +3,8 @@ import re
 from spacy import Language
 from spacy_wordnet.wordnet_annotator import WordnetAnnotator
 import random
-import re
+import string
+
 from nltk.stem import PorterStemmer
 ps = PorterStemmer()
 
@@ -13,6 +14,8 @@ s2v = nlp.add_pipe("sense2vec")
 s2v.from_disk("s2v_old")
 nlp.add_pipe("spacy_wordnet", after='tagger')
 spacy_wordnet_annotator = WordnetAnnotator(nlp.lang)
+
+PRIOR_LIST = ['NUM', 'ADJ']
 
 
 @Language.component("wordnet")
@@ -78,6 +81,23 @@ def _createOptions(token):
     return options
 
 
+def _getNumOptions(token):
+    options = []
+    for i in range(10):
+        rep = re.sub('d', lambda x: str(random.randint(0, 9)), token.shape_)
+        options.append(rep)
+    return options
+
+
+def _mispelledOptions(token):
+    options = []
+    for i in range(5):
+        ch = token.text[random.randint(0, len(token.text)-1)]
+        rep = re.sub(ch, random.choice(string.ascii_letters), token.text)
+        options.append(rep)
+    return options
+
+
 def case_insensitive_unique_list(data, answer):
     seen, result = set(), []
     seen.add(answer.lower())
@@ -122,6 +142,14 @@ def getOptions(item):
                 tokenList.append(token)
         random.shuffle(tokenList)
 
+        # if num
+        if (len(tokenList) > 0 and tokenList[0].pos_ == PRIOR_LIST[0]):
+            token = tokenList[0]
+            options = _getNumOptions(token)
+            if(len(options) > 0):
+                return formattedOptions(answer, token.text, options, question, context)
+
+    if len(options) == 0:
         for token in tokenList:  # random check options significantly
             if token._.in_s2v:
                 options = _createOptions(token)
@@ -139,5 +167,5 @@ def getOptions(item):
                 options = _forcedOptions(token)
                 if(len(options) > 0):
                     return formattedOptions(answer, token.text, options, question, context)
-
-    return formattedOptions(answer, token.text, ['True', 'False'], question, context)
+    options = _mispelledOptions(token)
+    return formattedOptions(answer, token.text, options, question, context)

@@ -63,7 +63,7 @@ class QuizController extends GetxController {
   }
 
   double calulateResult() {
-    final total = _dataList.length;
+    final total = _dataList.isNotEmpty ? _dataList.length : 1;
     int rights = 0;
     _questionMap.forEach((key, val) {
       if (quizList[key].correct == val) rights++;
