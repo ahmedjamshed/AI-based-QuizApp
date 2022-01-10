@@ -14,7 +14,7 @@ part 'app_routes.dart';
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.LABELS;
+  static const INITIAL = Routes.HOME;
 
   static final routes = [
     GetPage(
@@ -34,7 +34,7 @@ class AppPages {
         transition: Transition.noTransition),
     GetPage(
         name: _Paths.QUIZ,
-        page: () => QuizView(),
+        page: () => const QuizView(),
         binding: QuizBinding(),
         fullscreenDialog: true),
   ];
