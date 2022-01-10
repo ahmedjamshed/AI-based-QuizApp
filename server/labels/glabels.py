@@ -9,7 +9,6 @@ config = dotenv_values(".env")
 
 
 def _parseMachineData(item):
-    print(item)
     try:
         return item['result']['detailedDescription']['url'].split("/")[-1]
     except Exception as e:

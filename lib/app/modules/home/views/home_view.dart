@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -82,10 +83,14 @@ class _ImageBuilder extends GetView<HomeController> {
           },
           child: ClipRRect(
             borderRadius: 15.borderRadius,
-            child: FadeInImage.memoryNetwork(
-              placeholder: kTransparentImage,
-              image: controller.imagesList[index],
+            child: CachedNetworkImage(
+              placeholder: (context, url) => const Icon(
+                Icons.image,
+                color: Colors.white,
+                size: 42,
+              ),
               fit: BoxFit.cover,
+              imageUrl: controller.imagesList[index],
             ),
           ),
         );
@@ -93,6 +98,12 @@ class _ImageBuilder extends GetView<HomeController> {
     );
   }
 }
+
+// FadeInImage.memoryNetwork(
+//               placeholder: kTransparentImage,
+//               image: controller.imagesList[index],
+//               fit: BoxFit.cover,
+//             )
 
 class _CustomAppBar extends SliverPersistentHeaderDelegate {
   const _CustomAppBar(

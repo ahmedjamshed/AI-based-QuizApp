@@ -87,9 +87,7 @@ async def generateQuestions(req: Body):
     # main
     # start = time.time()
     questions = qgPipe(req.data)
-
     seen = set()
-    # never use list as a variable name
     questions = [seen.add(
         ques['question']) or ques for ques in questions if ques['question'] not in seen]
     # end = time.time()
