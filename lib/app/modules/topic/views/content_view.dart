@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 import 'package:get/get.dart';
+import 'package:quizapp/app/common/util/exports.dart';
 import 'package:quizapp/app/modules/labels/controllers/labels_controller.dart';
 
 import 'package:quizapp/app/modules/topic/controllers/topic_controller.dart';
@@ -159,28 +160,48 @@ class CoverPage extends GetView<TopicController> {
   Widget build(BuildContext context) {
     final Label _data = Get.arguments ?? Label('', '', [], '');
     return Container(
-        margin: const EdgeInsets.all(15),
-        child: Column(children: [
-          // ignore: prefer_if_elements_to_conditional_expressions
-          Hero(
-              tag: _data.name,
-              child: ClipRRect(
-                borderRadius: const BorderRadius.all(Radius.circular(15)),
-                child: Image(
-                  image: CachedNetworkImageProvider(_data.image),
-                  fit: BoxFit.cover,
-                ),
-              )),
-          Text(_data.name, style: const TextStyle(fontSize: 20)),
-          Expanded(
-            child: SingleChildScrollView(
-              child: Text(
-                _data.description,
-                style: const TextStyle(fontSize: 16),
+        margin: const EdgeInsets.fromLTRB(0, 5, 5, 5),
+        padding: const EdgeInsets.all(8),
+        decoration: const BoxDecoration(
+          color: Colors.pink,
+          borderRadius: BorderRadius.all(Radius.circular(5)),
+        ),
+        child: SingleChildScrollView(
+          child: Column(children: [
+            // ignore: prefer_if_elements_to_conditional_expressions
+            Text(_data.name.toUpperCase(),
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold)),
+            const SizedBox(height: 10),
+            Hero(
+                tag: _data.name,
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.all(Radius.circular(15)),
+                  child: Image(
+                    image: CachedNetworkImageProvider(_data.image),
+                    fit: BoxFit.cover,
+                  ),
+                )),
+            const SizedBox(height: 10),
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(Radius.circular(15)),
+              ),
+              child: Column(
+                children: [
+                  Text(_data.description.capitalizeFirstofEach,
+                      style:
+                          const TextStyle(color: Colors.black, fontSize: 18)),
+                ],
               ),
             ),
-          ),
-        ]));
+          ]),
+        ));
   }
 }
 

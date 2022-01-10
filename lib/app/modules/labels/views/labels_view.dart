@@ -86,7 +86,7 @@ class LabelsView extends GetView<LabelsController> {
                 ? Label('', '', [], '')
                 : controller.dataList[controller.currentPage.value];
             return controller.isLoading.value
-                ? const Text('Loading')
+                ? const Center(child: CircularProgressIndicator())
                 : Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
@@ -94,8 +94,10 @@ class LabelsView extends GetView<LabelsController> {
                           child: animatedScale(Text(
                         _data.name,
                         key: ValueKey<String>(_data.name),
-                        style:
-                            const TextStyle(fontSize: 30, color: Colors.black),
+                        style: const TextStyle(
+                            fontSize: 32,
+                            color: Colors.pink,
+                            fontWeight: FontWeight.bold),
                       ))),
                       Expanded(
                         flex: 2,

@@ -100,6 +100,7 @@ class AppTheme {
           ),
           headline6: AppTextStyle.regularStyle.copyWith(
             color: AppColors.white,
+            fontSize: Dimens.fontSize24,
           ),
           bodyText1: AppTextStyle.regularStyle.copyWith(
             color: AppColors.white,
