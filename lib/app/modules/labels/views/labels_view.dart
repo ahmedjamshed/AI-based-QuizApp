@@ -86,7 +86,12 @@ class LabelsView extends GetView<LabelsController> {
                 ? Label('', '', [], '')
                 : controller.dataList[controller.currentPage.value];
             return controller.isLoading.value
-                ? const Center(child: CircularProgressIndicator())
+                ? Center(
+                    child: Text(
+                    controller.isLoading,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 22.0),
+                  ))
                 : Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
