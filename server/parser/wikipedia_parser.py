@@ -32,7 +32,7 @@ def wikiHtmlParser(html, head):
         elif "h" in tag.name:
 
             if len(description) > 20:
-                description = re.sub(r'(?<=[.,])(?=[^\s])', r' ', description.strip()) # .replace('\n', '')
+                description = re.sub(r'(?<=[.])(?=[^\s])', r' ', description.strip()) # .replace('\n', '')
                 runningTopic = topics[-1] if len(topics) else None
                 if(runningTopic and runningTopic.heading == heading):
                     runningTopic.addSubtopic(Topic(subheading, description))
