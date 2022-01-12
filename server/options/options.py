@@ -84,7 +84,7 @@ def _createOptions(token):
 def _getNumOptions(token):
     options = []
     for i in range(10):
-        rep = re.sub('d', lambda x: str(random.randint(1, 9)), token.shape_)
+        rep = re.sub('[^\D0]', lambda x: str(random.randint(1, 9)), token.text)
         options.append(rep)
     return options
 
