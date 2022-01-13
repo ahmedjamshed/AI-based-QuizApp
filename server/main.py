@@ -94,7 +94,9 @@ async def generateQuestions(req: Body):
     # print((end - start))
     quesAns = []
     for ques in questions:
-        quesAns.append(getOptions(ques))
+        opti = getOptions(ques)
+        quesAns.append(opti)
+        print(opti)
     return JSONResponse(content={
         "questions": quesAns
     })

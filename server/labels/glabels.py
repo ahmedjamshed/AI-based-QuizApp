@@ -20,7 +20,7 @@ def getMachineLabel(ids):
         'Accept': 'application/json',
     }
 
-    print(config['GAPI_KEY'])
+    # print(config['GAPI_KEY'])
     params = (
         ('ids', ids),
         ('key', config['GAPI_KEY']),

@@ -39,5 +39,4 @@ def wikiPages(titles):
     }
     response = requests.get(url, data)
     json_data = json.loads(response.text)
-    print(json_data)
     return list(json_data['query']['pages'])
