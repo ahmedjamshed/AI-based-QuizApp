@@ -1,8 +1,19 @@
-# Step-One app 
-#### leveraging
-## Knowledge-aware MCQs generator framework
+# Knowledge Aware Visual Question Answering Framework for developing visual learning apps for children
+
+This project contains a server developed on python3 using FastAPI which is capable of generating multiple knowledge-aware, open-ended and free-formed MCQs from a single image. It also contains a mobile app developed on flutter which interacts with the server to help the children in learning by generating automated quizzes on their favorite topics.
 
 
+
+
+## Architecture
+
+The proposed architecture can be divided into four modules
+
+![Modules](./imgs/ModModules.jpeg)
+
+#### Image Labelling
+
+![Image Labelling](./imgs/ModImageLabelling.jpeg)
 
 ## Installation
 
