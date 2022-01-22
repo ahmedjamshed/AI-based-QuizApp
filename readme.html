@@ -3,18 +3,47 @@
 <p class="has-line-data" data-line-start="2" data-line-end="3">This project contains a server developed on python3 using FastAPI which is capable of generating multiple knowledge-aware, open-ended and free-formed MCQs from a single image. It also contains a mobile app developed on flutter which interacts with the server to help the children in learning by generating automated quizzes on their favorite topics.</p>
 <h2 class="code-line" data-line-start=7 data-line-end=8><a id="Architecture_7"></a>Architecture</h2>
 <p class="has-line-data" data-line-start="9" data-line-end="10">The proposed architecture can be divided into four modules</p>
-<p class="has-line-data" data-line-start="11" data-line-end="12"><img src="./imgs/ModModules.jpeg" alt="Modules"></p>
-<h4 class="code-line" data-line-start=13 data-line-end=14><a id="Image_Labelling_13"></a>Image Labelling</h4>
-<p class="has-line-data" data-line-start="15" data-line-end="16"><img src="./imgs/ModImageLabelling.jpeg" alt="Image Labelling"></p>
-<h2 class="code-line" data-line-start=17 data-line-end=18><a id="Installation_17"></a>Installation</h2>
-<p class="has-line-data" data-line-start="20" data-line-end="21">Install the dependencies and start the server.</p>
-<pre><code class="has-line-data" data-line-start="23" data-line-end="28" class="language-sh"><span class="hljs-built_in">cd</span> your-project
-python -m venv env
+<p class="has-line-data" data-line-start="11" data-line-end="12"><img src="./imgs/ModModules.jpg" alt="Modules"></p>
+<h5 class="code-line" data-line-start=13 data-line-end=14><a id="1_Image_Labelling_13"></a>1. Image Labelling</h5>
+<p class="has-line-data" data-line-start="15" data-line-end="16">This module is responsible for labelling the image using Google Cloud Vision.</p>
+<p class="has-line-data" data-line-start="17" data-line-end="18"><img src="./imgs/ModImageLabelling.jpg" alt="Image Labelling"></p>
+<h5 class="code-line" data-line-start=20 data-line-end=21><a id="2_Knowledge_Parsing_20"></a>2. Knowledge Parsing</h5>
+<p class="has-line-data" data-line-start="22" data-line-end="23">This module is responsible for parsing the knowledge from Wikipedia.</p>
+<p class="has-line-data" data-line-start="24" data-line-end="25"><img src="./imgs/ModKnowledgeExtraction.jpg" alt="Knowledge Parsing"></p>
+<h5 class="code-line" data-line-start=26 data-line-end=27><a id="3_Questions_Answers_Extraction_26"></a>3. Questions Answers Extraction</h5>
+<p class="has-line-data" data-line-start="28" data-line-end="29">This module is responsible for extracting the answer-aware questions using Google’s T5 model fine-tuned on SQuAD dataset.</p>
+<p class="has-line-data" data-line-start="30" data-line-end="31"><img src="./imgs/ModQAExtraction.jpg" alt="QA Extraction"></p>
+<h5 class="code-line" data-line-start=32 data-line-end=33><a id="4_Relevant_Options_Creation_32"></a>4. Relevant Options Creation</h5>
+<p class="has-line-data" data-line-start="34" data-line-end="35">This module is responsible for generating relevant options using Sense2Vec to convert simple Questions into MCQs.</p>
+<p class="has-line-data" data-line-start="36" data-line-end="37"><img src="./imgs/ModRelevantOptions.jpg" alt="Relevant Options"></p>
+<h2 class="code-line" data-line-start=39 data-line-end=40><a id="StepOne_A_Visual_Learning_App_39"></a>Step-One: A Visual Learning App</h2>
+<p class="has-line-data" data-line-start="41" data-line-end="42">Using the proposed framework, we were able to develop a visual learning app for children with the following screens.</p>
+<h5 class="code-line" data-line-start=43 data-line-end=44><a id="1_Image_Input_Screen_43"></a>1. Image Input Screen</h5>
+<p class="has-line-data" data-line-start="45" data-line-end="46">This module is responsible for labelling the image using Google Cloud Vision.</p>
+<p class="has-line-data" data-line-start="47" data-line-end="48"><img src="./imgs/ImagePicker.jpg" alt="Image Picker"> <img src="./imgs/ImageSelection.jpg" alt="Image Selection"></p>
+<h5 class="code-line" data-line-start=50 data-line-end=51><a id="2_Topic_Selection_Screen_50"></a>2. Topic Selection Screen</h5>
+<p class="has-line-data" data-line-start="52" data-line-end="53">This module is responsible for parsing the knowledge from Wikipedia.</p>
+<p class="has-line-data" data-line-start="54" data-line-end="55"><img src="./imgs/LabelSelection.jpg" alt="Label Selection"> <img src="./imgs/LabelSelection2.jpg" alt="Another Label Selection"></p>
+<h5 class="code-line" data-line-start=56 data-line-end=57><a id="3_Reading_Screen_56"></a>3. Reading Screen</h5>
+<p class="has-line-data" data-line-start="58" data-line-end="59">This module is responsible for extracting the answer-aware questions using Google’s T5 model fine-tuned on SQuAD dataset.</p>
+<p class="has-line-data" data-line-start="60" data-line-end="61"><img src="./imgs/LabelPage.jpg" alt="Label Page"> <img src="./imgs/LabelPage2.jpg" alt="Another Label Page"></p>
+<h5 class="code-line" data-line-start=62 data-line-end=63><a id="4_Quiz_Screen_62"></a>4. Quiz Screen</h5>
+<p class="has-line-data" data-line-start="64" data-line-end="65">This module is responsible for generating relevant options using Sense2Vec to convert simple Questions into MCQs.</p>
+<p class="has-line-data" data-line-start="66" data-line-end="67"><img src="./imgs/Quiz1.jpg" alt="Quiz Screen"> <img src="./imgs/Context1.jpg" alt="Context Screen"></p>
+<h5 class="code-line" data-line-start=68 data-line-end=69><a id="5_Score_Screen_68"></a>5. Score Screen</h5>
+<p class="has-line-data" data-line-start="70" data-line-end="71">This module is responsible for generating relevant options using Sense2Vec to convert simple Questions into MCQs.</p>
+<p class="has-line-data" data-line-start="72" data-line-end="73"><img src="./imgs/scoreGood.jpg" alt="Good Score"> <img src="./imgs/scoreBad.jpg" alt="Bad Score"></p>
+<h2 class="code-line" data-line-start=74 data-line-end=75><a id="Installation_74"></a>Installation</h2>
+<h5 class="code-line" data-line-start=77 data-line-end=78><a id="Environment_77"></a>Environment</h5>
+<p class="has-line-data" data-line-start="78" data-line-end="79">To setup the environment, run:</p>
+<pre><code class="has-line-data" data-line-start="80" data-line-end="85" class="language-sh"><span class="hljs-built_in">cd</span> QuizApp/server
+python3 -m venv env
 <span class="hljs-built_in">source</span> env/bin/activate
 pip install -r requirements.txt
 </code></pre>
-<p class="has-line-data" data-line-start="29" data-line-end="30">Dependencies…</p>
-<pre><code class="has-line-data" data-line-start="32" data-line-end="44" class="language-sh">pip3 install sense2vec
+<h5 class="code-line" data-line-start=86 data-line-end=87><a id="Dependencies_86"></a>Dependencies</h5>
+<p class="has-line-data" data-line-start="87" data-line-end="88">To install dependencies:</p>
+<pre><code class="has-line-data" data-line-start="90" data-line-end="102" class="language-sh">pip3 install sense2vec
 pip3 install -U pip setuptools wheel
 pip3 install -U spacy
 python3 -m spacy download en_core_web_sm
@@ -23,24 +52,24 @@ pip3 install spacy-wordnet
 python3 -m nltk.downloader wordnet
 
 python -m spacy download en_core_web_sm
-pip3 install <span class="hljs-operator">-e</span> git://github.com/ahmedjamshed/question_<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="7512101b100714011c1a1b5b121c0135">[email&#160;protected]</a><span class="hljs-number">0.4</span>.<span class="hljs-number">0</span><span class="hljs-comment">#egg=question_generation</span>
+pip3 install <span class="hljs-operator">-e</span> git://github.com/ahmedjamshed/<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="b3c2c6d6c0c7dadcddecd4d6ddd6c1d2c7dadcdd9dd4dac7f3">[email&#160;protected]</a><span class="hljs-number">0.4</span>.<span class="hljs-number">0</span><span class="hljs-comment">#egg=question_generation</span>
 
 </code></pre>
-<p class="has-line-data" data-line-start="45" data-line-end="46">Run Once…</p>
-<pre><code class="has-line-data" data-line-start="48" data-line-end="52" class="language-sh">python3 dloader.py
+<p class="has-line-data" data-line-start="103" data-line-end="104">Run Once…</p>
+<pre><code class="has-line-data" data-line-start="106" data-line-end="110" class="language-sh">python3 dloader.py
 
 <span class="hljs-built_in">export</span> GOOGLE_APPLICATION_CREDENTIALS=<span class="hljs-string">"/Users/[user_name]/Desktop/QuizApp/server/keyFile.json"</span>
 </code></pre>
-<p class="has-line-data" data-line-start="53" data-line-end="54">To Run server…</p>
-<pre><code class="has-line-data" data-line-start="56" data-line-end="59" class="language-sh"><span class="hljs-built_in">cd</span> server
+<p class="has-line-data" data-line-start="111" data-line-end="112">To Run server…</p>
+<pre><code class="has-line-data" data-line-start="114" data-line-end="117" class="language-sh"><span class="hljs-built_in">cd</span> server
 uvicorn main:app --reload --workers <span class="hljs-number">1</span> --host <span class="hljs-number">0.0</span>.<span class="hljs-number">0.0</span> --port <span class="hljs-number">8008</span>
 </code></pre>
-<p class="has-line-data" data-line-start="60" data-line-end="61">OR</p>
-<p class="has-line-data" data-line-start="62" data-line-end="63">you can run ‘server/quizAppServer’ on colab and get the endpoint via ngrok</p>
-<p class="has-line-data" data-line-start="64" data-line-end="65">To Run App…</p>
-<p class="has-line-data" data-line-start="66" data-line-end="67">make sure server endpoint is updated in ‘lib/app/common/constants.dart’</p>
-<pre><code class="has-line-data" data-line-start="69" data-line-end="71" class="language-sh">flutter run
+<p class="has-line-data" data-line-start="118" data-line-end="119">OR</p>
+<p class="has-line-data" data-line-start="120" data-line-end="121"><a href="https://colab.research.google.com/gist/ahmedjamshed/1c8663cd4f24748eaf96a0b5bedd54de/quizappserver.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Colab Notebook"></a></p>
+<p class="has-line-data" data-line-start="122" data-line-end="123">To Run App…</p>
+<p class="has-line-data" data-line-start="124" data-line-end="125">make sure server endpoint is updated in <a href="./lib/app/common/constants.dart">constants.dart</a></p>
+<pre><code class="has-line-data" data-line-start="127" data-line-end="129" class="language-sh">flutter run
 </code></pre>
-<h2 class="code-line" data-line-start=72 data-line-end=73><a id="License_72"></a>License</h2>
-<p class="has-line-data" data-line-start="74" data-line-end="75">MIT</p>
+<h2 class="code-line" data-line-start=130 data-line-end=131><a id="License_130"></a>License</h2>
+<p class="has-line-data" data-line-start="132" data-line-end="133">MIT</p>
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script></body></html>

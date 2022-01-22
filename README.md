@@ -9,25 +9,83 @@ This project contains a server developed on python3 using FastAPI which is capab
 
 The proposed architecture can be divided into four modules
 
-![Modules](./imgs/ModModules.jpeg)
+![Modules](./imgs/ModModules.jpg)
 
-#### Image Labelling
+##### 1. Image Labelling
 
-![Image Labelling](./imgs/ModImageLabelling.jpeg)
+This module is responsible for labelling the image using Google Cloud Vision.
+
+![Image Labelling](./imgs/ModImageLabelling.jpg)
+
+
+##### 2. Knowledge Parsing
+
+This module is responsible for parsing the knowledge from Wikipedia.
+
+![Knowledge Parsing](./imgs/ModKnowledgeExtraction.jpg)
+
+##### 3. Questions Answers Extraction
+
+This module is responsible for extracting the answer-aware questions using Google's T5 model fine-tuned on SQuAD dataset.
+
+![QA Extraction](./imgs/ModQAExtraction.jpg)
+
+##### 4. Relevant Options Creation
+
+This module is responsible for generating relevant options using Sense2Vec to convert simple Questions into MCQs.
+
+![Relevant Options](./imgs/ModRelevantOptions.jpg)
+
+
+## Step-One: A Visual Learning App
+
+Using the proposed framework, we were able to develop a visual learning app for children with the following screens.
+
+##### 1. Image Input Screen
+
+This module is responsible for labelling the image using Google Cloud Vision.
+
+![Image Picker](./imgs/ImagePicker.jpg) ![Image Selection](./imgs/ImageSelection.jpg)
+
+
+##### 2. Topic Selection Screen
+
+This module is responsible for parsing the knowledge from Wikipedia.
+
+![Label Selection](./imgs/LabelSelection.jpg) ![Another Label Selection](./imgs/LabelSelection2.jpg)
+
+##### 3. Reading Screen
+
+This module is responsible for extracting the answer-aware questions using Google's T5 model fine-tuned on SQuAD dataset.
+
+![Label Page](./imgs/LabelPage.jpg) ![Another Label Page](./imgs/LabelPage2.jpg)
+
+##### 4. Quiz Screen
+
+This module is responsible for generating relevant options using Sense2Vec to convert simple Questions into MCQs.
+
+![Quiz Screen](./imgs/Quiz1.jpg) ![Context Screen](./imgs/Context1.jpg)
+
+##### 5. Score Screen
+
+This module is responsible for generating relevant options using Sense2Vec to convert simple Questions into MCQs.
+
+![Good Score](./imgs/scoreGood.jpg) ![Bad Score](./imgs/scoreBad.jpg)
 
 ## Installation
 
 
-Install the dependencies and start the server.
-
+##### Environment
+To setup the environment, run:
 ```sh
-cd your-project
-python -m venv env
+cd QuizApp/server
+python3 -m venv env
 source env/bin/activate
 pip install -r requirements.txt
 ```
 
-Dependencies...
+##### Dependencies
+To install dependencies:
 
 ```sh
 pip3 install sense2vec
@@ -60,11 +118,11 @@ uvicorn main:app --reload --workers 1 --host 0.0.0.0 --port 8008
 
 OR
 
-you can run 'server/quizAppServer' on colab and get the endpoint via ngrok
+[![Colab Notebook](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/gist/ahmedjamshed/1c8663cd4f24748eaf96a0b5bedd54de/quizappserver.ipynb)
 
 To Run App...
 
-make sure server endpoint is updated in 'lib/app/common/constants.dart'
+make sure server endpoint is updated in [constants.dart](./lib/app/common/constants.dart)
 
 ```sh
 flutter run
