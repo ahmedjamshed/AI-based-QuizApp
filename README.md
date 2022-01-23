@@ -82,6 +82,7 @@ cd QuizApp/server
 python3 -m venv env
 source env/bin/activate
 pip install -r requirements.txt
+export GOOGLE_APPLICATION_CREDENTIALS="/[project_location]/QuizApp/server/keyFile.json"
 ```
 
 ##### Dependencies
@@ -101,32 +102,44 @@ pip3 install -e git://github.com/ahmedjamshed/question_generation.git@0.4.0#egg=
 
 ```
 
-Run Once..
+##### Download sense2vec
+If you haven't previously downloaded the sense2vec data then download it using [dloader.py](./server/dloader.py)
 
 ```sh
 python3 dloader.py
-
-export GOOGLE_APPLICATION_CREDENTIALS="/Users/[user_name]/Desktop/QuizApp/server/keyFile.json"
 ```
 
-To Run server...
+##### Server
+You need to first run the server locally using uvicorn 
 
 ```sh
 cd server
 uvicorn main:app --reload --workers 1 --host 0.0.0.0 --port 8008
 ```
-
 OR
+you can also use this colab notebook which uses ngrok to generate the temporary endpoint.
 
 [![Colab Notebook](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/gist/ahmedjamshed/1c8663cd4f24748eaf96a0b5bedd54de/quizappserver.ipynb)
 
-To Run App...
+##### Step-One app
 
-make sure server endpoint is updated in [constants.dart](./lib/app/common/constants.dart)
+Make sure server endpoint is updated in [constants.dart](./lib/app/common/constants.dart)
 
 ```sh
 flutter run
 ```
+
+##### Output
+
+This framework will generate the following output considering this image of lion.
+
+![Lion](./imgs/lion.jpg)
+
+| Topic | Question | Answer | Options |
+| :-----: | :-: | :-: | :-: |
+| Carnivora | What is the fifth largest order of mammals? | ______ | Acanthopterygii, Acarina, Actiniaria, **Carnivora**, Actinomyxidia etc. |
+| Lion | What are the biggest causes of the decline of the lion? | habitat loss and conflicts with ____| other species, living things, **humans**, intelligent beings, sentient species etc.|
+| Snout | What is the rhinarium associated with? |  ______ sense of olfaction | same strength, stonger, tougher, **stronger**, weaker, more endurance etc..|
 
 ## License
 
