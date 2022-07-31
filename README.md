@@ -2,6 +2,8 @@
 
 This project contains a server developed on python3 using FastAPI which is capable of generating multiple knowledge-aware, open-ended and free-formed MCQs from a single image. It also contains a mobile app developed on flutter which interacts with the server to help the children in learning by generating automated quizzes on their favorite topics.
 
+[Research paper](Research_Paper.pdf)
+
 ## Motivation
 
 The motivation behind the Step-One app is to provide some mean of informal education to out of school children especially in remote areas where the educational facilities are inadequate. The Out of school children data is illustrated below.
